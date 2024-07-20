@@ -117,7 +117,9 @@ class PrePlayWindow(kodigui.ControlledWindow, windowutils.UtilMixin, RatingsMixi
         if oldFocusId == self.PLAY_BUTTON_ID:
             self.focusPlayButton()
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             controlID = self.getFocusId()
 

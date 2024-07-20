@@ -205,7 +205,9 @@ class SearchDialog(kodigui.BaseDialog, windowutils.UtilMixin):
         self.setProperty('search.section', 'all')
         self.updateQuery()
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 self.isActive = False

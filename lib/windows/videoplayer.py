@@ -163,7 +163,9 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
     def onReInit(self):
         self.setBackground()
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             if self.postPlayMode:
                 controlID = self.getFocusId()

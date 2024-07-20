@@ -544,10 +544,13 @@ class SeekDialog(kodigui.BaseDialog):
 
         self.updateProgress()
 
-    def _onAction(self, action):
+    def onAction(self, action):
         if xbmc.getCondVisibility('Window.IsActive(selectdialog)'):
             if self.doKodiSelectDialogHack(action):
                 return
+
+        if kodigui.XMLBase.onAction(self, action):
+            return
 
         try:
             self.resetTimeout()

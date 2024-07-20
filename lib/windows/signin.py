@@ -51,7 +51,7 @@ class SignInPlexPass(kodigui.BaseWindow):
         self.retry = False
         kodigui.BaseWindow.__init__(self, *args, **kwargs)
 
-    def _onAction(self, action):
+    def onAction(self, action):
         if action == xbmcgui.ACTION_SELECT_ITEM:
             self.retry = True
             self.doClose()
@@ -79,7 +79,9 @@ class PreSignInWindow(kodigui.BaseWindow):
     def onFirstInit(self):
         self.signinButton = self.getControl(self.SIGNIN_BUTTON_ID)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         if action == xbmcgui.ACTION_SELECT_ITEM:
             self.doSignin = True
             self.doClose()
@@ -115,7 +117,7 @@ class PinLoginWindow(kodigui.BaseWindow):
         self.setProperty('pin.image.2', '')
         self.setProperty('pin.image.3', '')
 
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             if action == xbmcgui.ACTION_NAV_BACK or action == xbmcgui.ACTION_PREVIOUS_MENU:
                 self.abort = True

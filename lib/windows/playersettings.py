@@ -41,7 +41,10 @@ class VideoSettingsDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showSettings(True)
         util.CRON.registerReceiver(self)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
+
         try:
             if not xbmc.getCondVisibility('Player.HasMedia') and not self.nonPlayback:
                 self.doClose()
@@ -231,7 +234,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showOptions()
         util.CRON.registerReceiver(self)
 
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             if not xbmc.getCondVisibility('Player.HasMedia') and not self.nonPlayback:
                 self.doClose()

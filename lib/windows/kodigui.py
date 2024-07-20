@@ -103,11 +103,16 @@ BG_NA = "script.plex/home/background-fallback_black.png"
 
 
 class XMLBase(object):
-    def onInit(self):
+    def onInit(self, count=0):
         try:
             self.getControl(666)
         except RuntimeError as e:
             if e.args and "Non-Existent Control" in e.args[0]:
+                if count == 0:
+                    # retry once
+                    xbmc.sleep(250)
+                    return self.onInit(count=1)
+
                 util.ERROR("Possibly broken XML file: {}, triggering recompilation.".format(self.xmlFile))
                 util.showNotification("Recompiling templates", time_ms=1000,
                                       header="Possibly broken XML file(s)")
@@ -140,9 +145,7 @@ class XMLBase(object):
         if (util.HOME_BUTTON_MAPPED is not None
                 and action.getButtonCode() == int(util.HOME_BUTTON_MAPPED) and hasattr(self, "goHome")):
             self.goHome(with_root=True)
-            return
-
-        self._onAction(action)
+            return True
 
 
 class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
@@ -369,7 +372,7 @@ class ControlledBase:
 
 
 class ControlledWindow(ControlledBase, BaseWindow):
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK):
                 self.doClose()
@@ -381,7 +384,7 @@ class ControlledWindow(ControlledBase, BaseWindow):
 
 
 class ControlledDialog(ControlledBase, BaseDialog):
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK):
                 self.doClose()
@@ -1009,7 +1012,7 @@ class MultiWindow(object):
     def onReInit(self):
         pass
 
-    def _onAction(self, action):
+    def onAction(self, action):
         if action == xbmcgui.ACTION_PREVIOUS_MENU or action == xbmcgui.ACTION_NAV_BACK:
             self.doClose()
         self._currentOnAction(action)
@@ -1046,7 +1049,7 @@ class SafeControlEdit(object):
     def setCompatibleMode(self, on):
         self._compatibleMode = on
 
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             controlID = self._win.getFocusId()
             if controlID == self.controlID:

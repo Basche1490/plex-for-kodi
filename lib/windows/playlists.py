@@ -52,7 +52,9 @@ class PlaylistsWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         else:
             self.setFocusId(self.VIDEO_PL_LIST_ID)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             if action == xbmcgui.ACTION_CONTEXT_MENU:
                 if not xbmc.getCondVisibility('ControlGroup({0}).HasFocus(0)'.format(self.OPTIONS_GROUP_ID)):

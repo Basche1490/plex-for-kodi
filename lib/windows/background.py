@@ -25,7 +25,7 @@ class BackgroundWindow(kodigui.BaseWindow):
         self.function()
         self.doClose()
 
-    def _onAction(self, action):
+    def onAction(self, action):
         pass
 
 

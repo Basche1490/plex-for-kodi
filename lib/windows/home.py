@@ -754,10 +754,13 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
             except:
                 util.LOG("Couldn't store last background")
 
-    def _onAction(self, action):
+    def onAction(self, action):
         controlID = self.getFocusId()
 
         if self._ignoreInput:
+            return
+
+        if kodigui.XMLBase.onAction(self, action):
             return
 
         try:
@@ -1127,7 +1130,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                 if mli.dataSource and mli.dataSource.key == sectionID:
                     self.sectionList.selectItem(mli.pos())
                     self.lastSection = mli.dataSource
-                    self.sectionChanged()
+                    self.setProperty('hub.focus', '')
+                    self.setFocusId(self.SECTION_LIST_ID)
+                    self._sectionReallyChanged(self.lastSection)
 
     @property
     def carriedProps(self):

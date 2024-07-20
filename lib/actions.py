@@ -86,7 +86,6 @@ class ActionKey(object):
         self.code = code
         self.key = translate_key(code)
         self.key_found = self.key != code
-        log("REFL: %s %s" % (self.key, self.key_found))
 
     @property
     def name(self):

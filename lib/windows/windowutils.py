@@ -13,12 +13,13 @@ class UtilMixin():
         self.exitCommand = None
 
     def goHome(self, section=None, with_root=False):
-        HOME.go_root = with_root
-        HOME.show()
         if section:
             self.closeWithCommand('HOME:{0}'.format(section))
         else:
             self.closeWithCommand('HOME')
+
+        HOME.go_root = with_root
+        HOME.show()
 
     def openItem(self, obj):
         self.processCommand(opener.open(obj))

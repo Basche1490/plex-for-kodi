@@ -98,7 +98,9 @@ class PhotoWindow(kodigui.BaseWindow):
     def osdTimerCallback(self):
         self.setFocusId(self.OVERLAY_BUTTON_ID)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             # controlID = self.getFocusId()
             if action == xbmcgui.ACTION_MOVE_LEFT:

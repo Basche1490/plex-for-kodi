@@ -42,7 +42,9 @@ class OptionsDialog(kodigui.BaseDialog):
         util.MONITOR.waitForAbort(0.1)
         self.setFocusId(self.BUTTON_IDS[0])
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         controlID = self.getFocusId()
         actionID = action.getId()
 

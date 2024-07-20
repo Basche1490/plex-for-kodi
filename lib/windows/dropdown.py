@@ -84,7 +84,9 @@ class DropdownDialog(kodigui.BaseDialog):
             from lib import player
             player.PLAYER.on('session.ended', self.playbackSessionEnded)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             pass
         except:

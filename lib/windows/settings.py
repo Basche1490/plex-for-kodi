@@ -825,7 +825,9 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         self.lastSection = None
         self.checkSection()
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             self.checkSection()
             controlID = self.getFocusId()
@@ -1087,7 +1089,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showOptions()
         util.CRON.registerReceiver(self)
 
-    def _onAction(self, action):
+    def onAction(self, action):
         try:
             if not xbmc.getCondVisibility('Player.HasMedia'):
                 self.doClose()

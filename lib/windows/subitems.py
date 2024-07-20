@@ -170,7 +170,9 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
             width = (int(wBase * self.width)) or 1
             self.progressImageControl.setWidth(width)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             controlID = self.getFocusId()
 

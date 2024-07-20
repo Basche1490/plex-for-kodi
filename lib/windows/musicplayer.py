@@ -82,7 +82,9 @@ class MusicPlayerWindow(currentplaylist.CurrentPlaylistWindow):
             return
         super(MusicPlayerWindow, self).processCommand(command)
 
-    def _onAction(self, action):
+    def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         if self.ignoreStopCommands and action in (xbmcgui.ACTION_PREVIOUS_MENU,
                                                   xbmcgui.ACTION_NAV_BACK):
             if not self.is_current_window:
