@@ -90,7 +90,7 @@ class CurrentPlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
             player.PLAYER.handler.playQueue.on('change', self.updateProperties)
         player.PLAYER.on('playlist.changed', self.playQueueCallback)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             controlID = self.getFocusId()
             if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK):
@@ -101,7 +101,7 @@ class CurrentPlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.PLAYLIST_LIST_ID:

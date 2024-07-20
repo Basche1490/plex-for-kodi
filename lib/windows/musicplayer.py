@@ -82,7 +82,7 @@ class MusicPlayerWindow(currentplaylist.CurrentPlaylistWindow):
             return
         super(MusicPlayerWindow, self).processCommand(command)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         if self.ignoreStopCommands and action in (xbmcgui.ACTION_PREVIOUS_MENU,
                                                   xbmcgui.ACTION_NAV_BACK):
             if not self.is_current_window:

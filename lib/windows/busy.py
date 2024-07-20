@@ -18,7 +18,7 @@ class BusyWindow(kodigui.BaseDialog):
 
 
 class BlockingBusyWindow(BusyWindow):
-    def onAction(self, action):
+    def _onAction(self, action):
         if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_STOP):
             return False
 
@@ -26,7 +26,7 @@ class BlockingBusyWindow(BusyWindow):
 class BusyClosableWindow(BusyWindow):
     ctx = None
 
-    def onAction(self, action):
+    def _onAction(self, action):
         if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_STOP):
             self.ctx.shouldClose = True
 

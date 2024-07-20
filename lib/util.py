@@ -167,6 +167,18 @@ def _processSetting(setting, default, is_json=False):
     return setting
 
 
+HOME_BUTTON_MAPPED = None
+
+
+def homeButtonMapped(*args, **kwargs):
+    global HOME_BUTTON_MAPPED
+    data = getSetting('map_button_home', None)
+    HOME_BUTTON_MAPPED = data if data != "None" else None
+
+
+homeButtonMapped()
+
+
 class AddonSettings(object):
     """
     @DynamicAttrs

@@ -205,14 +205,14 @@ class SearchDialog(kodigui.BaseDialog, windowutils.UtilMixin):
         self.setProperty('search.section', 'all')
         self.updateQuery()
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 self.isActive = False
         except:
             util.ERROR()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if 1000 < controlID < 1037:

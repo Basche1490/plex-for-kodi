@@ -6,10 +6,13 @@ import sys
 import plexnet
 from kodi_six import xbmc
 from kodi_six import xbmcgui
+from kodi_six import xbmcaddon
+from threading import Timer
 
 import lib.cache
 from lib import util
 from lib import genres
+from lib import actions
 from lib.util import T
 from . import kodigui
 from . import windowutils
@@ -378,6 +381,26 @@ class IntegerSetting(BasicSetting):
     type = 'INTEGER'
 
 
+class KeySetting(BasicSetting):
+    type = 'STRING'
+
+    def value_setter(self):
+        w = SchnorchelDialog()
+        timeout = Timer(5, w.close)
+        timeout.start()
+        w.doModal()
+        timeout.cancel()
+        choice = w.key
+        del w
+        return choice
+
+    def get(self, *args, **kwargs):
+        code = super(KeySetting, self).get(default=None, *args, **kwargs)
+        if code is not None and code != "None":
+            ak = actions.ActionKey(int(code))
+            return ak
+
+
 class Settings(object):
     SETTINGS = {
         'main': (
@@ -589,6 +612,7 @@ class Settings(object):
                         ('never', T(32033, 'Never'))
                     )
                 ).description(T(32939, 'Only applies to video player UI')),
+                KeySetting('map_button_home', "Map home to button", None)
             )
         ),
         'player_user': (
@@ -801,11 +825,14 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         self.lastSection = None
         self.checkSection()
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             self.checkSection()
             controlID = self.getFocusId()
-            if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
+            if action == xbmcgui.ACTION_STOP:
+                self.editSetting(clear=True)
+                return
+            elif action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 if controlID == self.OPTIONS_LIST_ID:
                     self.setFocusId(self.SETTINGS_LIST_ID)
                     return
@@ -820,7 +847,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        kodigui.BaseWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.SECTION_LIST_ID:
@@ -881,7 +908,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         self.settingsList.reset()
         self.settingsList.addItems(items)
 
-    def editSetting(self, from_right=False):
+    def editSetting(self, from_right=False, clear=False):
         mli = self.settingsList.getSelectedItem()
         if not mli:
             return
@@ -896,6 +923,8 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
             self.editIP(mli, setting)
         elif setting.type == 'INTEGER' and not from_right:
             self.editInteger(mli, setting)
+        elif setting.type == 'STRING' and not from_right:
+            self.editString(mli, setting, clear=clear)
         elif setting.type == 'BUTTON':
             self.buttonDialog(mli, setting)
 
@@ -987,6 +1016,54 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         setting.set(int(result))
         mli.setLabel2(result)
 
+    def editString(self, mli, setting, clear=False):
+        if clear:
+            setting.set(None)
+            mli.setLabel2(T(32447, "None"))
+            return
+        if hasattr(setting, "value_setter"):
+            result = setting.value_setter()
+            setting.set(result.code)
+            mli.setLabel2(str(result))
+            return
+        else:
+            result = xbmcgui.Dialog().input(T(32417, 'Enter Port Number'), str(setting.get()), xbmcgui.INPUT_STRING)
+        if result is None:
+            return
+        elif result is -1:
+            setting.set(None)
+            return
+
+        setting.set(result)
+        mli.setLabel2(str(result))
+
+
+class SchnorchelDialog(xbmcgui.WindowXMLDialog):
+    """
+    inspired by https://github.com/pkscout/script.keymap/blob/main/editor.py
+    """
+
+    def __new__(cls):
+        gui_api = tuple(map(int, xbmcaddon.Addon('xbmc.gui').getAddonInfo('version').split('.')))
+        file_name = "DialogNotification.xml" if gui_api >= (5, 11, 0) else "DialogKaiToast.xml"
+        return super(SchnorchelDialog, cls).__new__(cls, file_name, "")
+
+    def __init__(self):
+        self.key = None
+
+    def onAction(self, action):
+        code = action.getButtonCode()
+        action_id = action.getId()
+        self.key = None
+        if action_id not in (xbmcgui.ACTION_SELECT_ITEM, xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
+            self.key = None if code == 0 else actions.ActionKey(code)
+        elif action_id in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
+            self.key = None
+        else:
+            self.key = -1
+        self.close()
+        return
+
 
 class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
     xmlFile = 'script-plex-settings_select_dialog.xml'
@@ -1010,7 +1087,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showOptions()
         util.CRON.registerReceiver(self)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if not xbmc.getCondVisibility('Player.HasMedia'):
                 self.doClose()
@@ -1018,7 +1095,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         except:
             util.ERROR()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:

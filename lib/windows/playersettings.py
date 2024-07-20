@@ -41,7 +41,7 @@ class VideoSettingsDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showSettings(True)
         util.CRON.registerReceiver(self)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if not xbmc.getCondVisibility('Player.HasMedia') and not self.nonPlayback:
                 self.doClose()
@@ -67,7 +67,7 @@ class VideoSettingsDialog(kodigui.BaseDialog, util.CronReceiver):
 
             self.lastSelectedItem = self.settingsList.control.getSelectedPosition()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.SETTINGS_LIST_ID:
@@ -231,7 +231,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         self.showOptions()
         util.CRON.registerReceiver(self)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if not xbmc.getCondVisibility('Player.HasMedia') and not self.nonPlayback:
                 self.doClose()
@@ -259,7 +259,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
 
                 self.lastSelectedItem = self.optionsList.control.getSelectedPosition()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:

@@ -170,7 +170,7 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
             width = (int(wBase * self.width)) or 1
             self.progressImageControl.setWidth(width)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             controlID = self.getFocusId()
 
@@ -224,7 +224,7 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.HOME_BUTTON_ID:

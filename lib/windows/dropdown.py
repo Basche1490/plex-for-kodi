@@ -84,7 +84,7 @@ class DropdownDialog(kodigui.BaseDialog):
             from lib import player
             player.PLAYER.on('session.ended', self.playbackSessionEnded)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             pass
         except:
@@ -111,7 +111,7 @@ class DropdownDialog(kodigui.BaseDialog):
 
                 self.lastSelectedItem = self.optionsList.control.getSelectedPosition()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:

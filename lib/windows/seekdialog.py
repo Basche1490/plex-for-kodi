@@ -544,7 +544,7 @@ class SeekDialog(kodigui.BaseDialog):
 
         self.updateProgress()
 
-    def onAction(self, action):
+    def _onAction(self, action):
         if xbmc.getCondVisibility('Window.IsActive(selectdialog)'):
             if self.doKodiSelectDialogHack(action):
                 return
@@ -803,7 +803,7 @@ class SeekDialog(kodigui.BaseDialog):
         except:
             util.ERROR()
 
-        kodigui.BaseDialog.onAction(self, action)
+        self.defOnAction(action)
 
     def doKodiSelectDialogHack(self, action):
         command = {

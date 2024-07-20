@@ -136,6 +136,14 @@ class XMLBase(object):
             raise
         self._onInit()
 
+    def onAction(self, action):
+        if (util.HOME_BUTTON_MAPPED is not None
+                and action.getButtonCode() == int(util.HOME_BUTTON_MAPPED) and hasattr(self, "goHome")):
+            self.goHome(with_root=True)
+            return
+
+        self._onAction(action)
+
 
 class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
     __slots__ = ("_closing", "_winID", "started", "finishedInit", "dialogProps", "isOpen", "_errored")
@@ -188,6 +196,9 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
         except util.NoDataException:
             self.exitCommand = "NODATA"
             self.doClose()
+
+    def defOnAction(self, action):
+        super(xbmcgui.WindowXML, self).onAction(action)
 
     def onFirstInit(self):
         pass
@@ -308,6 +319,9 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
             self.started = True
             self.onFirstInit()
 
+    def defOnAction(self, action):
+        super(xbmcgui.WindowXMLDialog, self).onAction(action)
+
     def onFirstInit(self):
         pass
 
@@ -355,7 +369,7 @@ class ControlledBase:
 
 
 class ControlledWindow(ControlledBase, BaseWindow):
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK):
                 self.doClose()
@@ -367,7 +381,7 @@ class ControlledWindow(ControlledBase, BaseWindow):
 
 
 class ControlledDialog(ControlledBase, BaseDialog):
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK):
                 self.doClose()
@@ -995,7 +1009,7 @@ class MultiWindow(object):
     def onReInit(self):
         pass
 
-    def onAction(self, action):
+    def _onAction(self, action):
         if action == xbmcgui.ACTION_PREVIOUS_MENU or action == xbmcgui.ACTION_NAV_BACK:
             self.doClose()
         self._currentOnAction(action)
@@ -1032,7 +1046,7 @@ class SafeControlEdit(object):
     def setCompatibleMode(self, on):
         self._compatibleMode = on
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             controlID = self._win.getFocusId()
             if controlID == self.controlID:

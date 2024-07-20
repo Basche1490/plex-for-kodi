@@ -117,7 +117,7 @@ class PrePlayWindow(kodigui.ControlledWindow, windowutils.UtilMixin, RatingsMixi
         if oldFocusId == self.PLAY_BUTTON_ID:
             self.focusPlayButton()
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             controlID = self.getFocusId()
 
@@ -168,7 +168,7 @@ class PrePlayWindow(kodigui.ControlledWindow, windowutils.UtilMixin, RatingsMixi
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.HOME_BUTTON_ID:

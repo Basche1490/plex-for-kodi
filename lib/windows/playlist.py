@@ -101,7 +101,7 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
     def onReInit(self):
         self.playlistListControl.setSelectedItemByDataSource(self.playlist.current())
 
-    # def onAction(self, action):
+    # def _onAction(self, action):
     #     try:
     #         if action in(xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_CONTEXT_MENU):
     #             if not xbmc.getCondVisibility('ControlGroup({0}).HasFocus(0)'.format(self.OPTIONS_GROUP_ID)):
@@ -110,13 +110,13 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
     #     except:
     #         util.ERROR()
 
-    #     kodigui.ControlledWindow.onAction(self, action)
+    #     self.defOnAction(action)
 
     def onNewVideo(self, *args, **kwargs):
         video = kwargs.get("video")
         self.playlist.setCurrent(self.playlist.getPosFromItem(video))
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 self.doClose()
@@ -125,7 +125,7 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if controlID == self.HOME_BUTTON_ID:

@@ -81,7 +81,7 @@ class AlbumWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
             if mli.dataSource.ratingKey == ratingKey:
                 self.trackListControl.setSelectedItem(mli)
 
-    def onAction(self, action):
+    def _onAction(self, action):
         controlID = self.getFocusId()
         try:
             if action == xbmcgui.ACTION_LAST_PAGE and xbmc.getCondVisibility('ControlGroup(300).HasFocus(0)'):
@@ -108,7 +108,7 @@ class AlbumWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def checkOptionsAction(self, action):
         if action == xbmcgui.ACTION_MOVE_UP:

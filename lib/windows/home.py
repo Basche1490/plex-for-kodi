@@ -415,6 +415,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self.wantedSections = None
         self.movingSection = False
         self._initialMovingSectionPos = None
+        self.go_root = False
         windowutils.HOME = self
 
         self.lock = threading.Lock()
@@ -488,6 +489,15 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self._anyItemAction = False
         if self._applyTheme:
             self.closeWRecompileTpls()
+            return
+
+        if self.go_root:
+            self.sectionList.setSelectedItemByPos(0)
+            self.setProperty('hub.focus', '')
+            self.lastSection = home_section
+            self.showHubs(home_section)
+            self.setFocusId(self.SECTION_LIST_ID)
+            self.go_root = False
             return
 
         if self._reloadOnReinit:
@@ -648,6 +658,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         plexapp.SERVERMANAGER.on('reachable:server', self.displayServerAndUser)
 
         plexapp.util.APP.on('change:selectedServer', self.onSelectedServerChange)
+        plexapp.util.APP.on('change:map_button_home', util.homeButtonMapped)
         plexapp.util.APP.on('loaded:server_connections', self.checkPlexDirectHosts)
         plexapp.util.APP.on('account:response', self.displayServerAndUser)
         plexapp.util.APP.on('sli:reachability:received', self.displayServerAndUser)
@@ -673,6 +684,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         plexapp.SERVERMANAGER.off('reachable:server', self.displayServerAndUser)
 
         plexapp.util.APP.off('change:selectedServer', self.onSelectedServerChange)
+        plexapp.util.APP.off('change:map_button_home', util.homeButtonMapped)
         plexapp.util.APP.off('loaded:server_connections', self.checkPlexDirectHosts)
         plexapp.util.APP.off('account:response', self.displayServerAndUser)
         plexapp.util.APP.off('sli:reachability:received', self.displayServerAndUser)
@@ -742,7 +754,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
             except:
                 util.LOG("Couldn't store last background")
 
-    def onAction(self, action):
+    def _onAction(self, action):
         controlID = self.getFocusId()
 
         if self._ignoreInput:
@@ -880,7 +892,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         except:
             util.ERROR()
 
-        kodigui.BaseWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onClick(self, controlID):
         if self._ignoreInput:

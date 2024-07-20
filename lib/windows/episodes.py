@@ -497,7 +497,7 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
 
         self.episode = None
 
-    def onAction(self, action):
+    def _onAction(self, action):
         try:
             controlID = self.getFocusId()
 
@@ -556,7 +556,7 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         except:
             util.ERROR()
 
-        kodigui.ControlledWindow.onAction(self, action)
+        self.defOnAction(action)
 
     def onNewVideo(self, video=None, **kwargs):
         if not video:

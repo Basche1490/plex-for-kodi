@@ -12,7 +12,8 @@ class UtilMixin():
     def __init__(self):
         self.exitCommand = None
 
-    def goHome(self, section=None):
+    def goHome(self, section=None, with_root=False):
+        HOME.go_root = with_root
         HOME.show()
         if section:
             self.closeWithCommand('HOME:{0}'.format(section))
