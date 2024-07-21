@@ -50,7 +50,7 @@ def waitForThreads():
                         t.cancel()
 
                     try:
-                        t.join(2.0)
+                        t.join(.25)
                     except:
                         util.ERROR()
 
