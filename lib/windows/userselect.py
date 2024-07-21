@@ -34,8 +34,6 @@ class UserSelectWindow(kodigui.BaseWindow):
         self.start()
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
-            return
         try:
             ID = action.getId()
             if 57 < ID < 68:
@@ -69,7 +67,7 @@ class UserSelectWindow(kodigui.BaseWindow):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseWindow.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.USER_LIST_ID:

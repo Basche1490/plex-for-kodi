@@ -206,7 +206,7 @@ class SearchDialog(kodigui.BaseDialog, windowutils.UtilMixin):
         self.updateQuery()
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
@@ -214,7 +214,7 @@ class SearchDialog(kodigui.BaseDialog, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseDialog.onAction(self, action)
 
     def onClick(self, controlID):
         if 1000 < controlID < 1037:

@@ -82,7 +82,7 @@ class AlbumWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
                 self.trackListControl.setSelectedItem(mli)
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
         controlID = self.getFocusId()
         try:
@@ -110,7 +110,7 @@ class AlbumWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.ControlledWindow.onAction(self, action)
 
     def checkOptionsAction(self, action):
         if action == xbmcgui.ACTION_MOVE_UP:

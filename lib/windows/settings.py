@@ -830,7 +830,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         self.checkSection()
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
         try:
             self.checkSection()
@@ -1037,7 +1037,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
             result = xbmcgui.Dialog().input(T(32417, 'Enter Port Number'), str(setting.get()), xbmcgui.INPUT_STRING)
         if result is None:
             return
-        elif result is -1:
+        elif result == -1:
             setting.set(None)
             return
 
@@ -1127,7 +1127,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseWindow.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:

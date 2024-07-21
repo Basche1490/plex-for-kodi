@@ -117,7 +117,7 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         self.playlist.setCurrent(self.playlist.getPosFromItem(video))
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
@@ -127,7 +127,7 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.ControlledWindow.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.HOME_BUTTON_ID:

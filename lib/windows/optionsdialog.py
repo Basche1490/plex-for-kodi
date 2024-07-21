@@ -43,8 +43,6 @@ class OptionsDialog(kodigui.BaseDialog):
         self.setFocusId(self.BUTTON_IDS[0])
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
-            return
         controlID = self.getFocusId()
         actionID = action.getId()
 
@@ -53,7 +51,7 @@ class OptionsDialog(kodigui.BaseDialog):
             if res:
                 return
 
-        return self.defOnAction(action)
+        kodigui.BaseDialog.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID in self.BUTTON_IDS:

@@ -549,7 +549,7 @@ class SeekDialog(kodigui.BaseDialog):
             if self.doKodiSelectDialogHack(action):
                 return
 
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
 
         try:
@@ -806,7 +806,7 @@ class SeekDialog(kodigui.BaseDialog):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseDialog.onAction(self, action)
 
     def doKodiSelectDialogHack(self, action):
         command = {

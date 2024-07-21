@@ -143,18 +143,19 @@ class XMLBase(object):
             raise
         self._onInit()
 
-    def onAction(self, action):
+    def goHomeAction(self, action):
         if (util.HOME_BUTTON_MAPPED is not None
                 and action.getButtonCode() == int(util.HOME_BUTTON_MAPPED) and hasattr(self, "goHome")):
             self.goHome(with_root=True)
             return True
+        return
 
 
 class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
     __slots__ = ("_closing", "_winID", "started", "finishedInit", "dialogProps", "isOpen", "_errored")
 
     def __init__(self, *args, **kwargs):
-        super(BaseWindow, self).__init__()
+        BaseFunctions.__init__(self)
         self._closing = False
         self._errored = False
         self._winID = None
@@ -166,9 +167,6 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
         if carryProps:
             self.setProperties(list(carryProps.keys()), list(carryProps.values()))
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
-
-        if self.__class__.__name__ not in ("HomeWindow", "BackgroundWindow"):
-            plexapp.util.APP.on('close.windows', self.onCloseSignal)
 
     def onCloseSignal(self, *args, **kwargs):
         self.doClose()
@@ -201,18 +199,16 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
                 self.started = True
                 if LAST_BG_URL:
                     self.windowSetBackground(LAST_BG_URL)
+
+                if self.__class__.__name__ not in ("HomeWindow", "BackgroundWindow"):
+                    plexapp.util.APP.on('close.windows', self.onCloseSignal)
+
                 self.onFirstInit()
                 self.finishedInit = True
 
         except util.NoDataException:
             self.exitCommand = "NODATA"
             self.doClose()
-
-    def defOnAction(self, action):
-        super(xbmcgui.WindowXML, self).onAction(action)
-
-    def onFirstInit(self):
-        pass
 
     def onReInit(self):
         pass
@@ -311,7 +307,7 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
     __slots__ = ("_closing", "_winID", "started", "isOpen", "_errored")
 
     def __init__(self, *args, **kwargs):
-        super(BaseDialog, self).__init__()
+        BaseFunctions.__init__(self)
         self._closing = False
         self._errored = False
         self._winID = ''
@@ -321,8 +317,6 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
         if carryProps:
             self.setProperties(list(carryProps.keys()), list(carryProps.values()))
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
-
-        plexapp.util.APP.on('close.dialogs', self.onCloseSignal)
 
     def onCloseSignal(self, *args, **kwargs):
         self.doClose()
@@ -334,10 +328,8 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
             self.onReInit()
         else:
             self.started = True
+            plexapp.util.APP.on('close.dialogs', self.onCloseSignal)
             self.onFirstInit()
-
-    def defOnAction(self, action):
-        super(xbmcgui.WindowXMLDialog, self).onAction(action)
 
     def onFirstInit(self):
         pass

@@ -99,7 +99,7 @@ class PhotoWindow(kodigui.BaseWindow):
         self.setFocusId(self.OVERLAY_BUTTON_ID)
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
+        if kodigui.XMLBase.goHomeAction(self, action):
             return
         try:
             # controlID = self.getFocusId()
@@ -143,7 +143,7 @@ class PhotoWindow(kodigui.BaseWindow):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseWindow.onAction(self, action)
 
     def checkPqueueListChanged(self):
         item = self.pqueueList.getSelectedItem()

@@ -760,9 +760,6 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         if self._ignoreInput:
             return
 
-        if kodigui.XMLBase.onAction(self, action):
-            return
-
         try:
             if self._skipNextAction:
                 self._skipNextAction = False
@@ -895,7 +892,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseWindow.onAction(self, action)
 
     def onClick(self, controlID):
         if self._ignoreInput:

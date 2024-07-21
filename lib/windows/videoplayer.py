@@ -164,8 +164,6 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
         self.setBackground()
 
     def onAction(self, action):
-        if kodigui.XMLBase.onAction(self, action):
-            return
         try:
             if self.postPlayMode:
                 controlID = self.getFocusId()
@@ -207,7 +205,7 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.ControlledWindow.onAction(self, action)
 
     def playerPlaybackStarted(self, *args, **kwargs):
         self.playBackStarted = True
