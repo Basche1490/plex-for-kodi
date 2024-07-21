@@ -406,6 +406,8 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
                 self.setFocusId(self.POSTERS_PANEL_ID)
 
     def onAction(self, action):
+        if kodigui.XMLBase.onAction(self, action):
+            return
         try:
             if self.dragging:
                 if not action == xbmcgui.ACTION_MOUSE_DRAG:
