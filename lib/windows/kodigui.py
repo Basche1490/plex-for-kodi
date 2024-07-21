@@ -12,6 +12,8 @@ from six.moves import zip
 
 from .. import util
 
+from plexnet import plexapp
+
 MONITOR = None
 
 
@@ -165,6 +167,12 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
             self.setProperties(list(carryProps.keys()), list(carryProps.values()))
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
 
+        if self.__class__.__name__ not in ("HomeWindow", "BackgroundWindow"):
+            plexapp.util.APP.on('close.windows', self.onCloseSignal)
+
+    def onCloseSignal(self, *args, **kwargs):
+        self.doClose()
+
     def _onInit(self):
         global LAST_BG_URL
         self._winID = xbmcgui.getCurrentWindowId()
@@ -274,6 +282,7 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
         return value
 
     def doClose(self):
+        plexapp.util.APP.off('close.windows', self.onCloseSignal)
         if not self.isOpen:
             return
         self._closing = True
@@ -313,6 +322,11 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
             self.setProperties(list(carryProps.keys()), list(carryProps.values()))
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
 
+        plexapp.util.APP.on('close.dialogs', self.onCloseSignal)
+
+    def onCloseSignal(self, *args, **kwargs):
+        self.doClose()
+
     def _onInit(self):
         self._winID = xbmcgui.getCurrentWindowDialogId()
         BaseFunctions.lastDialogID = self._winID
@@ -345,6 +359,7 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
             xbmc.log('kodigui.BaseDialog.setProperty: Missing window', xbmc.LOGDEBUG)
 
     def doClose(self):
+        plexapp.util.APP.off('close.dialogs', self.onCloseSignal)
         self._closing = True
         self.close()
         self.isOpen = False

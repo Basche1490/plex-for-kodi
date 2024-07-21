@@ -1027,6 +1027,10 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
     def onWake(self, *args, **kwargs):
         wakeAction = util.getSetting('action_on_wake', util.isCoreELEC and 'wait_5' or 'wait_1')
         if wakeAction == "restart":
+            if not self.is_active:
+                plexapp.util.APP.trigger('close.dialogs')
+                plexapp.util.APP.trigger('close.windows')
+
             self.closeOption = "restart"
             self.doClose()
             return
