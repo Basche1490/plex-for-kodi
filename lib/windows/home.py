@@ -492,11 +492,11 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
             return
 
         if self.go_root:
-            self.sectionList.setSelectedItemByPos(0)
             self.setProperty('hub.focus', '')
-            self.lastSection = home_section
-            self.showHubs(home_section)
             self.setFocusId(self.SECTION_LIST_ID)
+            self.sectionList.setSelectedItemByPos(0)
+            # somehow we need to do this as well.
+            xbmc.executebuiltin('Control.SetFocus({0}, {1})'.format(self.SECTION_LIST_ID, 0))
             self.go_root = False
             return
 
