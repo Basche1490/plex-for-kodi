@@ -2597,7 +2597,7 @@ msgid "Restart PM4K"
 msgstr "PM4K neustarten"
 
 msgctxt "#33072"
-msgid "Wait for {} seconds"
+msgid "Wait for {}s"
 msgstr "Warten für {}s"
 
 msgctxt "#33073"
@@ -2621,7 +2621,7 @@ msgid "Scale modern indicators"
 msgstr "Moderne Indikatoren skalieren"
 
 msgctxt "#33078"
-msgid "Scale the modern indicators based on the poster size used. Default: On (small: 1.0, medium: 1.175, big: 1.3)"
+msgid "Scale the modern indicators based on the poster size used. Default: On (tiny: 0.75, small: 1.0, medium: 1.175, big: 1.3)"
 msgstr "Skaliere die modernen Geschaut-Indikatoren basierend auf der Postergröße. Standard: an (winzig: 0.75, klein: 1.0, mittel: 1.175, groß: 1.3)"
 
 msgctxt "#33079"
