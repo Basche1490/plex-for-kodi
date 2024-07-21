@@ -2647,3 +2647,15 @@ msgstr "Papierkorb leeren"
 msgctxt "#33084"
 msgid "Analyze"
 msgstr "Analysieren"
+
+msgctxt "#33085"
+msgid "Map key to home"
+msgstr "Taste zu Home zuordnen"
+
+msgctxt "#33086"
+msgid "Press the key you want to map to go to home within {} seconds"
+msgstr "Drücke die Taste, die Du zuordnen willst, um sofort zu Home zu kommen binnen {} Sekunden"
+
+msgctxt "#33087"
+msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP button on the setting."
+msgstr "Wähle einen Knopf um sofort zur Home-Ansicht zu kommen. Abbrechen via BACK/PREVIOUS_MENU. Gebundene Taste mit dem STOP Knopf auf der Einstellung entbinden."

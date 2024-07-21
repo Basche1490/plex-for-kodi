@@ -1,8 +1,6 @@
 # coding=utf-8
 from kodi_six import xbmcgui
 
-from .logging import log
-
 KEY_VKEY = 0xF000
 KEY_UNICODE = 0xF200
 

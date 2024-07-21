@@ -26,18 +26,18 @@
             </control>
             <control type="image">
                 <posx>0</posx>
-                <posy>810</posy>
+                <posy>865</posy>
                 <width>1920</width>
-                <height>270</height>
+                <height>215</height>
                 <texture>script.plex/white-square.png</texture>
                 <colordiffuse>32000000</colordiffuse>
             </control>
         </control>
         <control type="image">
             <posx>843</posx>
-            <posy>810</posy>
+            <posy>865</posy>
             <width>1077</width>
-            <height>270</height>
+            <height>215</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>32111111</colordiffuse>
         </control>
@@ -54,10 +54,10 @@
 
     <control type="textbox">
         <visible>Control.HasFocus(100) | Control.HasFocus(125)</visible>
-        <posx>903</posx>
-        <posy>870</posy>
-        <width>1017</width>
-        <height>170</height>
+        <posx>872</posx>
+        <posy>886.5</posy>
+        <width>1024</width>
+        <height>172</height>
         <font>font10</font>
         <textcolor>FFFFFFFF</textcolor>
         <align>left</align>
@@ -68,13 +68,13 @@
 
     <control type="group" id="50">
         <posx>248</posx>
-        <posy>168</posy>
+        <posy>131.5</posy>
         <defaultcontrol always="true">75</defaultcontrol>
         <control type="list" id="75">
             <posx>0</posx>
             <posy>0</posy>
             <width>590</width>
-            <height>666</height>
+            <height>741</height>
             <onleft>201</onleft>
             <onright>100</onright>
             <scrolltime>200</scrolltime>
@@ -174,7 +174,7 @@
             <posx>604</posx>
             <posy>0</posy>
             <width>776</width>
-            <height>640</height>
+            <height>715</height>
             <onleft>75</onleft>
             <onright>150</onright>
             <scrolltime>200</scrolltime>
@@ -369,7 +369,7 @@
             <left>1388</left>
             <top>40</top>
             <width>9</width>
-            <height>600</height>
+            <height>675</height>
             <visible>true</visible>
             <texturesliderbackground colordiffuse="66000000" border="4">script.plex/white-square-rounded-4r.png</texturesliderbackground>
             <texturesliderbar colordiffuse="66FFFFFF" border="4">script.plex/white-square-rounded-4r.png</texturesliderbar>
@@ -403,7 +403,7 @@
             <posx>1383</posx>
             <posy>0</posy>
             <width>845</width>
-            <height>566</height>
+            <height>715</height>
             <onleft>100</onleft>
             <scrolltime>200</scrolltime>
             <orientation>vertical</orientation>
@@ -496,7 +496,7 @@
             <left>2161</left>
             <top>40</top>
             <width>9</width>
-            <height>525</height>
+            <height>675</height>
             <visible>true</visible>
             <texturesliderbackground colordiffuse="66000000" border="4">script.plex/white-square-rounded-4r.png</texturesliderbackground>
             <texturesliderbar colordiffuse="66FFFFFF" border="4">script.plex/white-square-rounded-4r.png</texturesliderbar>

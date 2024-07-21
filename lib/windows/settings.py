@@ -386,7 +386,7 @@ class KeySetting(BasicSetting):
 
     def value_setter(self):
         w = SchnorchelDialog()
-        timeout = Timer(5, w.close)
+        timeout = Timer(w.timeout, w.close)
         timeout.start()
         w.doModal()
         timeout.cancel()
@@ -409,77 +409,6 @@ class Settings(object):
                     'auto_signin', T(32038, 'Automatically Sign In'), False
                 ).description(
                     T(32100, 'Skip user selection and pin entry on startup.')
-                ),
-                OptionsSetting(
-                    'theme',
-                    T(32983, 'Theme'),
-                    util.DEF_THEME,
-                    (
-                        ('modern', T(32985, 'Modern')),
-                        ('modern-dotted', T(32986, 'Modern (dotted)')),
-                        ('modern-colored', T(32989, 'Modern (colored)')),
-                        ('classic', T(32987, 'Classic')),
-                        ('custom', T(32988, 'Custom')),
-                    ), theme_relevant=True
-                ).description(
-                    T(32984, 'stub')
-                ),
-                OptionsSetting(
-                    'watched_indicators', T(33022, ''),
-                    "modern_2024",
-                    (
-                        ('classic', T(32987, 'Classic')),
-                        ('modern', T(32985, 'Modern')),
-                        ('modern_2024', T(33076, 'Modern (2024)')),
-                    ),
-                    theme_relevant=True
-                ).description(
-                    T(33023, "")
-                ),
-                BoolSetting(
-                    'hide_aw_bg', T(33024, ''), False, theme_relevant=True
-                ).description(
-                    T(33025, "")
-                ),
-                BoolSetting(
-                    'scale_indicators', T(33077, ''), True, theme_relevant=True
-                ).description(
-                    T(33078, "")
-                ),
-                MultiOptionsSetting(
-                    'no_episode_spoilers3', T(33006, ''),
-                    ['unwatched'],
-                    (
-                        ('unwatched', T(33010, '')),
-                        ('in_progress', T(33011, '')),
-                        ('no_unwatched_episode_titles', T(33012, '')),
-                        ('blur_chapters', T(33081, '')),
-                    )
-                ).description(T(33007, "")),
-                MultiOptionsSetting(
-                    'spoilers_allowed_genres2', T(33016, ''),
-                    ["Reality", "Game Show", "Documentary", "Sport"],
-                    [(g, g) for g in genres.GENRES_TV]
-                ).description(T(33017, "")),
-                BoolSetting(
-                    'hubs_use_new_continue_watching', T(32998, ''), False
-                ).description(
-                    T(32999, "")
-                ),
-                BoolSetting(
-                    'hubs_round_robin', T(33043, ''), False
-                ).description(
-                    T(33044, "").format(util.addonSettings.hubsRrMax)
-                ),
-                BoolSetting(
-                    'hubs_bifurcation_lines', T(32961, 'Show hub bifurcation lines'), False
-                ).description(
-                    T(32962, "Visually separate hubs horizontally using a thin line.")
-                ),
-                BoolSetting(
-                    'path_mapping_indicators', T(33032, 'Show path mapping indicators'), True
-                ).description(
-                    T(33033, "When path mapping is active for a library, display an indicator.")
                 ),
                 BoolSetting(
                     'search_use_kodi_kbd', T(32955, 'Use Kodi keyboard for searching'), False
@@ -580,6 +509,82 @@ class Settings(object):
                 ),
             )
         ),
+        'ui': (
+            T(32467, 'User Interface'), (
+                OptionsSetting(
+                    'theme',
+                    T(32983, 'Theme'),
+                    util.DEF_THEME,
+                    (
+                        ('modern', T(32985, 'Modern')),
+                        ('modern-dotted', T(32986, 'Modern (dotted)')),
+                        ('modern-colored', T(32989, 'Modern (colored)')),
+                        ('classic', T(32987, 'Classic')),
+                        ('custom', T(32988, 'Custom')),
+                    ), theme_relevant=True
+                ).description(
+                    T(32984, 'stub')
+                ),
+                OptionsSetting(
+                    'watched_indicators', T(33022, ''),
+                    "modern_2024",
+                    (
+                        ('classic', T(32987, 'Classic')),
+                        ('modern', T(32985, 'Modern')),
+                        ('modern_2024', T(33076, 'Modern (2024)')),
+                    ),
+                    theme_relevant=True
+                ).description(
+                    T(33023, "")
+                ),
+                BoolSetting(
+                    'hide_aw_bg', T(33024, ''), False, theme_relevant=True
+                ).description(
+                    T(33025, "")
+                ),
+                BoolSetting(
+                    'scale_indicators', T(33077, ''), True, theme_relevant=True
+                ).description(
+                    T(33078, "")
+                ),
+                MultiOptionsSetting(
+                    'no_episode_spoilers3', T(33006, ''),
+                    ['unwatched'],
+                    (
+                        ('unwatched', T(33010, '')),
+                        ('in_progress', T(33011, '')),
+                        ('no_unwatched_episode_titles', T(33012, '')),
+                        ('blur_chapters', T(33081, '')),
+                    )
+                ).description(T(33007, "")),
+                MultiOptionsSetting(
+                    'spoilers_allowed_genres2', T(33016, ''),
+                    ["Reality", "Game Show", "Documentary", "Sport"],
+                    [(g, g) for g in genres.GENRES_TV]
+                ).description(T(33017, "")),
+                BoolSetting(
+                    'hubs_use_new_continue_watching', T(32998, ''), False
+                ).description(
+                    T(32999, "")
+                ),
+                BoolSetting(
+                    'hubs_round_robin', T(33043, ''), False
+                ).description(
+                    T(33044, "").format(util.addonSettings.hubsRrMax)
+                ),
+                BoolSetting(
+                    'hubs_bifurcation_lines', T(32961, 'Show hub bifurcation lines'), False
+                ).description(
+                    T(32962, "Visually separate hubs horizontally using a thin line.")
+                ),
+                BoolSetting(
+                    'path_mapping_indicators', T(33032, 'Show path mapping indicators'), True
+                ).description(
+                    T(33033, "When path mapping is active for a library, display an indicator.")
+                ),
+                KeySetting('map_button_home', T(33085), None).description(T(33087))
+            )
+        ),
         'player': (
             T(32940, 'Player UI'), (
                 BoolSetting('player_official', T(33045, 'Behave like official Plex clients'), True).description(
@@ -612,7 +617,6 @@ class Settings(object):
                         ('never', T(32033, 'Never'))
                     )
                 ).description(T(32939, 'Only applies to video player UI')),
-                KeySetting('map_button_home', "Map home to button", None)
             )
         ),
         'player_user': (
@@ -791,7 +795,7 @@ class Settings(object):
         ),
     }
 
-    SECTION_IDS = ('main', 'video', 'audio', 'player', 'player_user', 'network', 'system', 'about')
+    SECTION_IDS = ('main', 'video', 'audio', 'ui', 'player', 'player_user', 'network', 'system', 'about')
 
     def __getitem__(self, key):
         return self.SETTINGS[key]
@@ -1025,8 +1029,9 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
             return
         if hasattr(setting, "value_setter"):
             result = setting.value_setter()
-            setting.set(result.code)
-            mli.setLabel2(str(result))
+            if result is not None:
+                setting.set(result.code)
+                mli.setLabel2(str(result))
             return
         else:
             result = xbmcgui.Dialog().input(T(32417, 'Enter Port Number'), str(setting.get()), xbmcgui.INPUT_STRING)
@@ -1045,13 +1050,38 @@ class SchnorchelDialog(xbmcgui.WindowXMLDialog):
     inspired by https://github.com/pkscout/script.keymap/blob/main/editor.py
     """
 
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):
         gui_api = tuple(map(int, xbmcaddon.Addon('xbmc.gui').getAddonInfo('version').split('.')))
         file_name = "DialogNotification.xml" if gui_api >= (5, 11, 0) else "DialogKaiToast.xml"
         return super(SchnorchelDialog, cls).__new__(cls, file_name, "")
 
-    def __init__(self):
+    def __init__(self, timeout=10):
         self.key = None
+        self.timeout = timeout
+        self._winID = None
+
+        self.setProperty("no.image", "1")
+
+    def onInit(self):
+        ctrl1, ctrl2 = 401, 402
+        if util.SKIN_PLEXTUARY:
+            ctrl1, ctrl2 = 1401, 1402
+        try:
+            self.getControl(ctrl1).addLabel(T(33085))
+            self.getControl(ctrl2).addLabel(T(33086).format(self.timeout))
+        except AttributeError:
+            self.getControl(ctrl1).setLabel(T(33085))
+            self.getControl(ctrl2).setLabel(T(33086).format(self.timeout))
+
+    def setProperty(self, key, value):
+        if not self._winID:
+            self._winID = xbmcgui.getCurrentWindowId()
+
+        try:
+            xbmcgui.Window(self._winID).setProperty(key, value)
+            xbmcgui.WindowXML.setProperty(self, key, value)
+        except RuntimeError:
+            xbmc.log('kodigui.BaseWindow.setProperty: Missing window', xbmc.LOGDEBUG)
 
     def onAction(self, action):
         code = action.getButtonCode()

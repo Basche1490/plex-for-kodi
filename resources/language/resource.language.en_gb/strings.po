@@ -2141,3 +2141,15 @@ msgstr ""
 msgctxt "#33084"
 msgid "Analyze"
 msgstr ""
+
+msgctxt "#33085"
+msgid "Map key to home"
+msgstr ""
+
+msgctxt "#33086"
+msgid "Press the key you want to map to go to home within {} seconds"
+msgstr ""
+
+msgctxt "#33087"
+msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP button on the setting."
+msgstr ""
