@@ -34,6 +34,7 @@
             </control>
         </control>
         <control type="image">
+            <animation effect="slide" end="-297,0" time="200" tween="quadratic" easing="out" condition="Control.HasFocus(125)">Conditional</animation>
             <posx>843</posx>
             <posy>865</posy>
             <width>1077</width>

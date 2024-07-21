@@ -853,7 +853,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         except:
             util.ERROR()
 
-        self.defOnAction(action)
+        kodigui.BaseWindow.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.SECTION_LIST_ID:
@@ -1127,7 +1127,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
         except:
             util.ERROR()
 
-        kodigui.BaseWindow.onAction(self, action)
+        kodigui.BaseDialog.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:
