@@ -259,7 +259,7 @@ class SelectDialog(kodigui.BaseDialog, util.CronReceiver):
 
                 self.lastSelectedItem = self.optionsList.control.getSelectedPosition()
 
-        self.defOnAction(action)
+        kodigui.BaseDialog.onAction(self, action)
 
     def onClick(self, controlID):
         if controlID == self.OPTIONS_LIST_ID:
