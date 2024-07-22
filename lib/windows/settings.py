@@ -835,7 +835,7 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         try:
             self.checkSection()
             controlID = self.getFocusId()
-            if action == xbmcgui.ACTION_STOP:
+            if action in (xbmcgui.ACTION_STOP, xbmcgui.ACTION_CONTEXT_MENU):
                 self.editSetting(clear=True)
                 return
             elif action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
@@ -920,6 +920,9 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
             return
 
         setting = mli.dataSource
+
+        if clear and setting.type != 'STRING':
+            return
 
         if setting.type in ('LIST', 'OPTIONS', 'MULTI'):
             self.fillList(setting)
