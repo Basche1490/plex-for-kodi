@@ -206,8 +206,6 @@ class SearchDialog(kodigui.BaseDialog, windowutils.UtilMixin):
         self.updateQuery()
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 self.isActive = False

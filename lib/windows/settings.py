@@ -830,8 +830,6 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
         self.checkSection()
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         try:
             self.checkSection()
             controlID = self.getFocusId()

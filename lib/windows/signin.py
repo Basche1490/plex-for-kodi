@@ -80,8 +80,6 @@ class PreSignInWindow(kodigui.BaseWindow):
         self.signinButton = self.getControl(self.SIGNIN_BUTTON_ID)
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         if action == xbmcgui.ACTION_SELECT_ITEM:
             self.doSignin = True
             self.doClose()

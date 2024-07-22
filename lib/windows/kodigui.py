@@ -210,6 +210,11 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
             self.exitCommand = "NODATA"
             self.doClose()
 
+    def onAction(self, action):
+        if XMLBase.goHomeAction(self, action):
+            return
+        xbmcgui.WindowXML.onAction(self, action)
+
     def onReInit(self):
         pass
 
@@ -330,6 +335,11 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
             self.started = True
             plexapp.util.APP.on('close.dialogs', self.onCloseSignal)
             self.onFirstInit()
+
+    def onAction(self, action):
+        if XMLBase.goHomeAction(self, action):
+            return
+        xbmcgui.WindowXMLDialog.onAction(self, action)
 
     def onFirstInit(self):
         pass

@@ -498,8 +498,6 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         self.episode = None
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         try:
             controlID = self.getFocusId()
 

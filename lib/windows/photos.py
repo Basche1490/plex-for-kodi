@@ -99,8 +99,6 @@ class PhotoWindow(kodigui.BaseWindow):
         self.setFocusId(self.OVERLAY_BUTTON_ID)
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         try:
             # controlID = self.getFocusId()
             if action == xbmcgui.ACTION_MOVE_LEFT:

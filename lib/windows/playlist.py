@@ -117,8 +117,6 @@ class PlaylistWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
         self.playlist.setCurrent(self.playlist.getPosFromItem(video))
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         try:
             if action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_PREVIOUS_MENU):
                 self.doClose()

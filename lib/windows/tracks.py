@@ -82,8 +82,6 @@ class AlbumWindow(kodigui.ControlledWindow, windowutils.UtilMixin):
                 self.trackListControl.setSelectedItem(mli)
 
     def onAction(self, action):
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
         controlID = self.getFocusId()
         try:
             if action == xbmcgui.ACTION_LAST_PAGE and xbmc.getCondVisibility('ControlGroup(300).HasFocus(0)'):

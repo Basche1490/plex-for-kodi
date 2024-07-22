@@ -549,9 +549,6 @@ class SeekDialog(kodigui.BaseDialog):
             if self.doKodiSelectDialogHack(action):
                 return
 
-        if kodigui.XMLBase.goHomeAction(self, action):
-            return
-
         try:
             self.resetTimeout()
 
