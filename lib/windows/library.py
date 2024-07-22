@@ -976,6 +976,9 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
         elif self.section.TYPE in ('photo', 'photodirectory'):
             self.showPhoto(mli.dataSource)
 
+        if self._closeSignalled:
+            return
+
         if not mli:
             return
 

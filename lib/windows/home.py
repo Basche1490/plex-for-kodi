@@ -407,6 +407,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self._applyTheme = False
         self._ignoreTick = False
         self._ignoreInput = False
+        self._ignoreReInit = False
+        self._restarting = False
         self._anyItemAction = False
         self._odHubsDirty = False
         self.librarySettings = None
@@ -486,6 +488,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self.doClose()
 
     def onReInit(self):
+        if self._ignoreReInit:
+            return
+
         self._anyItemAction = False
         if self._applyTheme:
             self.closeWRecompileTpls()
@@ -1024,6 +1029,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
     def onWake(self, *args, **kwargs):
         wakeAction = util.getSetting('action_on_wake', util.isCoreELEC and 'wait_5' or 'wait_1')
         if wakeAction == "restart":
+            self._ignoreReInit = True
+            self._restarting = True
             if not self.is_active:
                 plexapp.util.APP.trigger('close.dialogs')
                 plexapp.util.APP.trigger('close.windows')
@@ -1094,6 +1101,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                 raise util.NoDataException
         except util.NoDataException:
             util.ERROR("No data - disconnected?", notify=True, time_ms=5000)
+            return
+
+        if self._restarting:
             return
 
         self.updateListItem(mli)

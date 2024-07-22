@@ -152,12 +152,14 @@ class XMLBase(object):
 
 
 class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
-    __slots__ = ("_closing", "_winID", "started", "finishedInit", "dialogProps", "isOpen", "_errored")
+    __slots__ = ("_closing", "_winID", "started", "finishedInit", "dialogProps", "isOpen", "_errored",
+                 "_closeSignalled")
 
     def __init__(self, *args, **kwargs):
         BaseFunctions.__init__(self)
         self._closing = False
         self._errored = False
+        self._closeSignalled = False
         self._winID = None
         self.started = False
         self.finishedInit = False
@@ -169,6 +171,7 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
 
     def onCloseSignal(self, *args, **kwargs):
+        self._closeSignalled = True
         self.doClose()
 
     def _onInit(self):
@@ -309,12 +312,13 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
 
 
 class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
-    __slots__ = ("_closing", "_winID", "started", "isOpen", "_errored")
+    __slots__ = ("_closing", "_winID", "started", "isOpen", "_errored", "_closeSignalled")
 
     def __init__(self, *args, **kwargs):
         BaseFunctions.__init__(self)
         self._closing = False
         self._errored = False
+        self._closeSignalled = False
         self._winID = ''
         self.started = False
 
@@ -324,6 +328,7 @@ class BaseDialog(XMLBase, xbmcgui.WindowXMLDialog, BaseFunctions):
         self.setBoolProperty('is_plextuary', util.SKIN_PLEXTUARY)
 
     def onCloseSignal(self, *args, **kwargs):
+        self._closeSignalled = True
         self.doClose()
 
     def _onInit(self):
@@ -934,7 +939,8 @@ class _MWBackground(ControlledWindow):
 
 
 class MultiWindow(object):
-    __slots__ = ("_windows", "_next", "_properties", "_current", "_allClosed", "exitCommand", "_currentOnAction")
+    __slots__ = ("_windows", "_next", "_properties", "_current", "_allClosed", "exitCommand", "_currentOnAction",
+                 "_closeSignalled")
 
     def __init__(self, windows=None, default_window=None, **kwargs):
         self._windows = windows
@@ -942,10 +948,15 @@ class MultiWindow(object):
         self._properties = {}
         self._current = None
         self._allClosed = False
+        self._closeSignalled = False
         self.exitCommand = None
 
     def __getattr__(self, name):
         return getattr(self._current, name)
+
+    def onCloseSignal(self, *args, **kwargs):
+        self._closeSignalled = True
+        self.doClose()
 
     def setWindows(self, windows):
         self._windows = windows
@@ -1017,9 +1028,12 @@ class MultiWindow(object):
     def _onFirstInit(self):
         for k, v in self._properties.items():
             self._current.setProperty(k, v)
+
+        plexapp.util.APP.on('close.windows', self.onCloseSignal)
         self.onFirstInit()
 
     def doClose(self):
+        plexapp.util.APP.off('close.windows', self.onCloseSignal)
         self._allClosed = True
         self._current.doClose()
 
