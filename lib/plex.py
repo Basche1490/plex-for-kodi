@@ -326,6 +326,7 @@ class CallbackEvent(plexapp.util.CompatEvent):
         self.context = context
         self.signal = signal
         self.timeout = timeout
+        self.timed_out = False
         self.context.on(self.signal, self.set)
 
     def __enter__(self):
@@ -343,6 +344,7 @@ class CallbackEvent(plexapp.util.CompatEvent):
     def wait(self):
         if not plexnet_util.Event.wait(self, self.timeout):
             util.DEBUG_LOG('{0}: TIMED-OUT', self)
+            self.timed_out = True
         self.close()
 
     def triggeredOrTimedOut(self, timeout=None):
@@ -364,11 +366,20 @@ class CallbackEvent(plexapp.util.CompatEvent):
 def init():
     util.DEBUG_LOG('Initializing...')
 
-    with CallbackEvent(plexapp.util.APP, 'init'):
-        util.DEBUG_LOG('Waiting for plexapp initialization...')
-        plexapp.init()
+    timed_out = False
+    retries = 0
+    while retries == 0 or (retries < 4 and timed_out):
+        with CallbackEvent(plexapp.util.APP, 'init', timeout=plexapp.util.LONG_TIMEOUT) as cb:
+            util.DEBUG_LOG('Waiting for plexapp initialization... {}'.format(retries+1))
+            plexapp.init()
 
-    util.DEBUG_LOG('Account initialized: {}', plexapp.ACCOUNT.ID)
+        timed_out = cb.timed_out
+        retries += 1
+        if timed_out:
+            util.DEBUG_LOG("plexapp initialization timed out, trying again")
+
+    if not timed_out:
+        util.DEBUG_LOG('Account initialized: {}', plexapp.ACCOUNT.ID)
 
     retry = True
 

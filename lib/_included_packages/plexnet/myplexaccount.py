@@ -21,6 +21,9 @@ class HomeUser(util.AttributeDict):
                                                    self.get('title', 'None').encode('utf8'), self.get('admin', 0))
 
 
+SHORT_CONNECT_LONG_TIMEOUT = asyncadapter.AsyncTimeout(util.LONG_TIMEOUT).setConnectTimeout(util.TIMEOUT)
+
+
 class MyPlexAccount(object):
     def __init__(self):
         # Strings
@@ -125,7 +128,7 @@ class MyPlexAccount(object):
         if self.authToken:
             request = myplexrequest.MyPlexRequest("/users/account")
             context = request.createRequestContext("account", callback.Callable(self.onAccountResponse),
-                                                   timeout=util.LONG_TIMEOUT)
+                                                   timeout=SHORT_CONNECT_LONG_TIMEOUT)
             util.APP.startRequest(request, context)
         else:
             util.APP.clearInitializer("myplex")
