@@ -416,7 +416,7 @@
                 </setting>
                 <setting id="max_retries" type="number" label="33049" help="33050">
                     <level>0</level>
-                    <default>1</default>
+                    <default>3</default>
                     <constraints>
                         <minimum>0</minimum>
                         <step>1</step>
