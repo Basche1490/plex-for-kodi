@@ -54,6 +54,7 @@
     </control>
 
     <control type="textbox">
+        <animation effect="slide" end="-297,0" time="200" tween="quadratic" easing="out" condition="Control.HasFocus(125)">Conditional</animation>
         <visible>Control.HasFocus(100) | Control.HasFocus(125)</visible>
         <posx>872</posx>
         <posy>886.5</posy>
