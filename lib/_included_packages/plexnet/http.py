@@ -10,6 +10,7 @@ import datetime
 from . import threadutils
 import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import mimetypes
+import functools
 from . import plexobjects
 from xml.etree import ElementTree
 
@@ -66,8 +67,8 @@ def POST(*args, **kwargs):
 
 def Session():
     s = asyncadapter.Session()
+    s.request = functools.partial(s.request, timeout=util.TIMEOUT)
     s.headers = util.BASE_HEADERS.copy()
-    s.timeout = util.TIMEOUT
 
     return s
 
