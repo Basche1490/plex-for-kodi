@@ -21,9 +21,6 @@ class HomeUser(util.AttributeDict):
                                                    self.get('title', 'None').encode('utf8'), self.get('admin', 0))
 
 
-SHORT_CONNECT_LONG_TIMEOUT = asyncadapter.AsyncTimeout(util.LONG_TIMEOUT).setConnectTimeout(util.TIMEOUT)
-
-
 class MyPlexAccount(object):
     def __init__(self):
         # Strings
@@ -128,7 +125,7 @@ class MyPlexAccount(object):
         if self.authToken:
             request = myplexrequest.MyPlexRequest("/users/account")
             context = request.createRequestContext("account", callback.Callable(self.onAccountResponse),
-                                                   timeout=SHORT_CONNECT_LONG_TIMEOUT)
+                                                   timeout=util.PLEXTV_TIMEOUT)
             util.APP.startRequest(request, context)
         else:
             util.APP.clearInitializer("myplex")
@@ -151,7 +148,7 @@ class MyPlexAccount(object):
         """
         try:
             req = myplexrequest.MyPlexRequest("/api/v2/home")
-            xml = req.getToStringWithTimeout(seconds=util.LONG_TIMEOUT)
+            xml = req.getToStringWithTimeout(timeout=util.PLEXTV_TIMEOUT)
             data = ElementTree.fromstring(xml)
             return data.attrib.get('subscription') == '1'
         except:
@@ -299,7 +296,7 @@ class MyPlexAccount(object):
 
         request = myplexrequest.MyPlexRequest("/users/sign_in.xml")
         context = request.createRequestContext("sign_in", callback.Callable(self.onAccountResponse),
-                                               timeout=util.LONG_TIMEOUT)
+                                               timeout=util.PLEXTV_TIMEOUT)
         if self.isOffline:
             context.timeout = self.isOffline and asyncadapter.AsyncTimeout(1).setConnectTimeout(1)
         util.APP.startRequest(request, context, {})
@@ -322,7 +319,7 @@ class MyPlexAccount(object):
         req = myplexrequest.MyPlexRequest("/api/home/users")
         if use_async:
             context = req.createRequestContext("home_users", callback.Callable(self.onHomeUsersUpdateResponse),
-                                                timeout=util.LONG_TIMEOUT)
+                                                timeout=util.PLEXTV_TIMEOUT)
             if self.isOffline:
                 context.timeout = self.isOffline and asyncadapter.AsyncTimeout(1).setConnectTimeout(1)
             util.APP.startRequest(req, context)
@@ -342,7 +339,7 @@ class MyPlexAccount(object):
         if response:
             data = response.getBodyXml()
         else:
-            xml = request.getToStringWithTimeout(seconds=util.LONG_TIMEOUT)
+            xml = request.getToStringWithTimeout(timeout=util.PLEXTV_TIMEOUT)
             data = ElementTree.fromstring(xml)
 
         oldHU = self.homeUsers[:]
@@ -388,7 +385,7 @@ class MyPlexAccount(object):
             # build path and post to myplex to switch the user
             path = '/api/home/users/{0}/switch'.format(userId)
             req = myplexrequest.MyPlexRequest(path)
-            xml = req.postToStringWithTimeout({'pin': pin}, seconds=util.LONG_TIMEOUT)
+            xml = req.postToStringWithTimeout({'pin': pin}, timeout=util.PLEXTV_TIMEOUT)
             try:
                 data = ElementTree.fromstring(xml)
             except:

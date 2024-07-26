@@ -6,7 +6,7 @@ from . import http
 from . import plexrequest
 from . import mediadecisionengine
 from . import serverdecision
-from lib.util import addonSettings, KODI_VERSION_MAJOR
+from lib.util import KODI_VERSION_MAJOR
 from lib.cache import CACHE_SIZE
 
 from six.moves import range
@@ -239,7 +239,7 @@ class PlexPlayer(BasePlayer):
         if decisionPath:
             server = self.metadata.transcodeServer or self.item.getServer()
             request = plexrequest.PlexRequest(server, decisionPath)
-            response = request.getWithTimeout(10)
+            response = request.getWithTimeout(util.DEFAULT_TIMEOUT)
 
             if response.isSuccess() and response.container:
                 decision = serverdecision.ServerDecision(self, response, self)

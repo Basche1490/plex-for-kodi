@@ -302,17 +302,26 @@ plexapp.util.CHECK_LOCAL = util.getSetting('smart_discover_local', True)
 plexapp.util.LOCAL_OVER_SECURE = util.getSetting('prefer_local', False)
 
 # set requests timeout
-TIMEOUT = float(util.addonSettings.requestsTimeout)
+TIMEOUT_READ = float(util.addonSettings.requestsTimeoutRead)
+TIMEOUT_CONNECT = float(util.addonSettings.requestsTimeoutConnect)
+PLEXTV_TIMEOUT_READ = float(util.addonSettings.plextvTimeoutRead)
+PLEXTV_TIMEOUT_CONNECT = float(util.addonSettings.plextvTimeoutConnect)
 CONNCHECK_TIMEOUT = float(util.addonSettings.connCheckTimeout)
-plexapp.util.TIMEOUT = TIMEOUT
-plexapp.util.CONN_CHECK_TIMEOUT = asyncadapter.AsyncTimeout(CONNCHECK_TIMEOUT).setConnectTimeout(CONNCHECK_TIMEOUT)
+plexapp.util.TIMEOUT = TIMEOUT_READ
+plexapp.util.TIMEOUT_CONNECT = TIMEOUT_CONNECT
+plexapp.util.PLEXTV_TIMEOUT_READ = PLEXTV_TIMEOUT_READ
+plexapp.util.PLEXTV_TIMEOUT_CONNECT = PLEXTV_TIMEOUT_CONNECT
+plexapp.util.PLEXTV_TIMEOUT = asyncadapter.AsyncTimeout(PLEXTV_TIMEOUT_READ).setConnectTimeout(PLEXTV_TIMEOUT_CONNECT)
+plexapp.util.CONN_CHECK_TIMEOUT = asyncadapter.AsyncTimeout(TIMEOUT_READ).setConnectTimeout(CONNCHECK_TIMEOUT)
 plexapp.util.LAN_REACHABILITY_TIMEOUT = util.addonSettings.localReachTimeout / 1000.0
-pnhttp.DEFAULT_TIMEOUT = asyncadapter.AsyncTimeout(TIMEOUT).setConnectTimeout(TIMEOUT)
+plexapp.util.DEFAULT_TIMEOUT = asyncadapter.AsyncTimeout(TIMEOUT_READ).setConnectTimeout(TIMEOUT_CONNECT)
+pnhttp.DEFAULT_TIMEOUT = plexapp.util.DEFAULT_TIMEOUT
+asyncadapter.DEFAULT_TIMEOUT = pnhttp.DEFAULT_TIMEOUT
 asyncadapter.DEFAULT_TIMEOUT = pnhttp.DEFAULT_TIMEOUT
 plexapp.util.ACCEPT_LANGUAGE = util.ACCEPT_LANGUAGE_CODE
 plexapp.setUserAgent(defaultUserAgent())
 plexnet_util.BASE_HEADERS = plexnet_util.getPlexHeaders()
-asyncadapter.MAX_RETRIES = int(util.addonSettings.maxRetries)
+asyncadapter.MAX_RETRIES = int(util.addonSettings.maxRetries1)
 if util.addonSettings.useCertBundle != "system":
     util.LOG("Using certificate bundle: {}".format(util.addonSettings.useCertBundle))
     plexnet_util.USE_CERT_BUNDLE = util.addonSettings.useCertBundle

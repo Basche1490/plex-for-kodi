@@ -49,7 +49,12 @@ def resetBaseHeaders():
 PROJECT = 'PlexNet'                                 # name provided to plex server
 VERSION = '0.0.0a1'                                 # version of this api
 TIMEOUT = 10                                        # request timeout
-LONG_TIMEOUT = 20                                   # s
+TIMEOUT_CONNECT = 5                                 # connect timeout
+DEFAULT_TIMEOUT = 10
+LONG_TIMEOUT = 20
+PLEXTV_TIMEOUT = None                               # set me later
+PLEXTV_TIMEOUT_READ = 20                                   # s
+PLEXTV_TIMEOUT_CONNECT = 5
 CONN_CHECK_TIMEOUT = 2.5                            # s
 LAN_REACHABILITY_TIMEOUT = 0.01                     # s
 CHECK_LOCAL = False

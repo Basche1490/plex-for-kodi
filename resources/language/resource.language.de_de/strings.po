@@ -1633,13 +1633,13 @@ msgstr "Überspringt automatisch Intros und Abspänne von Episoden und versucht 
 
 #: 
 msgctxt "#33620"
-msgid "Plex requests timeout (seconds)"
-msgstr "Plex-HTTP-Zeitlimit (Sekunden)"
+msgid "Plex server connect timeout"
+msgstr "Plex-Serververbindungs-Zeitlimit"
 
 #: 
 msgctxt "#33621"
-msgid "Set the (async and connection) timeout value of the Python requests library in seconds. Default: 5"
-msgstr "Setzt das Zeitlimit für die Python-Requests-Bibliothek bei asynchronen Verbindungen und Verbindungsanfragen. Default: 5"
+msgid "Sets the maximum amount of time to connect to a Plex Server in seconds. Default: 5"
+msgstr "Setzt das Zeitlimit um sich mit einem Plex-Server zu verbinden, in Sekunden. Voreinstellung: 5"
 
 #: 
 msgctxt "#33622"
@@ -2509,8 +2509,8 @@ msgid "Max retries"
 msgstr "Maximale Neuanfragen"
 
 msgctxt "#33050"
-msgid "The maximum number of retries each connection should attempt. The default (1) helps with hibernation/wakeup issues. Set higher for bad connections, setting this to 0 was the old default before 0.7.9"
-msgstr "Die maximale Anzahl an Versuchen, die eine Verbindung unternehmen soll. Der Standard (1) hilft bei Ruhezustand/Aufwachen Probleme. Höher stellen bei schlechter Verbindung, 0 war der alte Standard vor 0.7.9"
+msgid "The maximum number of retries each connection should attempt. The default (3) helps with hibernation/wakeup issues. Set higher for bad connections, setting this to 0 was the old default before 0.7.9"
+msgstr "Die maximale Anzahl an Versuchen, die eine Verbindung unternehmen soll. Der Standardwert (3) hilft bei Ruhezustand/Aufwachen Probleme. Höher stellen bei schlechter Verbindung, 0 war der alte Standard vor 0.7.9"
 
 msgctxt "#33051"
 msgid "Use CA certificate bundle"
@@ -2703,3 +2703,27 @@ msgstr "Tick-Rate (Hz)"
 msgctxt "#33099"
 msgid "Controls how often certain ticks are performed on GUI windows and the SeekDialog/VideoPlayer and how fast certain events are handled. Can be expensive when bigger than 1 Hz (once per second), can cause quirks when lower than 1 Hz (less than once per second). Depends on the hardware. Default: 1 Hz, Max: 10 Hz (every 100 ms), Sane highest and old default: 10 Hz (every 100 ms)"
 msgstr "Stellt ein, wie häufig in GUI-Fenstern und dem SeekDialog/VideoPlayer getickt wird und wie schnell bestimmte Events verarbeitet werden. Kann teuer werden, wenn größer als 1 Hz (einmal pro Sekunde), kann Macken verursachen, wenn kleiner als 1 Hz (seltener als einmal pro Sekunde). Hängt von der Hardware ab. Standard: 1 Hz, Max: 10 Hz (alle 100 ms), vernünftiger höchster Wert und alter Standard: 10 Hz (alle 100 ms)"
+
+msgctxt "#33636"
+msgid "Plex server read timeout"
+msgstr "Plex-Server-Lesezeitlimit"
+
+msgctxt "#33637"
+msgid "Sets the maximum amount of time to read from a Plex Server in seconds. Default: 10"
+msgstr "Setzt das Zeitlimit beim Lesen von einem Plex-Server, in Sekunden. Voreinstellung: 10"
+
+msgctxt "#33638"
+msgid "Plex.tv connect timeout"
+msgstr "Plex.tv-Verbindungszeitlimit"
+
+msgctxt "#33639"
+msgid "Plex.tv: Sets the maximum amount of time to connect to Plex.tv in seconds. Default: 5"
+msgstr "Plex.tv: Setzt das Zeitlimit um sich mit Plex.tv zu verbinden, in Sekunden. Voreinstellung: 5"
+
+msgctxt "#33640"
+msgid "Plex.tv read timeout"
+msgstr "Plex.tv Lesezeitlimit"
+
+msgctxt "#33641"
+msgid "Plex.tv: Sets the maximum amount of time to read from Plex.tv in seconds. Default: 20"
+msgstr "Plex.tv: Setzt das Zeitlimit beim Lesen von Plex.tv, in Sekunden. Voreinstellung: 20"

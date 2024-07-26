@@ -1319,11 +1319,11 @@ msgid "Automatically skips episode intros, credits and tries to skip episode rec
 msgstr ""
 
 msgctxt "#33620"
-msgid "Plex requests timeout (seconds)"
+msgid "Plex server connect timeout"
 msgstr ""
 
 msgctxt "#33621"
-msgid "Set the (async and connection) timeout value of the Python requests library in seconds. Default: 5"
+msgid "Sets the maximum amount of time to connect to a Plex Server in seconds. Default: 5"
 msgstr ""
 
 msgctxt "#33622"
@@ -2003,7 +2003,7 @@ msgid "Max retries"
 msgstr ""
 
 msgctxt "#33050"
-msgid "The maximum number of retries each connection should attempt. The default (1) helps with hibernation/wakeup issues. Set higher for bad connections, setting this to 0 was the old default before 0.7.9"
+msgid "The maximum number of retries each connection should attempt. The default (3) helps with hibernation/wakeup issues. Set higher for bad connections, setting this to 0 was the old default before 0.7.9"
 msgstr ""
 
 msgctxt "#33051"
@@ -2200,4 +2200,28 @@ msgstr ""
 
 msgctxt "#33099"
 msgid "Controls how often certain ticks are performed on GUI windows and the SeekDialog/VideoPlayer and how fast certain events are handled. Can be expensive when bigger than 1 Hz (once per second), can cause quirks when lower than 1 Hz (less than once per second). Depends on the hardware. Default: 1 Hz, Max: 10 Hz (every 100 ms), Sane highest and old default: 10 Hz (every 100 ms)"
+msgstr ""
+
+msgctxt "#33636"
+msgid "Plex server read timeout"
+msgstr ""
+
+msgctxt "#33637"
+msgid "Sets the maximum amount of time to read from a Plex Server in seconds. Default: 10"
+msgstr ""
+
+msgctxt "#33638"
+msgid "Plex.tv connect timeout"
+msgstr ""
+
+msgctxt "#33639"
+msgid "Plex.tv: Sets the maximum amount of time to connect to Plex.tv in seconds. Default: 5"
+msgstr ""
+
+msgctxt "#33640"
+msgid "Plex.tv read timeout"
+msgstr ""
+
+msgctxt "#33641"
+msgid "Plex.tv: Sets the maximum amount of time to read from Plex.tv in seconds. Default: 20"
 msgstr ""

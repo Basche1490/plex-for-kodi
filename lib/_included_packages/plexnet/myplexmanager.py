@@ -36,7 +36,7 @@ class MyPlexManager(object):
 
         request = myplexrequest.MyPlexRequest("/pms/resources")
         context = request.createRequestContext("resources", callback.Callable(self.onResourcesResponse),
-                                               timeout=util.LONG_TIMEOUT)
+                                               timeout=util.PLEXTV_TIMEOUT)
 
         if plexapp.ACCOUNT.isSecure:
             request.addParam("includeHttps", "1")

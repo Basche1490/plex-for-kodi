@@ -402,25 +402,49 @@
                     </constraints>
                     <control type="list" format="string"/>
                 </setting>
-                <setting id="requests_timeout" type="number" label="33620" help="33621">
+                <setting id="requests_timeout_connect" type="number" label="33620" help="33621">
                     <level>0</level>
                     <default>5</default>
                     <constraints>
-                        <minimum>0.1</minimum>
-                        <step>0.1</step>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
                         <maximum>60</maximum>
                     </constraints>
                     <control type="slider" format="number">
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="max_retries" type="number" label="33049" help="33050">
+                <setting id="requests_timeout_read" type="number" label="33636" help="33637">
                     <level>0</level>
-                    <default>3</default>
+                    <default>10</default>
                     <constraints>
-                        <minimum>0</minimum>
-                        <step>1</step>
-                        <maximum>20</maximum>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
+                        <maximum>60</maximum>
+                    </constraints>
+                    <control type="slider" format="number">
+                        <popup>false</popup>
+                    </control>
+                </setting>
+                <setting id="plextv_timeout_connect" type="number" label="33638" help="33639">
+                    <level>0</level>
+                    <default>5</default>
+                    <constraints>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
+                        <maximum>60</maximum>
+                    </constraints>
+                    <control type="slider" format="number">
+                        <popup>false</popup>
+                    </control>
+                </setting>
+                <setting id="plextv_timeout_read" type="number" label="33640" help="33641">
+                    <level>0</level>
+                    <default>20</default>
+                    <constraints>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
+                        <maximum>60</maximum>
                     </constraints>
                     <control type="slider" format="number">
                         <popup>false</popup>
@@ -430,8 +454,8 @@
                     <level>0</level>
                     <default>2.5</default>
                     <constraints>
-                        <minimum>0.1</minimum>
-                        <step>0.1</step>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
                         <maximum>20</maximum>
                     </constraints>
                     <control type="slider" format="number">
@@ -445,6 +469,18 @@
                         <minimum>1</minimum>
                         <step>1</step>
                         <maximum>1000</maximum>
+                    </constraints>
+                    <control type="slider" format="number">
+                        <popup>false</popup>
+                    </control>
+                </setting>
+                <setting id="max_retries1" type="number" label="33049" help="33050">
+                    <level>0</level>
+                    <default>3</default>
+                    <constraints>
+                        <minimum>0</minimum>
+                        <step>1</step>
+                        <maximum>20</maximum>
                     </constraints>
                     <control type="slider" format="number">
                         <popup>false</popup>

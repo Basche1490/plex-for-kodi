@@ -168,7 +168,7 @@ class ResourceConnection(plexobjects.PlexObject):
         method = method or http.requests.get
         url = self.getURL(path)
         util.LOG('{0} {1}', method.__name__.upper(), url)
-        response = method(url, headers=self.headers(token), timeout=util.TIMEOUT, **kwargs)
+        response = method(url, headers=self.headers(token), timeout=util.DEFAULT_TIMEOUT, **kwargs)
         if response.status_code not in (200, 201):
             codename = http.status_codes.get(response.status_code)[0]
             raise exceptions.BadRequest('({0}) {1}'.format(response.status_code, codename))
@@ -201,6 +201,7 @@ class PlexResourceList(plexobjects.PlexItemList):
         return self._items
 
 
+# fixme: never called
 def fetchResources(token):
     headers = util.BASE_HEADERS.copy()
     headers['X-Plex-Token'] = token
@@ -211,6 +212,7 @@ def fetchResources(token):
     return [plexserver.PlexServer(elem) for elem in data]
 
 
+# fixme: never called
 def findResource(resources, search, port=32400):
     """ Searches server.name """
     search = search.lower()
@@ -223,6 +225,7 @@ def findResource(resources, search, port=32400):
     raise exceptions.NotFound('Unable to find server: {0}'.format(search))
 
 
+# fixme: never called
 def findResourceByID(resources, ID):
     """ Searches server.clientIdentifier """
     util.LOG('Looking for server by ID: {0}', ID)

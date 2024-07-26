@@ -58,16 +58,16 @@ socket.getaddrinfo = pgetaddrinfo
 
 
 def GET(*args, **kwargs):
-    return requests.get(*args, headers=util.BASE_HEADERS.copy(), timeout=util.TIMEOUT, **kwargs)
+    return requests.get(*args, headers=util.BASE_HEADERS.copy(), timeout=DEFAULT_TIMEOUT, **kwargs)
 
 
 def POST(*args, **kwargs):
-    return requests.post(*args, headers=util.BASE_HEADERS.copy(), timeout=util.TIMEOUT, **kwargs)
+    return requests.post(*args, headers=util.BASE_HEADERS.copy(), timeout=DEFAULT_TIMEOUT, **kwargs)
 
 
 def Session():
     s = asyncadapter.Session()
-    s.request = functools.partial(s.request, timeout=util.TIMEOUT)
+    s.request = functools.partial(s.request, timeout=DEFAULT_TIMEOUT)
     s.headers = util.BASE_HEADERS.copy()
 
     return s
@@ -165,42 +165,42 @@ class HttpRequest(object):
 
         self.removeAsPending()
 
-    def getWithTimeout(self, seconds=DEFAULT_TIMEOUT):
-        return HttpObjectResponse(self.getPostWithTimeout(seconds), self.path, self.server)
+    def getWithTimeout(self, timeout=DEFAULT_TIMEOUT):
+        return HttpObjectResponse(self.getPostWithTimeout(timeout), self.path, self.server)
 
-    def postWithTimeout(self, seconds=DEFAULT_TIMEOUT, body=None):
+    def postWithTimeout(self, timeout=DEFAULT_TIMEOUT, body=None):
         self.method = 'POST'
-        return HttpObjectResponse(self.getPostWithTimeout(seconds, body), self.path, self.server)
+        return HttpObjectResponse(self.getPostWithTimeout(timeout, body), self.path, self.server)
 
-    def getToStringWithTimeout(self, seconds=DEFAULT_TIMEOUT):
-        res = self.getPostWithTimeout(seconds)
+    def getToStringWithTimeout(self, timeout=DEFAULT_TIMEOUT):
+        res = self.getPostWithTimeout(timeout)
         if not res:
             return ''
         return res.text.encode('utf8')
 
-    def postToStringWithTimeout(self, body=None, seconds=DEFAULT_TIMEOUT):
+    def postToStringWithTimeout(self, body=None, timeout=DEFAULT_TIMEOUT):
         self.method = 'POST'
-        res = self.getPostWithTimeout(seconds, body)
+        res = self.getPostWithTimeout(timeout, body)
         if not res:
             return ''
         return res.text.encode('utf8')
 
-    def getPostWithTimeout(self, seconds=DEFAULT_TIMEOUT, body=None):
+    def getPostWithTimeout(self, timeout=DEFAULT_TIMEOUT, body=None):
         if self._cancel:
             return
 
-        self.logRequest(body, seconds, False)
+        self.logRequest(body, timeout=timeout, _async=False)
         try:
             if self.method == 'PUT':
-                res = self.session.put(self.url, timeout=seconds, stream=True)
+                res = self.session.put(self.url, timeout=timeout, stream=True)
             elif self.method == 'DELETE':
-                res = self.session.delete(self.url, timeout=seconds, stream=True)
+                res = self.session.delete(self.url, timeout=timeout, stream=True)
             elif self.method == 'HEAD':
-                res = self.session.head(self.url, timeout=seconds, stream=True)
+                res = self.session.head(self.url, timeout=timeout, stream=True)
             elif self.method == 'POST' or body is not None:
-                res = self.session.post(self.url, data=body, timeout=seconds, stream=True)
+                res = self.session.post(self.url, data=body, timeout=timeout, stream=True)
             else:
-                res = self.session.get(self.url, timeout=seconds, stream=True)
+                res = self.session.get(self.url, timeout=timeout, stream=True)
 
             self.currentResponse = res
 
