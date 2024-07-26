@@ -1942,8 +1942,8 @@ msgstr "Benutzerspezifisch.\nGilt nur für die Video-Abspieloberfläche"
 
 #: 
 msgctxt "#32940"
-msgid "Player UI"
-msgstr "Abspieloberfläche"
+msgid "Video Player"
+msgstr "Video-Player"
 
 #: 
 msgctxt "#32941"
@@ -2659,3 +2659,15 @@ msgstr "Drücke die Taste, die Du zuordnen willst, um sofort zu Home zu kommen b
 msgctxt "#33087"
 msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP button on the setting."
 msgstr "Wähle einen Knopf um sofort zur Home-Ansicht zu kommen. Abbrechen via BACK/PREVIOUS_MENU. Gebundene Taste mit dem STOP Knopf auf der Einstellung entbinden."
+
+msgctxt "#33088"
+msgid "Only applies to video player UI"
+msgstr "Gilt nur für die Video-Abspieloberfläche"
+
+msgctxt "#33089"
+msgid "Resume seek-behind"
+msgstr "Beim Fortsetzen Zurückspringen"
+
+msgctxt "#33090"
+msgid "If your audio doesn't resume as fast as the video, use this to seek back after resuming from pause to compensate for the delay. Only with DirectPlay. Default: Off"
+msgstr "Wenn der Ton nicht so schnell nach dem Fortsetzen wieder einsetzt, wie das Bild, benutze dies um beim Fortsetzen nach dem Pausieren eine bestimmte Zeitspanne zurück zu springen. Nur bei Direkter Wiedergabe. Standard: Aus"

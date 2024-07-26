@@ -609,14 +609,21 @@ class Settings(object):
                         ('always', T(32035, 'Always')), ('eponly', T(32938, 'Only for Episodes/Playlists')),
                         ('never', T(32033, 'Never'))
                     )
-                ).description(T(32939, 'Only applies to video player UI')),
+                ).description(T(33088, 'Only applies to video player UI')),
                 OptionsSetting(
                     'video_show_prevnext', T(32937, 'Show prev/next button'), 'eponly',
                     (
                         ('always', T(32035, 'Always')), ('eponly', T(32938, 'Only for Episodes/Playlists')),
                         ('never', T(32033, 'Never'))
                     )
-                ).description(T(32939, 'Only applies to video player UI')),
+                ).description(T(33088, 'Only applies to video player UI')),
+                OptionsSetting(
+                    'resume_seek_behind', T(33089, ''), 0,
+                    [(0, T(32481))] + [
+                        (a, T(33091).format(sec_or_ms=a if a < 1000 else int(a / 1000),
+                                            unit_s_or_ms="ms" if a < 1000 else "s")) for a in
+                        [100] + list(range(250, 1000, 250)) + list(range(1000, 11000, 1000))]
+                ).description(T(33090, '')),
             )
         ),
         'player_user': (

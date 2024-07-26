@@ -1567,7 +1567,7 @@ msgid "User-specific.\nOnly applies to video player UI"
 msgstr ""
 
 msgctxt "#32940"
-msgid "Player UI"
+msgid "Video Player"
 msgstr ""
 
 msgctxt "#32941"
@@ -2152,4 +2152,20 @@ msgstr ""
 
 msgctxt "#33087"
 msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP button on the setting."
+msgstr ""
+
+msgctxt "#33088"
+msgid "Only applies to video player UI"
+msgstr ""
+
+msgctxt "#33089"
+msgid "Resume seek-behind"
+msgstr ""
+
+msgctxt "#33090"
+msgid "If your audio doesn't resume as fast as the video, use this to seek back after resuming from pause to compensate for the delay. Only with DirectPlay. Default: Off"
+msgstr ""
+
+msgctxt "#33091"
+msgid "{sec_or_ms} {unit_s_or_ms}"
 msgstr ""

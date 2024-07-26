@@ -199,6 +199,7 @@ class SeekDialog(kodigui.BaseDialog):
         self.timeKeeperTime = None
         self.idleTime = None
         self.stopPlaybackOnIdle = util.getSetting('player_stop_on_idle', 0)
+        self.resumeSeekBehind = util.getSetting('resume_seek_behind', 0)
         self.isDirectPlay = True
         self.isTranscoded = False
 
@@ -1885,6 +1886,9 @@ class SeekDialog(kodigui.BaseDialog):
 
         self.idleTime = None
         self.ldTimer and self.syncTimeKeeper()
+
+        if self.isDirectPlay and self.resumeSeekBehind:
+            self.doSeek(self.offset - self.resumeSeekBehind)
 
     def onAVChange(self):
         util.DEBUG_LOG("SeekDialog: OnAVChange: DPO: {0}, offset: {1}", self.DPPlayerOffset, self.offset)
