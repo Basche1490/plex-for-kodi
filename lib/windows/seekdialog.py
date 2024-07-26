@@ -200,6 +200,10 @@ class SeekDialog(kodigui.BaseDialog):
         self.idleTime = None
         self.stopPlaybackOnIdle = util.getSetting('player_stop_on_idle', 0)
         self.resumeSeekBehind = util.getSetting('resume_seek_behind', 0)
+        self.resumeSeekBehindPause = util.getSetting('resume_seek_behind_pause', False)
+        self.resumeSeekBehindAfter = util.getSetting('resume_seek_behind_after', 0) / 1000.0
+        self.resumeSeekBehindOnlyDP = util.getSetting('resume_seek_behind_onlydp', False)
+        self.pausedAt = None
         self.isDirectPlay = True
         self.isTranscoded = False
 
@@ -1879,6 +1883,10 @@ class SeekDialog(kodigui.BaseDialog):
                     self.player.pause()
                 return True
 
+    def seekBehind(self):
+        if not self.resumeSeekBehindOnlyDP or self.isDirectPlay:
+            self.doSeek(self.trueOffset() - self.resumeSeekBehind)
+
     def onPlayBackResumed(self):
         util.DEBUG_LOG("SeekDialog: OnPlaybackResumed")
         if self._ignoreInput:
@@ -1887,8 +1895,12 @@ class SeekDialog(kodigui.BaseDialog):
         self.idleTime = None
         self.ldTimer and self.syncTimeKeeper()
 
-        if self.isDirectPlay and self.resumeSeekBehind:
-            self.doSeek(self.offset - self.resumeSeekBehind)
+        if self.resumeSeekBehind and not self.resumeSeekBehindPause and (
+                not self.resumeSeekBehindAfter or
+                self.pausedAt and time.time() - self.pausedAt >= self.resumeSeekBehindAfter):
+            self.seekBehind()
+
+        self.pausedAt = None
 
     def onAVChange(self):
         util.DEBUG_LOG("SeekDialog: OnAVChange: DPO: {0}, offset: {1}", self.DPPlayerOffset, self.offset)
@@ -1918,6 +1930,11 @@ class SeekDialog(kodigui.BaseDialog):
     def onPlayBackPaused(self):
         util.DEBUG_LOG("SeekDialog: OnPlaybackPaused")
         self.idleTime = time.time()
+        if self.resumeSeekBehindPause and not self.resumeSeekBehindAfter:
+            self.seekBehind()
+            return
+
+        self.pausedAt = time.time()
 
     def onPlayBackSeek(self, stime, offset):
         util.DEBUG_LOG("SeekDialog: OnPlaybackSeek: {0}, {1}", stime, offset)
@@ -2186,6 +2203,12 @@ class SeekDialog(kodigui.BaseDialog):
                 cont = self.waitForBuffer()
                 if not cont:
                     return
+
+            if (self.pausedAt and self.resumeSeekBehindPause and
+                    time.time() - self.pausedAt >= self.resumeSeekBehindAfter):
+                self.seekBehind()
+                self.pausedAt = None
+                return
 
             # invisibly sync low-drift timer to current playback every X seconds, as Player.getTime() can be wildly off
             if self.ldTimer and not self.osdVisible() and self.timeKeeper and self.timeKeeper.ticks >= 60:

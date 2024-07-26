@@ -2665,9 +2665,33 @@ msgid "Only applies to video player UI"
 msgstr "Gilt nur für die Video-Abspieloberfläche"
 
 msgctxt "#33089"
-msgid "Resume seek-behind"
-msgstr "Beim Fortsetzen Zurückspringen"
+msgid "Automatic seek-back"
+msgstr "Automatisch zurückspringen"
 
 msgctxt "#33090"
-msgid "If your audio doesn't resume as fast as the video, use this to seek back after resuming from pause to compensate for the delay. Only with DirectPlay. Default: Off"
-msgstr "Wenn der Ton nicht so schnell nach dem Fortsetzen wieder einsetzt, wie das Bild, benutze dies um beim Fortsetzen nach dem Pausieren eine bestimmte Zeitspanne zurück zu springen. Nur bei Direkter Wiedergabe. Standard: Aus"
+msgid "If your audio doesn't resume as fast as the video, or you want to catch up after a longer pause, use this to seek back after resuming from pause to compensate for the delay. Default: Off"
+msgstr "Wenn der Ton nicht so schnell nach dem Fortsetzen wieder einsetzt, wie das Bild, oder Du aufholen möchtest, benutze dies um beim Fortsetzen nach dem Pausieren eine bestimmte Zeitspanne zurück zu springen. Standard: Aus"
+
+msgctxt "#33092"
+msgid "Seek back on pause"
+msgstr "Zurückspringen bei Pause"
+
+msgctxt "#33093"
+msgid "Seek back after"
+msgstr "Zurückspringen nach"
+
+msgctxt "#33094"
+msgid "Only seek back after having paused at least a certain amount of seconds"
+msgstr "Nur zurückspringen nachdem wenigstens eine gewisse Zeit pausiert war"
+
+msgctxt "#33095"
+msgid "Seek back on pause instead of on resume. When Transcoding you should enable this."
+msgstr "Zurückspringen beim Pausieren anstatt nach dem Fortsetzen. Beim Transkodieren sollte dies aktiviert sein."
+
+msgctxt "#33096"
+msgid "Only with Direct Play"
+msgstr "Nur bei Direkter Wiedergabe"
+
+msgctxt "#33097"
+msgid "Enable seek back ony when we're Direct Playing, not Transcoding."
+msgstr "Zurückspringen nur bei Direkter Wiedergabe, nicht beim Transkodieren."

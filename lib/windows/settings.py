@@ -622,8 +622,19 @@ class Settings(object):
                     [(0, T(32481))] + [
                         (a, T(33091).format(sec_or_ms=a if a < 1000 else int(a / 1000),
                                             unit_s_or_ms="ms" if a < 1000 else "s")) for a in
-                        [100] + list(range(250, 1000, 250)) + list(range(1000, 11000, 1000))]
+                        [100] + list(range(250, 1000, 250)) + list(range(1000, 61000, 1000))]
                 ).description(T(33090, '')),
+                BoolSetting('resume_seek_behind_pause', T(33092, ''), False).description(
+                    T(33095, '')),
+                OptionsSetting(
+                    'resume_seek_behind_after', T(33093, ''), 0,
+                    [(0, T(32481))] + [
+                        (a, T(33091).format(sec_or_ms=a if a < 1000 else int(a / 1000),
+                                            unit_s_or_ms="ms" if a < 1000 else "s")) for a in
+                        list(range(250, 1000, 250)) + list(range(1000, 61000, 1000))]
+                ).description(T(33094, '')),
+                BoolSetting('resume_seek_behind_onlydp', T(33096, ''), False).description(
+                    T(33097, '')),
             )
         ),
         'player_user': (
