@@ -137,7 +137,7 @@
     <width>10</width>
     <height>600</height>
     <onleft>100</onleft>
-    <visible>!Window.IsVisible(sliderdialog)</visible>
+    <visible>!Window.IsVisible(sliderdialog) + Control.IsVisible(100) + !Window.IsVisible(osdvideosettings) + !Window.IsVisible(osdaudiosettings) + !Window.IsVisible(osdsubtitlesettings) + !Window.IsVisible(subtitlesearch) + !Window.IsVisible(osdcmssettings)</visible>
     <texturesliderbackground colordiffuse="30000000" border="5">script.plex/white-square.png</texturesliderbackground>
     <texturesliderbar colordiffuse="77FFFFFF" border="5">script.plex/white-square.png</texturesliderbar>
     <texturesliderbarfocus colordiffuse="FFE5A00D" border="5">script.plex/white-square.png</texturesliderbarfocus>
