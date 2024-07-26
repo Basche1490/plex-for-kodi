@@ -234,6 +234,7 @@ class AddonSettings(object):
         ("use_cert_bundle", "system"),
         ("cache_templates", True),
         ("always_compile_templates", False),
+        ("tickrate", 1.0),
     )
 
     def __init__(self):
@@ -679,7 +680,7 @@ class Cron(threading.Thread):
 
     def __enter__(self):
         self.start()
-        DEBUG_LOG('Cron started')
+        DEBUG_LOG('Cron started with interval: {}'.format(self.interval))
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):

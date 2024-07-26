@@ -78,7 +78,7 @@ def main(with_render=False):
         render_templates(force=True)
 
     try:
-        with util.Cron(1):
+        with util.Cron(1 / util.addonSettings.tickrate):
             BACKGROUND = background.BackgroundWindow.create(function=_main)
             if BACKGROUND.waitForOpen():
                 util.setGlobalProperty('running', '1')

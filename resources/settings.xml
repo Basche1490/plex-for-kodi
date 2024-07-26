@@ -404,11 +404,11 @@
                 </setting>
                 <setting id="requests_timeout" type="number" label="33620" help="33621">
                     <level>0</level>
-                    <default>10</default>
+                    <default>5</default>
                     <constraints>
                         <minimum>0.1</minimum>
                         <step>0.1</step>
-                        <maximum>20</maximum>
+                        <maximum>60</maximum>
                     </constraints>
                     <control type="slider" format="number">
                         <popup>false</popup>
@@ -445,6 +445,18 @@
                         <minimum>1</minimum>
                         <step>1</step>
                         <maximum>1000</maximum>
+                    </constraints>
+                    <control type="slider" format="number">
+                        <popup>false</popup>
+                    </control>
+                </setting>
+                <setting id="tickrate" type="number" label="33098" help="33099">
+                    <level>0</level>
+                    <default>1.0</default>
+                    <constraints>
+                        <minimum>0.5</minimum>
+                        <step>0.5</step>
+                        <maximum>10</maximum>
                     </constraints>
                     <control type="slider" format="number">
                         <popup>false</popup>
