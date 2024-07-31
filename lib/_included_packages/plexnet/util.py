@@ -10,7 +10,6 @@ import platform
 import uuid
 import threading
 import six
-import collections
 import math
 from copy import copy
 from kodi_six import xbmcaddon
@@ -22,6 +21,11 @@ if six.PY2:
     Event = threading._Event
 else:
     Event = threading.Event
+
+try:
+    from collections.abc import Iterable
+except ImportError:
+    from collections import Iterable
 
 BASE_HEADERS = ''
 

@@ -672,6 +672,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         plexapp.util.APP.on('change:spoilers_allowed_genres2', self.setDirty)
         plexapp.util.APP.on('change:hubs_use_new_continue_watching', self.setDirty)
         plexapp.util.APP.on('change:path_mapping_indicators', self.setDirty)
+        plexapp.util.APP.on('change:debug', self.setDebugFlag)
         plexapp.util.APP.on('theme_relevant_setting', self.setThemeDirty)
 
         player.PLAYER.on('session.ended', self.updateOnDeckHubs)
@@ -698,6 +699,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         plexapp.util.APP.off('change:spoilers_allowed_genres2', self.setDirty)
         plexapp.util.APP.off('change:hubs_use_new_continue_watching', self.setDirty)
         plexapp.util.APP.off('change:path_mapping_indicators', self.setDirty)
+        plexapp.util.APP.off('change:debug', self.setDebugFlag)
         plexapp.util.APP.off('theme_relevant_setting', self.setThemeDirty)
 
         player.PLAYER.off('session.ended', self.updateOnDeckHubs)
@@ -1005,6 +1007,10 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
     def setThemeDirty(self, *args, **kwargs):
         self._applyTheme = util.getSetting("theme", "modern-colored")
+
+    def setDebugFlag(self, *args, **kwargs):
+        util.DEBUG = util.getSetting("debug", False)
+        util.addonSettings.debug = util.DEBUG
 
     def fullyRefreshHome(self, *args, **kwargs):
         section = kwargs.pop("section", None)
