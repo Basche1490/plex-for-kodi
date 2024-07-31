@@ -688,17 +688,21 @@ class SeekDialog(kodigui.BaseDialog):
 
                         else:
                             self.skipBack(without_osd=True)
-                    elif action in (xbmcgui.ACTION_MOVE_UP, xbmcgui.ACTION_MOVE_DOWN):
+                    elif action in (xbmcgui.ACTION_MOVE_UP,
+                                    xbmcgui.ACTION_MOVE_DOWN,
+                                    xbmcgui.ACTION_PAGE_UP,
+                                    xbmcgui.ACTION_PAGE_DOWN):
                         if self.clientLikePlex:
                             self.showOSD()
                             return
 
-                        # we're seeking from the timeline, with the OSD closed; act as we're skipping
-                        if not self._seeking:
-                            self.selectedOffset = self.trueOffset()
+                        if action in (xbmcgui.ACTION_MOVE_UP, xbmcgui.ACTION_MOVE_DOWN):
+                            # we're seeking from the timeline, with the OSD closed; act as we're skipping
+                            if not self._seeking:
+                                self.selectedOffset = self.trueOffset()
 
-                        if self.skipChapter(forward=(action == xbmcgui.ACTION_MOVE_UP), without_osd=True):
-                            return
+                            if self.skipChapter(forward=(action == xbmcgui.ACTION_MOVE_UP), without_osd=True):
+                                return
 
                     if action in (
                             xbmcgui.ACTION_MOVE_UP,
