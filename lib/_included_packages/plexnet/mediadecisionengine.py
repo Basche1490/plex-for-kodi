@@ -234,7 +234,7 @@ class MediaDecisionEngine(object):
                 util.LOG("MDE: Codec {} can't be direct played due to user settings", choice.audioStream.codec)
                 choice.isDirectPlayable = False
 
-            elif AC3Cond in ('2', '5'):
+            elif AC3Cond in ('2', '3', '5', '6'):
                 ch = int(AC3Cond)
                 ach = choice.sorts.audioChannels
 

@@ -359,7 +359,7 @@ class PlexPlayer(BasePlayer):
         forceAC3 = AC3Cond != 'never'
 
         ach = None
-        if AC3Cond in ('2', '5'):
+        if AC3Cond in ('2', '3', '5', '6'):
             ach = int(AC3Cond)
 
         # fixme: still necessary?

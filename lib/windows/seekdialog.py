@@ -1163,22 +1163,25 @@ class SeekDialog(kodigui.BaseDialog):
             self.hasDialog = False
 
     def videoSettingsHaveChanged(self):
-        changed = False
-        if (
-                self.player.video.settings.prefOverrides != self.initialVideoSettings or
-                self.player.video.selectedAudioStream() != self.initialAudioStream
-        ):
+        changed = AttributeDict(video=False, audio=False, subtitle=False, reload=False)
+        if self.player.video.settings.prefOverrides != self.initialVideoSettings:
+            changed.video = True
+            changed.reload = True
+        if self.player.video.selectedAudioStream() != self.initialAudioStream:
+            changed.audio = True
+            if not self.isDirectPlay:
+                changed.reload = True
+
+        if changed.video or changed.audio:
             self.initialVideoSettings = dict(self.player.video.settings.prefOverrides)
             self.initialAudioStream = self.player.video.selectedAudioStream()
-            changed = True
 
         sss = self.player.video.selectedSubtitleStream()
         if sss != self.initialSubtitleStream:
             self.initialSubtitleStream = sss
-            if changed or self.isTranscoded:
-                return True
-            else:
-                return 'SUBTITLE'
+            changed.subtitle = True
+            if self.isTranscoded:
+                changed.reload = True
 
         return changed
 
@@ -1362,23 +1365,47 @@ class SeekDialog(kodigui.BaseDialog):
             util.DEBUG_LOG("Switching embedded subtitle stream, seeking due to Kodi issue #21086")
 
             # true offset can be 0, which might lead to an infinite loop, seek to 100ms at least.
-            self.doSeek(max(self.trueOffset() - 100, 100))
+            if self.handler.seekOnStart:
+                util.DEBUG_LOG("Waiting for seekOnStart to apply: {}", self.handler.seekOnStart)
+
+            waited = 0
+            while self.handler.seekOnStart and waited < 20:
+                xbmc.sleep(100)
+                waited += 1
+
+            if waited < 20:
+                self.doSeek(max(self.trueOffset() - 100, 100))
+                return
+            util.LOG("Tried switching embedded subtitle stream to the correct one, but we've waited too long for "
+                      "seekOnStart.")
 
     def showSettings(self):
         with self.propertyContext('settings.visible'):
             playersettings.showDialog(self.player.video, via_osd=True, parent=self)
 
         changed = self.videoSettingsHaveChanged()
+        any_changes = any(changed.values())
 
-        if changed == 'SUBTITLE':
-            self.setSubtitles(do_sleep=False)
-            self.lastSubtitleNavAction = "forward"
-            return True
+        if any_changes:
+            if not changed.reload:
+                if changed.subtitle:
+                    self.setSubtitles(do_sleep=False)
+                    self.lastSubtitleNavAction = "forward"
 
-        elif changed:
+                if changed.audio:
+                    self.handler.setAudioTrack()
+
+                oldTranscoded = self.player.playerObject.metadata.isTranscoded
+
+                # check if we need to restart
+                self.player.playerObject.rebuild(self.player.video)
+                if oldTranscoded == self.player.playerObject.metadata.isTranscoded:
+                    return True
+
+            util.LOG("Media settings have changed and are not directly applicable, restarting video")
             self.doSeek(self.trueOffset(), settings_changed=True)
-        else:
-            return True
+            return False
+        return True
 
     def setBigSeekShift(self):
         closest = None

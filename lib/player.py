@@ -1337,7 +1337,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 'season': self.video.parentIndex.asInt(),
             })
         util.DEBUG_LOG("Setting VideoInfo: {}".format(
-            plexnetUtil.cleanObjTokens(info, flistkeys=[], fstrkeys=("path",))
+            plexnetUtil.cleanObjTokens(info, flistkeys=[])
         ))
         li.setInfo('video', info)
         li.setArt({

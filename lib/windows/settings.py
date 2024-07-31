@@ -473,8 +473,10 @@ class Settings(object):
                     (
                         ('never', T(32033, 'Never')),
                         ('always', T(32028, 'Always')),
-                        ('2', '2.1+'),
-                        ('5', '5.1+'),
+                        ('2', '>2.0'),
+                        ('3', '>2.1'),
+                        ('5', '>5.0'),
+                        ('6', '>5.1'),
                     )
                 ).description(
                     T(32063, 'Transcode audio to AC3 in certain conditions (useful for passthrough).')
