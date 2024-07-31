@@ -189,7 +189,7 @@ def cleanObjTokens(dorig,
                    dict_cls=dict):
     dcopy = copy(dorig)
     if not isinstance(dcopy, dict):
-        if isinstance(dcopy, collections.Iterable) and not isinstance(dcopy, six.string_types):
+        if isinstance(dcopy, Iterable) and not isinstance(dcopy, six.string_types):
             return [cleanObjTokens(a, flistkeys=flistkeys, mask_keys=mask_keys) for a in dcopy]
         elif isinstance(dcopy, six.string_types):
             return cleanToken(dcopy)
@@ -206,7 +206,7 @@ def cleanObjTokens(dorig,
         elif isinstance(v, dict):
             d[k] = cleanObjTokens(v, flistkeys=flistkeys, mask_keys=mask_keys)
 
-        elif isinstance(v, collections.Iterable):
+        elif isinstance(v, Iterable):
             fv = []
             for iv in v:
                 if isinstance(iv, six.string_types):
