@@ -2,6 +2,7 @@
 from __future__ import absolute_import
 
 import gc
+import os
 import sys
 import re
 import binascii
@@ -13,6 +14,7 @@ import datetime
 import contextlib
 import subprocess
 import unicodedata
+import pprint
 
 import six.moves.urllib.request, six.moves.urllib.parse, six.moves.urllib.error
 import six
@@ -1026,6 +1028,75 @@ def ensureHome():
             ct += 1
         if ct > 50:
             DEBUG_LOG("Still active window: %s" % xbmcgui.getCurrentWindowId())
+
+
+SETTING_RE = re.compile(r'<setting id="(?P<name>.+?)"[^>]*?>', re.MULTILINE | re.DOTALL)
+
+
+def dumpSettings():
+    from .windows import settings
+    from collections import OrderedDict
+
+    sections = set(settings.Settings.SECTION_IDS) - {"about", "player_user"}
+
+    main_settings_dict = OrderedDict([(k,
+                                       OrderedDict([(s.ID, (s.get(as_code=True), s.default))
+                                                    for s in settings.Settings.SETTINGS[k][1]
+                                                    if not s.userAware])) for k in sections])
+    main_revmap = {k: i for i in sections for k in main_settings_dict[i].keys()}
+    adv_settings_dict = OrderedDict([(s, (getSetting(s, d), d)) for s, d in AddonSettings._proxiedSettings])
+
+    try:
+        f = xbmcvfs.File(os.path.join(translatePath(ADDON.getAddonInfo("profile")), "settings.xml"))
+        data = f.read()
+        all_settings = SETTING_RE.findall(data)
+        f.close()
+    except:
+        LOG('script.plex: No settings.xml found')
+        return
+
+    final = OrderedDict({"settings": OrderedDict((k, []) for k in sections), "addon_settings": [], "unspecified": []})
+
+    for s in all_settings[:]:
+        # get setting from main settings
+        sec = main_revmap.get(s)
+
+        if sec:
+            ms = main_settings_dict[sec][s]
+            try:
+                v = json.loads(ms[0], default=ms[0])
+            except:
+                v = ms[0]
+            final["settings"][sec].append({s: {"value": v, "default": ms[1], "changed": v != ms[1]}})
+            all_settings.remove(s)
+            continue
+        advs = adv_settings_dict.get(s)
+        if advs:
+            try:
+                v = json.loads(advs[0], default=advs[0])
+            except:
+                v = advs[0]
+            final["addon_settings"].append({s: {"value": v, "default": advs[1], "changed": v != advs[1]}})
+            all_settings.remove(s)
+            continue
+
+    remove_keys = ("xml_cache.mpaResources",)
+    for key in remove_keys:
+        all_settings.remove(key)
+
+    def decode(v):
+        try:
+            return json.loads(v)
+        except:
+            return v
+
+    final["unspecified"] += [{s: decode(getSetting(s))} for s in all_settings]
+    final = plexnet.util.cleanObjTokens(final,
+                                        mask_keys=("token", "authToken", "uuid", "name", "ID", "thumb", "email", "id",
+                                                   "title", "username", "address"),
+                                        dict_cls=OrderedDict)
+
+    DEBUG_LOG("Settings dump: {}", pprint.pformat(final, compact=True))
 
 
 def garbageCollect():

@@ -159,7 +159,9 @@ class UserAwareSetting(BasicSetting):
 
     @property
     def userAwareID(self):
-        return '{}.{}'.format(self.ID, plexnet.plexapp.ACCOUNT.ID)
+        if plexnet.plexapp.ACCOUNT and plexnet.plexapp.ACCOUNT.ID:
+            return '{}.{}'.format(self.ID, plexnet.plexapp.ACCOUNT.ID)
+        return 'USER_AWARE'
 
     def emit_events(self, id_, val, **kwargs):
         plexnet.util.APP.trigger('change:{0}'.format(self.ID), key=self.userAwareID, value=val, skey=self.ID)
@@ -394,8 +396,11 @@ class KeySetting(BasicSetting):
         del w
         return choice
 
-    def get(self, *args, **kwargs):
+    def get(self, as_code=False, *args, **kwargs):
         code = super(KeySetting, self).get(default=None, *args, **kwargs)
+        if as_code:
+            return code
+
         if code is not None and code != "None":
             ak = actions.ActionKey(int(code))
             return ak
@@ -792,6 +797,7 @@ class Settings(object):
                     'player_stop_on_screensaver', T(32947, 'Stop video playback on screensaver'), True
                 ),
                 BoolSetting('debug', T(32024, 'Debug Logging'), False),
+                BoolSetting('dump_config', T(33642, 'Debug Logging'), False).description(T(33643)),
             )
         ),
         'privacy': (

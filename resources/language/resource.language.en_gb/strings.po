@@ -2225,3 +2225,11 @@ msgstr ""
 msgctxt "#33641"
 msgid "Plex.tv: Sets the maximum amount of time to read from Plex.tv in seconds. Default: 20"
 msgstr ""
+
+msgctxt "#33642"
+msgid "Dump config"
+msgstr ""
+
+msgctxt "#33643"
+msgid "Dumps all user settings into the log on startup, when DEBUG logging is enabled. Masks private information."
+msgstr ""

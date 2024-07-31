@@ -2,8 +2,6 @@
 
 from __future__ import absolute_import
 
-from copy import copy
-
 from . import simpleobjects
 import re
 import sys
@@ -12,6 +10,9 @@ import platform
 import uuid
 import threading
 import six
+import collections
+import math
+from copy import copy
 from kodi_six import xbmcaddon
 
 from . import verlib
@@ -173,24 +174,50 @@ def cleanToken(url):
     return re.sub(r'X-Plex-Token=[^&]+', 'X-Plex-Token=****', url)
 
 
-def cleanObjTokens(dorig, flistkeys=("streamUrls", "streams",), fstrkeys=("url", "token")):
-    d = {}
+def mask(v):
+    vlen = len(v)
+    return (v[:math.floor(vlen / 2)] + math.ceil(vlen / 2) * "*") if vlen > 4 else "****"
+
+
+def cleanObjTokens(dorig,
+                   flistkeys=("streamUrls", "streams",),
+                   mask_keys=("token", "authToken"),
+                   dict_cls=dict):
     dcopy = copy(dorig)
+    if not isinstance(dcopy, dict):
+        if isinstance(dcopy, collections.Iterable) and not isinstance(dcopy, six.string_types):
+            return [cleanObjTokens(a, flistkeys=flistkeys, mask_keys=mask_keys) for a in dcopy]
+        elif isinstance(dcopy, six.string_types):
+            return cleanToken(dcopy)
+        return dcopy
 
-    # filter lists
-    for k in flistkeys:
-        if k not in dcopy:
-            continue
-        d[k] = list(map(lambda x: cleanObjTokens(x) if isinstance(x, dict) else cleanToken(x), dcopy[k][:]))
+    d = dict_cls()
+    for k, v in dcopy.items():
+        if isinstance(v, six.string_types):
+            if v:
+                d[k] = mask(v) if k in mask_keys else cleanToken(v)
+                continue
+            d[k] = v
 
-    # filter strings
-    for k in fstrkeys:
-        if k not in dcopy:
-            continue
-        d[k] = "****" if k == "token" else cleanToken(dcopy[k])
+        elif isinstance(v, dict):
+            d[k] = cleanObjTokens(v, flistkeys=flistkeys, mask_keys=mask_keys)
 
-    dcopy.update(d)
-    return dcopy
+        elif isinstance(v, collections.Iterable):
+            fv = []
+            for iv in v:
+                if isinstance(iv, six.string_types):
+                    if k in flistkeys:
+                        fv.append(cleanToken(iv))
+                        continue
+                    fv.append(iv)
+                else:
+                    fv.append(cleanObjTokens(iv, flistkeys=flistkeys, mask_keys=mask_keys))
+            d[k] = fv
+
+        else:
+            d[k] = v
+
+    return d
 
 
 def now(local=False):
