@@ -202,7 +202,7 @@ class SeekDialog(kodigui.BaseDialog):
         self.resumeSeekBehind = util.getSetting('resume_seek_behind', 0)
         self.resumeSeekBehindPause = util.getSetting('resume_seek_behind_pause', False)
         self.resumeSeekBehindAfter = util.getSetting('resume_seek_behind_after', 0) / 1000.0
-        self.resumeSeekBehindOnlyDP = util.getSetting('resume_seek_behind_onlydp', False)
+        self.resumeSeekBehindOnlyDP = util.getSetting('resume_seek_behind_onlydp', True)
         self.pausedAt = None
         self.isDirectPlay = True
         self.isTranscoded = False

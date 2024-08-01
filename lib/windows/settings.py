@@ -640,7 +640,7 @@ class Settings(object):
                                             unit_s_or_ms="ms" if a < 1000 else "s")) for a in
                         list(range(250, 1000, 250)) + list(range(1000, 61000, 1000))]
                 ).description(T(33094, '')),
-                BoolSetting('resume_seek_behind_onlydp', T(33096, ''), False).description(
+                BoolSetting('resume_seek_behind_onlydp', T(33096, ''), True).description(
                     T(33097, '')),
             )
         ),
