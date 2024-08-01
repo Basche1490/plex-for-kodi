@@ -1498,9 +1498,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG('Player - STARTED')
         self.trigger('playback.started')
         self.started = True
-        if self.pauseAfterPlaybackStarted:
-            self.control('pause')
-            self.pauseAfterPlaybackStarted = False
 
         if not self.handler:
             return
@@ -1518,6 +1515,10 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         if not self.sessionID:
             return
         util.DEBUG_LOG('Player - AVStarted: {}', self.handler)
+        if self.pauseAfterPlaybackStarted:
+            self.control('pause')
+            self.pauseAfterPlaybackStarted = False
+
         self.isExternal = self.isExternalPlayer()
         self.trigger('av.started')
         if not self.handler:
