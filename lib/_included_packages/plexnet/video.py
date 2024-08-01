@@ -158,8 +158,9 @@ class Video(media.MediaItem, AudioCodecMixin):
         self.mediaChoice = mediachoice.MediaChoice(media, partIndex=partIndex)
 
     @forceMediaChoice
-    def selectStream(self, stream, _async=True):
-        self.mediaChoice.part.setSelectedStream(stream.streamType.asInt(), stream.id, _async)
+    def selectStream(self, stream, _async=True, from_session=False):
+        self.mediaChoice.part.setSelectedStream(stream.streamType.asInt(), stream.id, _async, from_session=from_session,
+                                                video=self)
         # Update any affected streams
         if stream.streamType.asInt() == plexstream.PlexStream.TYPE_AUDIO:
             for audioStream in self.audioStreams:

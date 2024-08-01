@@ -1403,6 +1403,10 @@ class SeekDialog(kodigui.BaseDialog):
 
                 # check if we need to restart
                 self.player.playerObject.rebuild(self.player.video)
+
+                # ping server to update activity/session
+                self.player.playerObject.getServerDecision()
+
                 if oldTranscoded == self.player.playerObject.metadata.isTranscoded:
                     return True
 
@@ -1915,7 +1919,7 @@ class SeekDialog(kodigui.BaseDialog):
                 return True
 
     def seekBehind(self):
-        if not self.resumeSeekBehindOnlyDP or self.isDirectPlay:
+        if (not self.resumeSeekBehindOnlyDP or self.isDirectPlay) and self.trueOffset() > self.resumeSeekBehind:
             self.doSeek(self.trueOffset() - self.resumeSeekBehind)
 
     def onPlayBackResumed(self):

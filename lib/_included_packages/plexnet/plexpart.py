@@ -105,7 +105,7 @@ class PlexPart(plexobjects.PlexObject):
 
         return default
 
-    def setSelectedStream(self, streamType, streamId, _async):
+    def setSelectedStream(self, streamType, streamId, _async, from_session=False, video=None):
         if streamType == plexstream.PlexStream.TYPE_AUDIO:
             typeString = "audio"
         elif streamType == plexstream.PlexStream.TYPE_SUBTITLE:
@@ -119,6 +119,9 @@ class PlexPart(plexobjects.PlexObject):
 
         if self.getServer().supportsFeature("allPartsStreamSelection"):
             path = path + "&allParts=1"
+#
+        if from_session:
+            path = path + "&X-Plex-Session-Id=%s" % video.settings.getGlobal("clientIdentifier")
 
         request = plexrequest.PlexRequest(self.getServer(), path, "PUT")
 

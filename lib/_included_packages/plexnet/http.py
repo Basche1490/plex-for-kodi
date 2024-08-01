@@ -132,6 +132,8 @@ class HttpRequest(object):
                 res = self.session.delete(self.url, timeout=timeout, stream=True)
             elif self.method == 'HEAD':
                 res = self.session.head(self.url, timeout=timeout, stream=True)
+            elif self.method == 'OPTIONS':
+                res = self.session.options(self.url, timeout=timeout, stream=True)
             elif self.method == 'POST' or body is not None:
                 if not contentType:
                     self.session.headers["Content-Type"] = "application/x-www-form-urlencoded"

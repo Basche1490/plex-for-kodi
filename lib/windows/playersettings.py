@@ -321,7 +321,7 @@ def showAudioDialog(video, non_playback=False):
     if choice is None:
         return
 
-    video.selectStream(choice)
+    video.selectStream(choice, from_session=not non_playback)
 
 
 def showSubtitlesDialog(video, non_playback=False):
@@ -336,7 +336,7 @@ def showSubtitlesDialog(video, non_playback=False):
     if choice is None:
         return
 
-    video.selectStream(choice)
+    video.selectStream(choice, from_session=not non_playback)
     video.manually_selected_sub_stream = choice.id
 
 
