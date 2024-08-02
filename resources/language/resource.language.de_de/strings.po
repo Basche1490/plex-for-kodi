@@ -2657,8 +2657,8 @@ msgid "Press the key you want to map to go to home within {} seconds"
 msgstr "Drücke die Taste, die Du zuordnen willst, um sofort zu Home zu kommen binnen {} Sekunden"
 
 msgctxt "#33087"
-msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP button on the setting."
-msgstr "Wähle einen Knopf um sofort zur Home-Ansicht zu kommen. Abbrechen via BACK/PREVIOUS_MENU. Gebundene Taste mit dem STOP Knopf auf der Einstellung entbinden."
+msgid "Bind a key to immediately go to the Home view. Cancel using BACK/PREVIOUS_MENU. Clear bound key using the STOP or CONTEXT_MENU (long press OK/Enter) button on the setting."
+msgstr "Wähle eine Taste, um sofort zur Home-Ansicht zu kommen. Abbrechen via BACK/PREVIOUS_MENU. Gebundene Taste mit dem STOP oder CONTEXT_MENU (OK/Enter lange gedrückt halten) Knopf auf der Einstellung entbinden."
 
 msgctxt "#33088"
 msgid "Only applies to video player UI"
