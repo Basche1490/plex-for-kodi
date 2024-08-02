@@ -642,6 +642,16 @@ class Settings(object):
                 ).description(T(33094, '')),
                 BoolSetting('resume_seek_behind_onlydp', T(33096, ''), True).description(
                     T(33097, '')),
+                OptionsSetting(
+                    'player_stop_on_idle',
+                    T(32946, 'Stop video playback on idle after'),
+                    0,
+                    ((0, T(32033, 'Never')), (30, '30s'), (60, '1m'), (120, '2m'), (300, '5m'), (600, '10m'),
+                     (900, '15m'), (1200, '20m'), (1800, '30m'), (2700, '45m'), (3600, '1h'),)
+                ),
+                BoolSetting(
+                    'player_stop_on_screensaver', T(32947, 'Stop video playback on screensaver'), True
+                ),
             )
         ),
         'player_user': (
@@ -788,16 +798,6 @@ class Settings(object):
                     [('none', T(32702, 'Nothing')), ('restart', T(33071, 'Restart PM4K'))]
                     + [('wait_{}'.format(s), T(33072, '').format(s)) for s in [1, 2, 3] + list(range(5, 65, 5))]
                 ).description(T(33075, '')),
-                OptionsSetting(
-                    'player_stop_on_idle',
-                    T(32946, 'Stop video playback on idle after'),
-                    0,
-                    ((0, T(32033, 'Never')), (30, '30s'), (60, '1m'), (120, '2m'), (300, '5m'), (600, '10m'),
-                     (900, '15m'), (1200, '20m'), (1800, '30m'), (2700, '45m'), (3600, '1h'),)
-                ),
-                BoolSetting(
-                    'player_stop_on_screensaver', T(32947, 'Stop video playback on screensaver'), True
-                ),
                 BoolSetting('debug', T(32024, 'Debug Logging'), False),
                 BoolSetting('dump_config', T(33642, 'Debug Logging'), False).description(T(33643)),
             )
