@@ -151,6 +151,8 @@ class BasePlayerHandler(object):
         self.lastTimelineState = state
         # self.timelineTimer.reset()
 
+        # if we've been called explicitly with a time, honor
+        force_time = t is not None
         _time = t or int(self.trueTime * 1000)
 
         # self.trigger("progress", [m, item, time])
@@ -169,7 +171,7 @@ class BasePlayerHandler(object):
 
         new_time_sent = plexapp.util.APP.nowplayingmanager.updatePlaybackState(
             self.timelineType, data, state, _time, self.playQueue, duration=self.currentDuration(),
-            force=overrideChecks
+            force=overrideChecks, force_time=force_time
         )
 
         if new_time_sent:

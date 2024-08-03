@@ -85,13 +85,14 @@ class NowPlayingManager(object):
         for timelineType in self.TIMELINE_TYPES:
             self.timelines[timelineType] = TimelineData(timelineType)
 
-    def updatePlaybackState(self, timelineType, itemData, state, t, playQueue=None, duration=0, force=False):
+    def updatePlaybackState(self, timelineType, itemData, state, t, playQueue=None, duration=0, force=False,
+                            force_time=False):
         timeline = self.timelines[timelineType]
         timeline.itemData = itemData
         timeline.playQueue = playQueue
         old_time = timeline.attrs.get("time")
         time_updated = False
-        if state != "stopped":
+        if state != "stopped" or force_time:
             timeline.attrs["time"] = str(t)
             time_updated = True
         elif old_time:
