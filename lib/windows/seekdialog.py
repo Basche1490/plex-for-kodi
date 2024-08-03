@@ -1410,7 +1410,7 @@ class SeekDialog(kodigui.BaseDialog):
                 if oldTranscoded == self.player.playerObject.metadata.isTranscoded:
                     return True
 
-            util.LOG("Media settings have changed and are not directly applicable, restarting video")
+            util.LOG("Media settings have changed and are not directly applicable, restarting video: {}", changed)
             self.doSeek(self.trueOffset(), settings_changed=True)
             return False
         return True

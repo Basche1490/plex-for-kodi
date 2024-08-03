@@ -132,9 +132,9 @@ class BasePlayerHandler(object):
             return
 
         util.DEBUG_LOG("UpdateNowPlaying: {0}, force: {1} refreshQueue: "
-                       "{2} state: {3} overrideChecks: {4} time: {5}".format(item.ratingKey,
+                       "{2} state: {3} (player: {6}) overrideChecks: {4} time: {5}".format(item.ratingKey,
                                                                              force, refreshQueue, state, overrideChecks,
-                                                                             t))
+                                                                             t, self.player.playState))
 
         state = state or self.player.playState
         # Avoid duplicates
@@ -440,6 +440,7 @@ class SeekPlayerHandler(BasePlayerHandler):
         self.player.trigger('started.video')
 
         if self.isDirectPlay:
+            # handle seekOnStart/resume
             self.seekAbsolute()
 
         if self.dialog:
@@ -710,7 +711,7 @@ class SeekPlayerHandler(BasePlayerHandler):
         self.showOSD()
 
     def tick(self):
-        if self.seeking != self.SEEK_IN_PROGRESS:
+        if self.seeking != self.SEEK_IN_PROGRESS and not self.ended and self.player.started and not self.seekOnStart:
             self.updateNowPlaying(force=True)
 
         if self.dialog and getattr(self.dialog, "_ignoreTick", None) is not True:
@@ -1573,7 +1574,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def onPlayBackSeek(self, time, offset):
         if not self.sessionID:
             return
-        util.DEBUG_LOG('Player - SEEK: %i' % offset)
+        util.DEBUG_LOG('Player - SEEK: %s %i', time, offset)
         if not self.handler:
             return
         self.handler.onPlayBackSeek(time, offset)
