@@ -101,6 +101,9 @@ class NowPlayingManager(object):
             else:
                 util.DEBUG_LOG("Possibly using bad time for timeline state as we're stopped now but can't find a "
                                "non-stopped time: {}", old_time)
+
+            # reuse old timestamp
+            t = int(timeline.attrs["time"])
         else:
             util.DEBUG_LOG("Possibly using bad time for timeline state as we're stopped now but never seen a good time")
             timeline.attrs["time"] = str(t)
