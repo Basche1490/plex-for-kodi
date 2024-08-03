@@ -537,7 +537,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         hosts = []
         for server in servers:
-            if not server.dnsRebindingProtection or not server.sameNetwork:
+            if util.addonSettings.ignorePdRemote and (not server.dnsRebindingProtection or not server.sameNetwork):
+                util.DEBUG_LOG("Ignoring DNS handling for plex.direct connections of: {}", server)
                 continue
             hosts += [c.address for c in server.connections]
 

@@ -2743,3 +2743,11 @@ msgstr "Schreibt alle Benutzereinstellungen in die Logdatei beim Start, wenn DEB
 msgctxt "#33644"
 msgid "Tracks"
 msgstr "Tracks"
+
+msgctxt "#33645"
+msgid "Ignore plex.direct DNS handling for remote hosts"
+msgstr "Entfernte plex.direct-Hosts nicht behandeln (DNS)"
+
+msgctxt "#33646"
+msgid "Only handle plex.direct hosts when the server's attributes dnsRebindingProtection=1 and publicAddressMatches=1. Might not work in certain situations. Disable if you have connection issues."
+msgstr "Nur plex.direct Hosts behandeln, wenn die Attribute des Servers dnsRebindingProtection=1 und publicAddressMatches=1 entsprechen. Könnte in bestimmten Situationen nicht funktionieren. Deaktivieren, sollte es Verbindungsprobleme geben."

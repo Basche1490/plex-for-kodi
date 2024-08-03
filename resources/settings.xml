@@ -389,6 +389,11 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
+                <setting id="ignore_pd_remote" type="boolean" label="33645" help="33646">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="use_cert_bundle" type="string" label="33051" help="33052">
                     <level>0</level>
                     <default>plex.direct</default>

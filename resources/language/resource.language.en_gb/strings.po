@@ -2237,3 +2237,11 @@ msgstr ""
 msgctxt "#33644"
 msgid "Tracks"
 msgstr ""
+
+msgctxt "#33645"
+msgid "Ignore plex.direct DNS handling for remote hosts"
+msgstr ""
+
+msgctxt "#33646"
+msgid "Only handle plex.direct hosts when the server's attributes dnsRebindingProtection=1 and publicAddressMatches=1. Might not work in certain situations. Disable if you have connection issues."
+msgstr ""

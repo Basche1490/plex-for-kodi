@@ -240,6 +240,7 @@ class AddonSettings(object):
         ("cache_templates", True),
         ("always_compile_templates", False),
         ("tickrate", 1.0),
+        ("ignore_pd_remote", True),
     )
 
     def __init__(self):
