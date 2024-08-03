@@ -90,8 +90,10 @@ class NowPlayingManager(object):
         timeline.itemData = itemData
         timeline.playQueue = playQueue
         old_time = timeline.attrs.get("time")
+        time_updated = False
         if state != "stopped":
             timeline.attrs["time"] = str(t)
+            time_updated = True
         elif old_time:
             if timeline.state != "stopped":
                 # use old timeline state's time for stopped states
@@ -102,12 +104,14 @@ class NowPlayingManager(object):
         else:
             util.DEBUG_LOG("Possibly using bad time for timeline state as we're stopped now but never seen a good time")
             timeline.attrs["time"] = str(t)
+            time_updated = True
         timeline.state = state
         timeline.duration = duration
 
         # self.sendTimelineToAll()
 
         self.sendTimelineToServer(timelineType, timeline, t, force=force)
+        return time_updated
 
     def sendTimelineToServer(self, timelineType, timeline, t, force=False):
         server = util.APP.serverManager.selectedServer

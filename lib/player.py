@@ -152,7 +152,6 @@ class BasePlayerHandler(object):
         # self.timelineTimer.reset()
 
         _time = t or int(self.trueTime * 1000)
-        self._progressHld[str(item.ratingKey)] = _time
 
         # self.trigger("progress", [m, item, time])
 
@@ -168,10 +167,15 @@ class BasePlayerHandler(object):
             "containerKey": str(item.container.address)
         })
 
-        plexapp.util.APP.nowplayingmanager.updatePlaybackState(
+        new_time_sent = plexapp.util.APP.nowplayingmanager.updatePlaybackState(
             self.timelineType, data, state, _time, self.playQueue, duration=self.currentDuration(),
             force=overrideChecks
         )
+
+        if new_time_sent:
+            # only update our immediate progress if we should (e.g. if updatePlaybackState reported a new time based
+            # on _time
+            self._progressHld[str(item.ratingKey)] = _time
 
     def getVolume(self):
         return util.rpc.Application.GetProperties(properties=["volume"])["volume"]
