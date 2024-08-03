@@ -537,7 +537,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         hosts = []
         for server in servers:
-            if not server.dnsRebindingProtection:
+            if not server.dnsRebindingProtection or not server.sameNetwork:
                 continue
             hosts += [c.address for c in server.connections]
 
