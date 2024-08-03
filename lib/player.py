@@ -1580,7 +1580,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def onPlayBackSeek(self, time, offset):
         if not self.sessionID:
             return
-        util.DEBUG_LOG('Player - SEEK: %s %i', time, offset)
+        util.DEBUG_LOG('Player - SEEK: {} {:d}', time, offset)
         if not self.handler:
             return
         self.handler.onPlayBackSeek(time, offset)
