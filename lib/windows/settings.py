@@ -765,7 +765,7 @@ class Settings(object):
                     '{}{}'.format(T(33614, 'stub1').format(
                         lib.cache.kcm.free, lib.cache.kcm.recMax),
                         '' if lib.cache.kcm.useModernAPI else ' ' + T(32954, 'stub2'))
-                ),
+                ) if not util.FROM_KODI_REPOSITORY or lib.cache.kcm.useModernAPI else None,
                 ReadFactorSetting('readfactor',
                                   T(32922, 'Kodi Cache Readfactor'),
                                   4,
@@ -776,7 +776,7 @@ class Settings(object):
                              'fill fast/aggressively enough.').format(lib.cache.kcm.defRF,
                                                                       lib.cache.kcm.recRFRange,
                                                                       lib.cache.kcm.defRFSM)
-                ),
+                ) if not util.FROM_KODI_REPOSITORY or lib.cache.kcm.useModernAPI else None,
                 BoolSetting(
                     'slow_connection', T(32915, 'Slow connection'), False
                 ).description("Use with a wonky/slow connection, e.g. in a hotel room. Adjusts the UI to visually "
@@ -921,6 +921,9 @@ class SettingsWindow(kodigui.BaseWindow, windowutils.UtilMixin):
 
         items = []
         for setting in settings:
+            if setting is None:
+                continue
+
             item = kodigui.ManagedListItem(setting.label, setting.type != 'BOOL' and setting.valueLabel() or '',
                                            data_source=setting)
             item.setProperty('description', setting.desc)

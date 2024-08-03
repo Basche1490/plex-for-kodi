@@ -89,7 +89,7 @@ else:
     translatePath = xbmc.translatePath
 
 SKIN_PLEXTUARY = xbmc.getSkinDir() == "skin.plextuary"
-
+FROM_KODI_REPOSITORY = ADDON.getAddonInfo('name') == "PM4K for Plex"
 PROFILE = translatePath(ADDON.getAddonInfo('profile'))
 
 
