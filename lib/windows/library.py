@@ -108,6 +108,7 @@ TYPE_PLURAL = {
     'episode': T(32458, 'Episodes'),
     'collection': T(32490, 'Collections'),
     'folder': T(32491, 'Folders'),
+    'track': T(33644, 'Tracks'),
 }
 
 SORT_KEYS = {
@@ -149,6 +150,12 @@ SORT_KEYS = {
         'titleSort': {'title': T(32357, 'By Title'), 'display': T(32358, 'Title'), 'defSortDesc': False},
         'artist.titleSort': {'title': T(32463, 'By Artist'), 'display': T(32462, 'Artist'), 'defSortDesc': False},
         'lastViewedAt': {'title': T(32369, 'By Date Played'), 'display': T(32370, 'Date Played'), 'defSortDesc': False},
+    },
+    'track': {
+        'titleSort': {'title': T(32357, 'By Title'), 'display': T(32358, 'Title'), 'defSortDesc': False},
+        'artist.titleSort': {'title': T(32463, 'By Artist'), 'display': T(32462, 'Artist'), 'defSortDesc': False},
+        'lastViewedAt': {'title': T(32369, 'By Date Played'), 'display': T(32370, 'Date Played'), 'defSortDesc': False},
+        'viewCount': {'title': T(32371, 'By Play Count'), 'display': T(32372, 'Play Count'), 'defSortDesc': True}
     },
     'photo': {
         'titleSort': {'title': T(32357, 'By Title'), 'display': T(32358, 'Title'), 'defSortDesc': False},
@@ -196,6 +203,8 @@ class ChunkRequestTask(backgroundthread.Task):
                 type_ = 9
             elif ITEM_TYPE == 'collection':
                 type_ = 18
+            elif ITEM_TYPE == 'track':
+                type_ = 10
 
             if ITEM_TYPE == 'folder':
                 items = self.section.folder(self.start, self.size, self.subDir)
@@ -609,7 +618,7 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
             for t in ('movie', 'collection', 'folder'):
                 options.append({'type': t, 'display': TYPE_PLURAL.get(t, t)})
         elif self.section.TYPE == 'artist':
-            for t in ('artist', 'album', 'collection'):
+            for t in ('artist', 'album', 'collection', 'track'):
                 options.append({'type': t, 'display': TYPE_PLURAL.get(t, t)})
         else:
             return
@@ -699,6 +708,8 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
                 searchTypes = ['titleSort', 'artist.titleSort', 'addedAt', 'lastViewedAt', 'viewCount', 'originallyAvailableAt', 'rating']
             elif ITEM_TYPE == 'collection':
                 searchTypes = ['titleSort', 'addedAt']
+            elif ITEM_TYPE == 'track':
+                searchTypes = ['titleSort', 'addedAt', 'lastViewedAt', 'viewCount']
 
             for stype in searchTypes:
                 option = SORT_KEYS['artist'].get(stype, SORT_KEYS['movie'].get(stype)).copy()
@@ -878,7 +889,7 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
                 for k in ('year', 'genre', 'contentRating', 'network', 'collection', 'actor', 'labels'):
                     options.append(optionsMap[k])
         elif self.section.TYPE == 'artist':
-            for k in ('genre', 'country', 'collection'):
+            for k in ('genre', 'country', 'collection', 'track'):
                 options.append(optionsMap[k])
         elif self.section.TYPE == 'photo':
             for k in ('year', 'make', 'model', 'aperture', 'exposure', 'iso', 'lens', 'labels'):
@@ -1089,6 +1100,8 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
             type_ = 9
         elif ITEM_TYPE == 'collection':
             type_ = 18
+        elif ITEM_TYPE == 'track':
+            type_ = 10
 
         idx = 0
         fallback = 'script.plex/thumb_fallbacks/{0}.png'.format(TYPE_KEYS.get(self.section.type, TYPE_KEYS['movie'])['fallback'])
@@ -1381,7 +1394,10 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
                     mli = self.showPanelControl[pos]
                     if obj:
                         mli.setProperty('index', str(pos))
-                        mli.setLabel(obj.defaultTitle or '')
+                        if obj.TYPE == 'track':
+                            mli.setLabel("{} - {}: {}".format(obj.grandparentTitle, obj.parentTitle, obj.title))
+                        else:
+                            mli.setLabel(obj.defaultTitle or '')
 
                         if obj.TYPE == 'collection':
                             colArtDim = TYPE_KEYS.get('collection').get('art_dim', (256, 256))

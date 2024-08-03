@@ -2739,3 +2739,7 @@ msgstr "Konfiguration ausgeben"
 msgctxt "#33643"
 msgid "Dumps all user settings into the log on startup, when DEBUG logging is enabled. Masks private information."
 msgstr "Schreibt alle Benutzereinstellungen in die Logdatei beim Start, wenn DEBUG-Logging aktiviert ist. Verschleiert private Informationen."
+
+msgctxt "#33644"
+msgid "Tracks"
+msgstr "Tracks"
