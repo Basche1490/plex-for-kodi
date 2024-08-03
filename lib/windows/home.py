@@ -8,7 +8,7 @@ import math
 import plexnet
 from kodi_six import xbmc
 from kodi_six import xbmcgui
-from plexnet import plexapp
+from plexnet import plexapp, plexresource
 from six.moves import range
 
 from lib import backgroundthread
@@ -537,6 +537,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         hosts = []
         for server in servers:
+            if server.sourceType != plexresource.ResourceConnection.SOURCE_MYPLEX:
+                continue
             if util.addonSettings.ignorePdRemote and (not server.dnsRebindingProtection or not server.sameNetwork):
                 util.DEBUG_LOG("Ignoring DNS handling for plex.direct connections of: {}", server)
                 continue
