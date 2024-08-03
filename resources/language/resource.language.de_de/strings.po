@@ -2672,6 +2672,10 @@ msgctxt "#33090"
 msgid "If your audio doesn't resume as fast as the video, or you want to catch up after a longer pause, use this to seek back after resuming from pause to compensate for the delay. Default: Off"
 msgstr "Wenn der Ton nicht so schnell nach dem Fortsetzen wieder einsetzt, wie das Bild, oder Du aufholen möchtest, benutze dies um beim Fortsetzen nach dem Pausieren eine bestimmte Zeitspanne zurück zu springen. Standard: Aus"
 
+msgctxt "#33091"
+msgid "{sec_or_ms} {unit_s_or_ms}"
+msgstr "{sec_or_ms} {unit_s_or_ms}"
+
 msgctxt "#33092"
 msgid "Seek back on pause"
 msgstr "Zurückspringen bei Pause"
