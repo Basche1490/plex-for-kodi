@@ -54,7 +54,7 @@ class PlexHostsManager(object):
             ip = parsePlexDirectHost(parsed.hostname)
             # ignore docker V4 hosts
             if util.addonSettings.ignoreDockerV4 and ":" not in ip and IPv4Address(text_type(ip)) in DOCKER_NETWORK:
-                util.DEBUG_LOG("Ignoring plex.direct local Docker IPv4 address: {}", source, parsed.hostname)
+                util.DEBUG_LOG("Ignoring plex.direct local {} Docker IPv4 address: {}", source, parsed.hostname)
                 continue
 
             if parsed.hostname not in self._hosts:

@@ -479,7 +479,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self.hookSignals()
         util.CRON.registerReceiver(self)
         self.updateProperties()
-        self.checkPlexDirectHosts(plexapp.SERVERMANAGER.allConnections, source="stored")
+        self.checkPlexDirectHosts(plexapp.SERVERMANAGER.serversByUuid.values(), source="stored")
 
     def closeWRecompileTpls(self):
         self._applyTheme = False
@@ -530,10 +530,16 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         if self._odHubsDirty:
             self._updateOnDeckHubs()
 
-    def checkPlexDirectHosts(self, hosts, source="stored", *args, **kwargs):
+    def checkPlexDirectHosts(self, servers, source="stored", *args, **kwargs):
         handlePD = util.getSetting('handle_plexdirect', 'ask')
         if handlePD == "never":
             return
+
+        hosts = []
+        for server in servers:
+            if not server.dnsRebindingProtection:
+                continue
+            hosts += [c.address for c in server.connections]
 
         knownHosts = pdm.getHosts()
         pdHosts = [host for host in hosts if ".plex.direct:" in host]

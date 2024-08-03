@@ -333,11 +333,16 @@ class PlexServerManager(signalsmixin.SignalsMixin):
             util.ERROR_LOG("Failed to parse PlexServerManager JSON")
             return
 
-        hosts = []
         for serverObj in obj['servers']:
+            # old data didn't include the dnsRebindingProtection attribute, skip
+            rbnd = serverObj.get('dnsRebindingProtection')
+            if rbnd is None:
+                continue
+
             server = plexserver.createPlexServerForName(serverObj['uuid'], serverObj['name'])
             server.owned = bool(serverObj.get('owned'))
             server.sameNetwork = serverObj.get('sameNetwork')
+            server.dnsRebindingProtection = rbnd
 
             hasSecureConn = False
             for i in range(len(serverObj.get('connections', []))):
@@ -348,7 +353,6 @@ class PlexServerManager(signalsmixin.SignalsMixin):
 
             for i in range(len(serverObj.get('connections', []))):
                 conn = serverObj['connections'][i]
-                hosts.append(conn['address'])
                 isFallback = hasSecureConn and conn['address'][:5] != "https" and not util.LOCAL_OVER_SECURE
                 sources = plexconnection.PlexConnection.SOURCE_BY_VAL[conn['sources']]
                 connection = plexconnection.PlexConnection(sources, conn['address'], conn['isLocal'], conn['token'], isFallback)
@@ -364,7 +368,7 @@ class PlexServerManager(signalsmixin.SignalsMixin):
             self.serversByUuid[server.uuid] = server
 
         util.LOG("Loaded {0} servers from registry", len(obj['servers']))
-        util.APP.trigger("loaded:server_connections", hosts=hosts, source="stored")
+        util.APP.trigger("loaded:server_connections", servers=self.serversByUuid.values(), source="stored")
         self.updateReachability(False, True)
 
     def saveState(self, setPreferred=False):
@@ -387,6 +391,7 @@ class PlexServerManager(signalsmixin.SignalsMixin):
                     'uuid': server.uuid,
                     'owned': server.owned,
                     'sameNetwork': server.sameNetwork,
+                    'dnsRebindingProtection': server.dnsRebindingProtection,
                     'connections': []
                 }
 
@@ -407,7 +412,7 @@ class PlexServerManager(signalsmixin.SignalsMixin):
                 and setPreferred:
             util.INTERFACE.setPreference("lastServerId.{}".format(plexapp.ACCOUNT.ID), self.selectedServer.uuid)
 
-        util.APP.trigger("loaded:server_connections", hosts=hosts, source="myplex")
+        util.APP.trigger("loaded:server_connections", servers=servers, source="myplex")
         util.INTERFACE.setRegistry("PlexServerManager", json.dumps(obj))
 
     def clearState(self):

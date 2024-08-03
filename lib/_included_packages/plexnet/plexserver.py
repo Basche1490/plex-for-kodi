@@ -80,6 +80,7 @@ class PlexServer(plexresource.PlexResource, signalsmixin.SignalsMixin):
         self.rawVersion = data.attrib.get('productVersion')
         self.versionNorm = util.normalizedVersion(self.rawVersion)
         self.transcodeSupport = data.attrib.get('transcodeSupport') == '1'
+        self.dnsRebindingProtection = data.attrib.get('dnsRebindingProtection') == '1'
 
     def __eq__(self, other):
         if not other:
