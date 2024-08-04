@@ -131,10 +131,16 @@ class BasePlayerHandler(object):
         if not self.shouldSendTimeline(item):
             return
 
-        util.DEBUG_LOG("UpdateNowPlaying: {0}, force: {1} refreshQueue: "
-                       "{2} state: {3} (player: {6}) overrideChecks: {4} time: {5}".format(item.ratingKey,
-                                                                             force, refreshQueue, state, overrideChecks,
-                                                                             t, self.player.playState))
+        util.DEBUG_LOG("UpdateNowPlaying: {0}, force: {1} refreshQueue: {2} state: {3} (player: {6}) "
+                       "overrideChecks: {4} time: {5} (player: {7})"
+                       .format(item.ratingKey,
+                               force,
+                               refreshQueue,
+                               state,
+                               overrideChecks,
+                               t,
+                               self.player.playState,
+                               self.player.getTime() if self.player.isPlayingVideo() else "N/A"))
 
         state = state or self.player.playState
         # Avoid duplicates
@@ -207,6 +213,7 @@ class SeekPlayerHandler(BasePlayerHandler):
         self.title = ''
         self.title2 = ''
         self.seekOnStart = 0
+        self.waitingForSOS = False
         self.chapters = None
         self.stoppedManually = False
         self.inBingeMode = False
@@ -222,6 +229,7 @@ class SeekPlayerHandler(BasePlayerHandler):
         self.baseOffset = 0
         self.seeking = self.NO_SEEK
         self.seekOnStart = 0
+        self.waitingForSOS = False
         self._lastDuration = 0
         self._progressHld = {}
         self.mode = self.MODE_RELATIVE
@@ -586,19 +594,44 @@ class SeekPlayerHandler(BasePlayerHandler):
             self.dialog.onPlayBackPaused()
 
     def onPlayBackSeek(self, stime, offset):
+        if self.waitingForSOS:
+            return
         util.DEBUG_LOG('SeekHandler: onPlayBackSeek - {0}, {1}, {2}', stime, offset, self.seekOnStart)
         if self.dialog:
             self.dialog.onPlayBackSeek(stime, offset)
 
-        if self.seekOnStart:
-            seeked = False
-            if self.dialog:
-                seeked = self.dialog.tick(stime)
+        if self.dialog and self.isDirectPlay and self.seekOnStart:
+            withinSOS = self.seekOnStart - 5000
 
-            if seeked:
-                util.DEBUG_LOG("OnPlayBackSeek: Seeked on start to: {0}", stime)
-                self.seekOnStart = 0
-            return
+            tries = 0
+            while not self.player.isPlayingVideo() and tries < 20:
+                xbmc.sleep(100)
+                tries += 1
+
+            if self.player.getTime() * 1000 < withinSOS:
+                self.waitingForSOS = True
+                self.dialog.offset = self.seekOnStart
+                self.seek(self.seekOnStart)
+
+                util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: "
+                               "Expecting to be within 5 seconds of {}, currently at: {}", self.seekOnStart,
+                               self.player.getTime())
+
+                tries = 0
+                while self.player.getTime() * 1000 < withinSOS and tries < 50:
+                    util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Not there, yet, "
+                                   "seeking again ({}, {})", self.seekOnStart, self.player.getTime())
+                    self.dialog.offset = self.seekOnStart
+                    self.seek(self.seekOnStart)
+                    tries += 1
+                    xbmc.sleep(100)
+                if tries >= 50:
+                    util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Couldn't properly seek on start within 5 seconds.")
+                else:
+                    util.DEBUG_LOG("OnPlayBackSeek: Seeked on start to: {0}", self.seekOnStart)
+                self.waitingForSOS = False
+
+            self.seekOnStart = 0
 
         self.updateOffset()
         # self.showOSD(from_seek=True)
@@ -1513,7 +1546,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def onAVChange(self):
         if not self.sessionID:
             return
-        util.DEBUG_LOG('Player - AVChange')
+        util.DEBUG_LOG('Player - AVChange: Time: {}', self.getTime() if self.isPlayingVideo() else "Not playing")
         if not self.handler:
             return
         self.handler.onAVChange()
@@ -1521,7 +1554,8 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def onAVStarted(self):
         if not self.sessionID:
             return
-        util.DEBUG_LOG('Player - AVStarted: {}', self.handler)
+        util.DEBUG_LOG('Player - AVStarted: {}, Time: {}', self.handler,
+                       self.getTime() if self.isPlayingVideo() else "Not playing")
         if self.pauseAfterPlaybackStarted:
             self.control('pause')
             self.pauseAfterPlaybackStarted = False
