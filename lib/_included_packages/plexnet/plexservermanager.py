@@ -334,15 +334,10 @@ class PlexServerManager(signalsmixin.SignalsMixin):
             return
 
         for serverObj in obj['servers']:
-            # old data didn't include the dnsRebindingProtection attribute, skip
-            rbnd = serverObj.get('dnsRebindingProtection')
-            if rbnd is None:
-                continue
-
             server = plexserver.createPlexServerForName(serverObj['uuid'], serverObj['name'])
             server.owned = bool(serverObj.get('owned'))
             server.sameNetwork = serverObj.get('sameNetwork')
-            server.dnsRebindingProtection = rbnd
+            server.dnsRebindingProtection = serverObj.get('dnsRebindingProtection')
 
             hasSecureConn = False
             for i in range(len(serverObj.get('connections', []))):
