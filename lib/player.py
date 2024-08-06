@@ -604,33 +604,35 @@ class SeekPlayerHandler(BasePlayerHandler):
             withinSOS = self.seekOnStart - 5000
 
             tries = 0
-            while not self.player.isPlayingVideo() and tries < 20:
+            while not self.player.isPlayingVideo() and tries < 50:
                 xbmc.sleep(100)
                 tries += 1
 
             if self.player.getTime() * 1000 < withinSOS:
                 self.waitingForSOS = True
-                self.dialog.offset = self.seekOnStart
+                # checking infoLabel Player.Seeking would be the better solution here, but we're dealing with stuff like
+                # CoreELEC, which doesn't necessarily properly honor this
+                xbmc.sleep(250)
                 self.seek(self.seekOnStart)
+                xbmc.sleep(200)
 
                 util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: "
                                "Expecting to be within 5 seconds of {}, currently at: {}", self.seekOnStart,
                                self.player.getTime())
 
                 tries = 0
-                while self.player.getTime() * 1000 < withinSOS and tries < 50:
+                while self.player.getTime() * 1000 < withinSOS and tries < 25:
                     util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Not there, yet, "
                                    "seeking again ({}, {})", self.seekOnStart, self.player.getTime())
-                    self.dialog.offset = self.seekOnStart
                     self.seek(self.seekOnStart)
                     tries += 1
-                    xbmc.sleep(100)
+                    xbmc.sleep(200)
                 if tries >= 50:
                     util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Couldn't properly seek on start within 5 seconds.")
                 else:
                     util.DEBUG_LOG("OnPlayBackSeek: Seeked on start to: {0}", self.seekOnStart)
                 self.waitingForSOS = False
-
+            self.dialog.offset = self.seekOnStart
             self.seekOnStart = 0
 
         self.updateOffset()
