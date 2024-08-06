@@ -1919,8 +1919,11 @@ class SeekDialog(kodigui.BaseDialog):
                 return True
 
     def seekBehind(self):
-        if (not self.resumeSeekBehindOnlyDP or self.isDirectPlay) and self.trueOffset() > self.resumeSeekBehind:
-            self.doSeek(self.trueOffset() - self.resumeSeekBehind)
+        to = self.trueOffset()
+        if ((not self.resumeSeekBehindOnlyDP or self.isDirectPlay)
+                and self.resumeSeekBehind and to > self.resumeSeekBehind):
+            util.DEBUG_LOG("SeekDialog: Seeking back from {} to {}", to, to - self.resumeSeekBehind)
+            self.doSeek(to - self.resumeSeekBehind)
 
     def onPlayBackResumed(self):
         util.DEBUG_LOG("SeekDialog: OnPlaybackResumed")
