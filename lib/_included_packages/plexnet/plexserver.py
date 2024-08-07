@@ -117,6 +117,10 @@ class PlexServer(plexresource.PlexResource, signalsmixin.SignalsMixin):
         if self.activeConnection:
             return self.activeConnection.isLocal
 
+    @property
+    def anyLANConnection(self):
+        return any(c.localVerified for c in self.connections)
+
     def getObject(self, key):
         data = self.query(key)
         return plexobjects.buildItem(self, data[0], key, container=self)

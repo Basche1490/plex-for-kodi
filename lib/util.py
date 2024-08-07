@@ -240,7 +240,9 @@ class AddonSettings(object):
         ("cache_templates", True),
         ("always_compile_templates", False),
         ("tickrate", 1.0),
-        ("ignore_pd_remote", True),
+        ("honor_plextv_dnsrebind", True),
+        ("honor_plextv_pam", True),
+        ("coreelec_resume_seek_wait", 200),
     )
 
     def __init__(self):

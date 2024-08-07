@@ -114,6 +114,18 @@
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
+                <setting id="coreelec_resume_seek_wait" type="integer" label="33649" help="33650">
+                    <level>0</level>
+                    <default>200</default>
+                    <constraints>
+                        <minimum>100</minimum>
+                        <step>50</step>
+                        <maximum>1000</maximum>
+                    </constraints>
+                    <control type="slider" format="integer">
+                        <popup>false</popup>
+                    </control>
+                </setting>
                 <setting id="show_media_ends_info" type="boolean" label="32540" help="32541">
                     <level>0</level>
                     <default>true</default>
@@ -389,7 +401,12 @@
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="ignore_pd_remote" type="boolean" label="33645" help="33646">
+                <setting id="honor_plextv_dnsrebind" type="boolean" label="33645" help="33646">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="honor_plextv_pam" type="boolean" label="33647" help="33648">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>

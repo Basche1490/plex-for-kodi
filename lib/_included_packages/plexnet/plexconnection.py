@@ -75,6 +75,7 @@ class PlexConnection(object):
         self.sources = source
         self.address = address
         self.isLocal = isLocal
+        self.localVerified = False
         self.isSecure = address[:5] == 'https'
         self.isFallback = isFallback
         self.token = token
@@ -168,6 +169,7 @@ class PlexConnection(object):
 
             if local_and_alive or host.is_alive:
                 self.isLocal = True
+                self.localVerified = True
                 if not local_and_alive:
                     util.LOG("Found IP {0} in local network ({1}) when checking {2}. Ping: {3}ms (max: {4}s)"
                              .format(ip, network, self.address, host.max_rtt, util.LAN_REACHABILITY_TIMEOUT))

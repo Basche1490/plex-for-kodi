@@ -614,7 +614,7 @@ class SeekPlayerHandler(BasePlayerHandler):
                 # CoreELEC, which doesn't necessarily properly honor this
                 xbmc.sleep(250)
                 self.seek(self.seekOnStart)
-                xbmc.sleep(200)
+                xbmc.sleep(util.addonSettings.coreelecResumeSeekWait)
 
                 util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: "
                                "Expecting to be within 5 seconds of {}, currently at: {}", self.seekOnStart,
@@ -626,7 +626,7 @@ class SeekPlayerHandler(BasePlayerHandler):
                                    "seeking again ({}, {})", self.seekOnStart, self.player.getTime())
                     self.seek(self.seekOnStart)
                     tries += 1
-                    xbmc.sleep(200)
+                    xbmc.sleep(util.addonSettings.coreelecResumeSeekWait)
                 if tries >= 50:
                     util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Couldn't properly seek on start within 5 seconds.")
                 else:

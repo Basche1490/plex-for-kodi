@@ -537,9 +537,14 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         hosts = []
         for server in servers:
-            if server.sourceType != plexresource.ResourceConnection.SOURCE_MYPLEX:
+            # only check stored or myplex servers
+            if server.sourceType not in (None, plexresource.ResourceConnection.SOURCE_MYPLEX):
                 continue
-            if util.addonSettings.ignorePdRemote and (not server.dnsRebindingProtection or not server.sameNetwork):
+            # if we're set to honor dnsRebindingProtection=1 and the server has this flag at 0 or
+            # if we're set to honor publicAddressMatches=1 and the server has this flag at 0, and we haven't seen the
+            # server locally, skip plex.direct handling
+            if ((util.addonSettings.honorPlextvDnsrebind and not server.dnsRebindingProtection) or
+                    (util.addonSettings.honorPlextvPam and not server.sameNetwork and not server.anyLANConnection)):
                 util.DEBUG_LOG("Ignoring DNS handling for plex.direct connections of: {}", server)
                 continue
             hosts += [c.address for c in server.connections]
@@ -547,7 +552,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         knownHosts = pdm.getHosts()
         pdHosts = [host for host in hosts if ".plex.direct:" in host]
 
-        util.DEBUG_LOG("Checking host mapping for {} {} connections", len(pdHosts), source)
+        util.DEBUG_LOG("Checking host mapping for {} {} connections: {}", len(pdHosts), source, ", ".join(pdHosts))
 
         newHosts = set(pdHosts) - set(knownHosts)
         if newHosts:
