@@ -621,14 +621,15 @@ class SeekPlayerHandler(BasePlayerHandler):
                                self.player.getTime())
 
                 tries = 0
-                while self.player.getTime() * 1000 < withinSOS and tries < 25:
+                max_tries = int(5000 / util.addonSettings.coreelecResumeSeekWait)
+                while self.player.isPlayingVideo() and self.player.getTime() * 1000 < withinSOS and tries < max_tries:
                     util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Not there, yet, "
                                    "seeking again ({}, {})", self.seekOnStart, self.player.getTime())
                     self.seek(self.seekOnStart)
                     tries += 1
                     xbmc.sleep(util.addonSettings.coreelecResumeSeekWait)
-                if tries >= 50:
-                    util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Couldn't properly seek on start within 5 seconds.")
+                if tries >= max_tries:
+                    util.DEBUG_LOG("OnPlayBackSeek: SeekOnStart: Couldn't properly seek on start within ~5 seconds.")
                 else:
                     util.DEBUG_LOG("OnPlayBackSeek: Seeked on start to: {0}", self.seekOnStart)
                 self.waitingForSOS = False
