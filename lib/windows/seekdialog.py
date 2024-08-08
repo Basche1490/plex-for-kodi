@@ -225,6 +225,7 @@ class SeekDialog(kodigui.BaseDialog):
         self.autoSkipCredits = False
         self.showIntroSkipEarly = False
         self.skipPostPlay = False
+        self.videoPausedForAudioStreamChange = False
 
         self.skipIntroButtonTimeout = util.addonSettings.skipIntroButtonTimeout
         self.skipCreditsButtonTimeout = util.addonSettings.skipCreditsButtonTimeout
@@ -1408,6 +1409,14 @@ class SeekDialog(kodigui.BaseDialog):
                 self.player.playerObject.getServerDecision()
 
                 if oldTranscoded == self.player.playerObject.metadata.isTranscoded:
+                    # On CoreELEC changing the audio stream causes the audio to stutter or delay
+                    # so this small seek helps sync things back up.  But we also need to pause the
+                    # video for a short time if it's playing or the seek doesn't work
+                    if util.isCoreELEC and changed.audio:
+                        if not xbmc.getCondVisibility('Player.Paused'):
+                            self.videoPausedForAudioStreamChange = True
+                            self.handler.player.control('pause')
+                        self.doSeek(offset=((self.handler.player.getTime() * 1000) - 1000))
                     return True
 
             util.LOG("Media settings have changed and are not directly applicable, restarting video: {}", changed)
@@ -1967,6 +1976,13 @@ class SeekDialog(kodigui.BaseDialog):
 
     def onPlayBackPaused(self):
         util.DEBUG_LOG("SeekDialog: OnPlaybackPaused")
+
+        # Need to resume the video when changing streams on CoreELEC
+        if util.isCoreELEC and self.videoPausedForAudioStreamChange:
+            self.videoPausedForAudioStreamChange = False
+            self.handler.player.control('play')
+            return
+
         self.idleTime = time.time()
         if self.resumeSeekBehindPause and not self.resumeSeekBehindAfter:
             self.seekBehind()
