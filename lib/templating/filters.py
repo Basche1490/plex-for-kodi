@@ -33,7 +33,7 @@ def calc(a, b, op="add"):
 
 @ibis.filters.register('vscale', with_context=True)
 @register_builtin
-def vscale(h, up=1, negpos=False, context=None):
+def vscale(value, up=1, negpos=False, context=None):
     """
     scale integer based on the aspect ratio difference between the current resolution and our default resolution
 
@@ -45,18 +45,32 @@ def vscale(h, up=1, negpos=False, context=None):
     shifting it further into negativeness
     fixme: Not sure if this is universal
     """
-    if not context.core["needs_scaling"]:
-        return h
+    if not context.core.needs_scaling:
+        return value
 
     cached_scale = context.get('cached_scale', None)
     if cached_scale is None:
-        w, h = context.core["resolution"]
+        w, h = context.core.resolution
         cached_scale = v_ar_ratio(w, h)
         context.set_global("cached_scale", cached_scale)
 
-    if negpos and h < 0:
-        return h + round(cached_scale * h, 2) * up
-    return round(cached_scale * h, 2) * up
+    if negpos and value < 0:
+        return value + round(cached_scale * value, 2) * up
+    return round(cached_scale * value, 2) * up
+
+
+@ibis.filters.register('vperc')
+@register_builtin
+def vperc(height, perc=50, ref=1080, rel=50):
+    """
+    return vertical position based on percentage of ref, percentage of height
+    @param rel:
+    @param perc:
+    @param height:
+    @param ref:
+    @return: float
+    """
+    return perc * ref / 100.0 - height * rel / 100
 
 
 @ibis.filters.register('add')

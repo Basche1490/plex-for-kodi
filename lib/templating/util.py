@@ -1,6 +1,7 @@
 # coding=utf-8
 import ibis.context
 
+from ibis.context import ContextDict
 from six.moves import collections_abc as collections
 
 
@@ -23,7 +24,7 @@ def deep_update(source, overrides):
     """
     for key, value in overrides.items():
         if isinstance(value, collections.Mapping) and value:
-            returned = deep_update(source.get(key, {}), value)
+            returned = deep_update(source.get(key, {}), ContextDict(value))
             source[key] = returned
         else:
             source[key] = overrides[key]

@@ -4,7 +4,7 @@ import glob
 
 from pprint import pformat
 from kodi_six import xbmcvfs, xbmc
-
+from ibis.context import ContextDict
 from lib.logging import log as LOG, log_error as ERROR
 from .util import deep_update
 from lib.os_utils import fast_iglob
@@ -15,7 +15,7 @@ def build_stack(inheritor, sources):
     inherit_from = inheritor.pop("INHERIT", None)
     data_stack = [inheritor]
     while inherit_from:
-        inheritor = copy.deepcopy(sources[inherit_from])
+        inheritor = ContextDict(copy.deepcopy(sources[inherit_from]))
         inherit_from = inheritor.pop("INHERIT", None)
         data_stack.append(inheritor)
 
@@ -41,11 +41,11 @@ def prepare_template_data(thm, context):
         else:
             # overrides with inheritance
             data_stack = build_stack(context[ctx]["START"], context[ctx])
-        template_context[ctx] = {}
+        template_context[ctx] = ContextDict()
         while data_stack:
             deep_update(template_context[ctx], data_stack.pop())
 
-    return template_context
+    return ContextDict(template_context)
 
 
 class TemplateEngine(object):
