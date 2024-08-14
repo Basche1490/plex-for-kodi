@@ -551,8 +551,8 @@
                         <posx>55</posx>
                         <posy>{{ vscale(61) }}</posy>
                         <control type="group">
-                            <animation effect="zoom" start="100" end="110" time="100" center="154.5,87.5" reversible="false">Focus</animation>
-                            <animation effect="zoom" start="110" end="100" time="100" center="154.5,87.5" reversible="false">UnFocus</animation>
+                            <animation effect="zoom" start="100" end="110" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">Focus</animation>
+                            <animation effect="zoom" start="110" end="100" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">UnFocus</animation>
                             <posx>0</posx>
                             <posy>0</posy>
                             <control type="image">
@@ -1118,8 +1118,8 @@
                         <posx>55</posx>
                         <posy>{{ vscale(61) }}</posy>
                         <control type="group">
-                            <animation effect="zoom" start="100" end="110" time="100" center="154.5,87.5" reversible="false">Focus</animation>
-                            <animation effect="zoom" start="110" end="100" time="100" center="154.5,87.5" reversible="false">UnFocus</animation>
+                            <animation effect="zoom" start="100" end="110" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">Focus</animation>
+                            <animation effect="zoom" start="110" end="100" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">UnFocus</animation>
                             <posx>0</posx>
                             <posy>0</posy>
                             <control type="image">
@@ -1319,8 +1319,8 @@
                         <posx>55</posx>
                         <posy>{{ vscale(72) }}</posy>
                         <control type="group">
-                            <animation effect="zoom" start="100" end="110" time="100" center="127,180.5" reversible="false">Focus</animation>
-                            <animation effect="zoom" start="110" end="100" time="100" center="127,180.5" reversible="false">UnFocus</animation>
+                            <animation effect="zoom" start="100" end="110" time="100" center="127,{{ vscale(180.5) }}" reversible="false">Focus</animation>
+                            <animation effect="zoom" start="110" end="100" time="100" center="127,{{ vscale(180.5) }}" reversible="false">UnFocus</animation>
                             <posx>0</posx>
                             <posy>0</posy>
                             <control type="group">

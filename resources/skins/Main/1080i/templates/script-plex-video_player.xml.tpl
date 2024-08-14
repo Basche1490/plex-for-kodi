@@ -67,7 +67,7 @@
                     <posx>60</posx>
                     <posy>{{ vscale(131) }}</posy>
                     <control type="group">
-                        <animation effect="zoom" start="100" end="110" time="100" center="231,129.5" reversible="true" condition="Control.HasFocus(101)">Conditional</animation>
+                        <animation effect="zoom" start="100" end="110" time="100" center="231,{{ vscale(129.5) }}" reversible="true" condition="Control.HasFocus(101)">Conditional</animation>
                         <posx>0</posx>
                         <posy>0</posy>
                         <control type="image">
@@ -170,7 +170,7 @@
                         <posx>582</posx>
                         <posy>{{ vscale(131) }}</posy>
                         <control type="group">
-                            <animation effect="zoom" start="100" end="110" time="100" center="268.5,151.5" reversible="true" condition="Control.HasFocus(102)">Conditional</animation>
+                            <animation effect="zoom" start="100" end="110" time="100" center="268.5,{{ vscale(151.5) }}" reversible="true" condition="Control.HasFocus(102)">Conditional</animation>
                             <posx>0</posx>
                             <posy>0</posy>
                             <control type="image">
@@ -501,8 +501,8 @@
                             <posx>55</posx>
                             <posy>{{ vscale(61) }}</posy>
                             <control type="group">
-                                <animation effect="zoom" start="100" end="110" time="100" center="154.5,87.5" reversible="false">Focus</animation>
-                                <animation effect="zoom" start="110" end="100" time="100" center="154.5,87.5" reversible="false">UnFocus</animation>
+                                <animation effect="zoom" start="100" end="110" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">Focus</animation>
+                                <animation effect="zoom" start="110" end="100" time="100" center="154.5,{{ vscale(87.5) }}" reversible="false">UnFocus</animation>
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <control type="image">
@@ -763,8 +763,8 @@
                             <posx>55</posx>
                             <posy>{{ vscale(72) }}</posy>
                             <control type="group">
-                                <animation effect="zoom" start="100" end="110" time="100" center="127,180.5" reversible="false">Focus</animation>
-                                <animation effect="zoom" start="110" end="100" time="100" center="127,180.5" reversible="false">UnFocus</animation>
+                                <animation effect="zoom" start="100" end="110" time="100" center="127,{{ vscale(180.5) }}" reversible="false">Focus</animation>
+                                <animation effect="zoom" start="110" end="100" time="100" center="127,{{ vscale(180.5) }}" reversible="false">UnFocus</animation>
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <control type="image">

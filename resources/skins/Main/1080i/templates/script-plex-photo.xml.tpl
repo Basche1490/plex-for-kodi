@@ -190,8 +190,8 @@
             </control>
             <control type="togglebutton" id="406">
                 {% if theme.buttons.zoomPlayButton %}
-                    <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false" condition="Control.HasFocus(406)">Conditional</animation>
-                    <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
+                    <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="Control.HasFocus(406)">Conditional</animation>
+                    <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
                 {% endif %}
                 <hitrect x="28" y="28" w="69" h="45" />
                 <posx>0</posx>
