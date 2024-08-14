@@ -6672,8 +6672,8 @@
     <control type="group">
         <visible>String.IsEmpty(Window.Property(search.dialog))</visible>
         <control type="button" id="203">
-            <animation effect="zoom" start="100" end="177" time="100" center="80,{{ vscale(67.5) }}" reversible="false">Focus</animation>
-            <animation effect="zoom" start="177" end="100" time="100" center="80,{{ vscale(67.5) }}" reversible="false">UnFocus</animation>
+            <animation effect="zoom" start="100" end="144" time="100" center="80,{{ vscale(67.5) }}" reversible="false">Focus</animation>
+            <animation effect="zoom" start="144" end="100" time="100" center="80,{{ vscale(67.5) }}" reversible="false">UnFocus</animation>
             <posx>60</posx>
             <posy>{{ vscale(47.5) }}</posy>
             <width>40</width>
