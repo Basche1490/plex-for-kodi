@@ -39,6 +39,7 @@ from .exceptions import NoDataException
 from .logging import log, log_error
 # noinspection PyUnresolvedReferences
 from .i18n import T
+from . import aspectratio
 from plexnet import signalsmixin
 
 DEBUG = True
@@ -126,6 +127,16 @@ try:
     ACCEPT_LANGUAGE_CODE = getLanguageCode(add_def='en-US,en')
 except:
     ACCEPT_LANGUAGE_CODE = 'en-US,en'
+
+
+try:
+    DISPLAY_RESOLUTION = [xbmcgui.getScreenWidth(), xbmcgui.getScreenHeight()]
+except:
+    log('Couldn\'t determine display resolution')
+    DISPLAY_RESOLUTION = [1920, 1080]
+
+
+NEEDS_SCALING = DISPLAY_RESOLUTION != [1920, 1080]
 
 
 def getSetting(key, default=None):
@@ -570,6 +581,15 @@ def scaleResolution(w, h, by=None):
         hratio = w / float(h)
         return int(round((px / wratio) ** .5)), int(round((px / hratio) ** .5))
     return w, h
+
+
+def vscale(h, r=3):
+    if not NEEDS_SCALING:
+        return h
+    ratio = aspectratio.V_AR_RATIO
+    if ratio is None:
+        ratio = aspectratio.v_ar_ratio(DISPLAY_RESOLUTION[0], DISPLAY_RESOLUTION[1])
+    return round(ratio * h, r) if r > 0 else int(round(ratio * h, r))
 
 
 class TextBox:

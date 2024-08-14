@@ -1,6 +1,10 @@
 # coding=utf-8
 
 TEMPLATE_CONTEXTS = {
+    "core": {
+        "resolution": (1920, 1080),
+        "needs_scaling": False,
+    },
     "indicators": {
         "base": {
             "use_scaling": False,

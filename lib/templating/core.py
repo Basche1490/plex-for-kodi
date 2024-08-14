@@ -34,8 +34,13 @@ def prepare_template_data(thm, context):
     while data_stack:
         deep_update(template_context["theme"], data_stack.pop())
 
-    for ctx in ("indicators",):
-        data_stack = build_stack(context[ctx]["START"], context[ctx])
+    for ctx in ("core", "indicators",):
+        # simple overrides
+        if "START" not in context[ctx]:
+            data_stack.append(context[ctx])
+        else:
+            # overrides with inheritance
+            data_stack = build_stack(context[ctx]["START"], context[ctx])
         template_context[ctx] = {}
         while data_stack:
             deep_update(template_context[ctx], data_stack.pop())

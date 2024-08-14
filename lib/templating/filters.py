@@ -6,6 +6,8 @@ import operator
 import six
 
 from .util import register_builtin
+from lib.aspectratio import v_ar_ratio
+from lib.logging import log as LOG
 from ibis.context import Undefined
 
 
@@ -27,6 +29,23 @@ def calc(a, b, op="add"):
         return getattr(operator, op)(a, b)
     except:
         raise ValueError("Can't calculate {}({}:{}, {}:{})".format(op, type(a), repr(a), type(b), repr(b)))
+
+
+@ibis.filters.register('vscale', with_context=True)
+@register_builtin
+def vscale(h, context=None):
+    """
+    scale integer based on the aspect ratio difference between the current resolution and our default resolution
+    """
+    if not context.core["needs_scaling"]:
+        return h
+
+    cached_scale = context.get('cached_scale', None)
+    if cached_scale is None:
+        w, h = context.core["resolution"]
+        cached_scale = v_ar_ratio(w, h)
+        context.set_global("cached_scale", cached_scale)
+    return round(cached_scale * h, 3)
 
 
 @ibis.filters.register('add')
@@ -59,9 +78,9 @@ def cast_int(a):
     return int(a)
 
 
-@ibis.filters.register('resolve')
+@ibis.filters.register('resolve', with_context=True)
 @register_builtin('resolve')
-def resolve_variable(arg):
+def resolve_variable(arg, context=None):
     return ibis.nodes.ResolveContextVariable(arg)
 
 
