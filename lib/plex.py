@@ -377,8 +377,8 @@ def init():
 
     timed_out = False
     retries = 0
-    while retries == 0 or (retries < 4 and timed_out):
-        with CallbackEvent(plexapp.util.APP, 'init', timeout=plexapp.util.LONG_TIMEOUT) as cb:
+    while retries == 0 or (retries < asyncadapter.MAX_RETRIES and timed_out):
+        with CallbackEvent(plexapp.util.APP, 'init', timeout=plexapp.util.PLEXTV_TIMEOUT_READ) as cb:
             util.DEBUG_LOG('Waiting for plexapp initialization... {}'.format(retries+1))
             plexapp.init()
 
