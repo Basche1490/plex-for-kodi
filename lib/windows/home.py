@@ -2150,8 +2150,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                 items[0].setProperty('only', '1')
 
             self.serverList.replaceItems(items)
+            itemHeight = util.vscale(100, r=0)
 
-            self.getControl(800).setHeight((min(len(items), 9) * 100) + 80)
+            self.getControl(800).setHeight((min(len(items), 9) * itemHeight) + 80)
 
             for item in items:
                 if item.dataSource != kodigui.DUMMY_DATA_SOURCE:
@@ -2228,8 +2229,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         self.userList.reset()
         self.userList.addItems(items)
+        itemHeight = util.vscale(66, r=0)
 
-        self.getControl(801).setHeight((len(items) * 66) + 80)
+        self.getControl(801).setHeight((len(items) * itemHeight) + 80)
 
         if not mouse:
             self.setFocusId(self.USER_LIST_ID)

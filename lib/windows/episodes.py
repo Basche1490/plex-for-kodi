@@ -879,7 +879,7 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
                     {'key': 'resume', 'display': T(32429, 'Resume from {0}').format(util.timeDisplay(episode.viewOffset.asInt()).lstrip('0').lstrip(':'))},
                     {'key': 'play', 'display': T(32317, 'Play from beginning')}
                 ],
-                pos=(660, 441),
+                pos=(660, "middle"),
                 close_direction='none',
                 set_dropdown_prop=False,
                 header=T(32314, 'In Progress'),
@@ -957,13 +957,15 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         options.append({'key': 'to_section', 'display': T(32324, u'Go to {0}').format(
             self.show_.getLibrarySectionTitle())})
 
-        pos = (500, 620)
+        pos = (500, util.vscalei(620))
         bottom = False
         if from_item:
             viewPos = self.episodeListControl.getViewPosition()
             optsLen = len(list(filter(None, options)))
-            # dropDown handles any overlap with the right window boundary so we don't need to care here
-            pos = ((((viewPos + 1) * 359) - 100), 649 if optsLen < 7 else 649 - 66 * (optsLen - 6))
+            # dropDown handles any overlap with the right window boundary, so we don't need to care here
+            pos = (
+                (((viewPos + 1) * 359) - 100),
+                util.vscalei(649) if optsLen < 7 else 649 - util.vscalei(66) * (optsLen - 6))
 
         choice = dropdown.showDropdown(options, pos, pos_is_bottom=bottom, close_direction='left',
                                        set_dropdown_prop=False)

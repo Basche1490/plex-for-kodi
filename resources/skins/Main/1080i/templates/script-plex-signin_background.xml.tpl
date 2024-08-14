@@ -7,5 +7,6 @@
     <width>1920</width>
     <height>1080</height>
     <texture>script.plex/sign_in/back.jpg</texture>
+    {% include "includes/scale_background.xml.tpl" %}
 </control>
 {% endblock %}

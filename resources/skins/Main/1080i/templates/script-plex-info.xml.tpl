@@ -41,7 +41,7 @@
 
 <control type="group" id="50">
     <posx>0</posx>
-    <posy>135</posy>
+    <posy>{{ vscale(135) }}</posy>
 
     <control type="group">
         <posx>60</posx>
@@ -52,7 +52,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>769</height>
+                <height>{{ vscale(769) }}</height>
                 <texture>$INFO[Window.Property(thumb.fallback)]</texture>
                 <aspectratio aligny="top">scale</aspectratio>
             </control>
@@ -60,7 +60,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>769</height>
+                <height>{{ vscale(769) }}</height>
                 <texture>$INFO[Window.Property(thumb)]</texture>
                 <aspectratio aligny="top">scale</aspectratio>
             </control>
@@ -71,7 +71,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>519</height>
+                <height>{{ vscale(519) }}</height>
                 <texture>$INFO[Window.Property(thumb.fallback)]</texture>
                 <aspectratio aligny="top">keep</aspectratio>
             </control>
@@ -79,7 +79,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>519</height>
+                <height>{{ vscale(519) }}</height>
                 <texture>$INFO[Window.Property(thumb)]</texture>
                 <aspectratio aligny="top">scale</aspectratio>
             </control>
@@ -90,7 +90,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>292</height>
+                <height>{{ vscale(292) }}</height>
                 <texture>$INFO[Window.Property(thumb.fallback)]</texture>
                 <aspectratio>scale</aspectratio>
             </control>
@@ -98,7 +98,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>519</width>
-                <height>292</height>
+                <height>{{ vscale(292) }}</height>
                 <texture>$INFO[Window.Property(thumb)]</texture>
                 <aspectratio aligny="top">scale</aspectratio>
             </control>
@@ -107,7 +107,7 @@
             <posx>579</posx>
             <posy>5</posy>
             <width>1190</width>
-            <height>40</height>
+            <height>{{ vscale(40) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -116,9 +116,9 @@
         </control>
         <control type="label">
             <posx>579</posx>
-            <posy>55</posy>
+            <posy>{{ vscale(55) }}</posy>
             <width>1190</width>
-            <height>40</height>
+            <height>{{ vscale(40) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -127,10 +127,10 @@
         </control>
         <control type="textbox">
             <posx>579</posx>
-            <posy>157</posy>
+            <posy>{{ vscale(157) }}</posy>
             <pagecontrol>152</pagecontrol>
             <width>1190</width>
-            <height>718</height>
+            <height>{{ vscale(718) }}</height>
             <font>font13</font>
             <align>left</align>
             <textcolor>FFDDDDDD</textcolor>
@@ -141,7 +141,7 @@
             <left>1794</left>
             <top>157</top>
             <width>6</width>
-            <height>718</height>
+            <height>{{ vscale(718) }}</height>
             <visible>true</visible>
             <texturesliderbackground colordiffuse="40000000" border="5">script.plex/white-square.png</texturesliderbackground>
             <texturesliderbar colordiffuse="77FFFFFF" border="5">script.plex/white-square.png</texturesliderbar>

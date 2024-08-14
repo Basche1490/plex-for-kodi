@@ -3,7 +3,7 @@
 {% block content %}
     <control type="group" id="50">
         <posx>0</posx>
-        <posy>135</posy>
+        <posy>{{ vscale(135) }}</posy>
         <defaultcontrol>101</defaultcontrol>
 
         <control type="group">
@@ -13,7 +13,7 @@
                 <posx>0</posx>
                 <posy>5</posy>
                 <width>420</width>
-                <height>40</height>
+                <height>{{ vscale(40) }}</height>
                 <font>font13</font>
                 <align>left</align>
                 <aligny>center</aligny>
@@ -22,9 +22,9 @@
             </control>
             <control type="label">
                 <posx>0</posx>
-                <posy>60</posy>
+                <posy>{{ vscale(60) }}</posy>
                 <width>420</width>
-                <height>40</height>
+                <height>{{ vscale(40) }}</height>
                 <font>font13</font>
                 <align>left</align>
                 <aligny>center</aligny>
@@ -33,9 +33,9 @@
             </control>
             <control type="image">
                 <posx>0</posx>
-                <posy>142</posy>
+                <posy>{{ vscale(142) }}</posy>
                 <width>630</width>
-                <height>630</height>
+                <height>{{ vscale(630) }}</height>
                 <texture>$INFO[Window.Property(album.thumb)]</texture>
                 <aspectratio>scale</aspectratio>
             </control>
@@ -46,9 +46,9 @@
                 <animation effect="fade" start="0" end="100" time="200" reversible="true">VisibleChange</animation>
                 <defaultcontrol>301</defaultcontrol>
                 <posx>50</posx>
-                <posy>784</posy>
+                <posy>{{ vscale(784) }}</posy>
                 <width>650</width>
-                <height>145</height>
+                <height>{{ vscale(145) }}</height>
                 <onup>200</onup>
                 <onright>101</onright>
                 <itemgap>-50</itemgap>
@@ -72,12 +72,12 @@
             <posx>750</posx>
             <posy>0</posy>
             <width>1170</width>
-            <height>945</height>
+            <height>{{ vscale(945) }}</height>
             <control type="image">
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1380</width>
-                <height>945</height>
+                <height>{{ vscale(945) }}</height>
                 <texture>script.plex/white-square.png</texture>
                 <colordiffuse>20000000</colordiffuse>
             </control>
@@ -86,7 +86,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1170</width>
-                <height>945</height>
+                <height>{{ vscale(945) }}</height>
                 <onup>200</onup>
                 <onright>152</onright>
                 <onleft>300</onleft>
@@ -95,17 +95,17 @@
                 <preloaditems>4</preloaditems>
                 <pagecontrol>152</pagecontrol>
                 <!-- ITEM LAYOUT ########################################## -->
-                <itemlayout height="76">
+                <itemlayout height="{{ vscale(76) }}">
                     <control type="group">
                         <visible>String.IsEmpty(ListItem.Property(is.header))</visible>
                         <posx>120</posx>
-                        <posy>24</posy>
+                        <posy>{{ vscale(24) }}</posy>
                         <control type="label">
                             <visible>!String.IsEqual(ListItem.Property(track.ID),Window(10000).Property(script.plex.track.ID))</visible>
                             <posx>-10</posx>
                             <posy>0</posy>
                             <width>60</width>
-                            <height>76</height>
+                            <height>{{ vscale(76) }}</height>
                             <font>font10</font>
                             <align>center</align>
                             <aligny>center</aligny>
@@ -115,9 +115,9 @@
                         <control type="image">
                             <visible>String.IsEqual(ListItem.Property(track.ID),Window(10000).Property(script.plex.track.ID))</visible>
                             <posx>2</posx>
-                            <posy>21</posy>
+                            <posy>{{ vscale(21) }}</posy>
                             <width>35</width>
-                            <height>35</height>
+                            <height>{{ vscale(35) }}</height>
                             <texture>script.plex/indicators/playing-circle.png</texture>
                             <colordiffuse>FFE5A00D</colordiffuse>
                         </control>
@@ -128,7 +128,7 @@
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <width>723</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <font>font10</font>
                                 <align>left</align>
                                 <aligny>center</aligny>
@@ -140,7 +140,7 @@
                             <posx>730</posx>
                             <posy>0</posy>
                             <width>200</width>
-                            <height>76</height>
+                            <height>{{ vscale(76) }}</height>
                             <font>font10</font>
                             <align>right</align>
                             <aligny>center</aligny>
@@ -150,9 +150,9 @@
                         <control type="image">
                             <visible>String.IsEmpty(ListItem.Property(is.footer))</visible>
                             <posx>0</posx>
-                            <posy>73</posy>
+                            <posy>{{ vscale(73) }}</posy>
                             <width>930</width>
-                            <height>2</height>
+                            <height>{{ vscale(2) }}</height>
                             <texture>script.plex/white-square.png</texture>
                             <colordiffuse>40000000</colordiffuse>
                         </control>
@@ -161,9 +161,9 @@
                     <control type="label">
                         <visible>!String.IsEmpty(ListItem.Property(is.header))</visible>
                         <posx>120</posx>
-                        <posy>24</posy>
+                        <posy>{{ vscale(24) }}</posy>
                         <width>400</width>
-                        <height>76</height>
+                        <height>{{ vscale(76) }}</height>
                         <font>font10</font>
                         <align>left</align>
                         <aligny>center</aligny>
@@ -174,19 +174,19 @@
                 </itemlayout>
 
                 <!-- FOCUSED LAYOUT ####################################### -->
-                <focusedlayout height="76">
+                <focusedlayout height="{{ vscale(76) }}">
                     <control type="group">
                         <visible>String.IsEmpty(ListItem.Property(is.header))</visible>
                         <control type="group">
                             <visible>!Control.HasFocus(101)</visible>
                             <posx>120</posx>
-                            <posy>24</posy>
+                            <posy>{{ vscale(24) }}</posy>
                             <control type="label">
                                 <visible>!String.IsEqual(ListItem.Property(track.ID),Window(10000).Property(script.plex.track.ID))</visible>
                                 <posx>-10</posx>
                                 <posy>0</posy>
                                 <width>60</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <font>font10</font>
                                 <align>center</align>
                                 <aligny>center</aligny>
@@ -196,9 +196,9 @@
                             <control type="image">
                                 <visible>String.IsEqual(ListItem.Property(track.ID),Window(10000).Property(script.plex.track.ID))</visible>
                                 <posx>2</posx>
-                                <posy>21</posy>
+                                <posy>{{ vscale(21) }}</posy>
                                 <width>35</width>
-                                <height>35</height>
+                                <height>{{ vscale(35) }}</height>
                                 <texture>script.plex/indicators/playing-circle.png</texture>
                                 <colordiffuse>FFE5A00D</colordiffuse>
                             </control>
@@ -209,7 +209,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>723</width>
-                                    <height>76</height>
+                                    <height>{{ vscale(76) }}</height>
                                     <font>font10</font>
                                     <align>left</align>
                                     <aligny>center</aligny>
@@ -221,7 +221,7 @@
                                 <posx>730</posx>
                                 <posy>0</posy>
                                 <width>200</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <font>font10</font>
                                 <align>right</align>
                                 <aligny>center</aligny>
@@ -231,9 +231,9 @@
                             <control type="image">
                                 <visible>String.IsEmpty(ListItem.Property(is.footer))</visible>
                                 <posx>0</posx>
-                                <posy>73</posy>
+                                <posy>{{ vscale(73) }}</posy>
                                 <width>930</width>
-                                <height>2</height>
+                                <height>{{ vscale(2) }}</height>
                                 <texture>script.plex/white-square.png</texture>
                                 <colordiffuse>40000000</colordiffuse>
                             </control>
@@ -242,19 +242,19 @@
                         <control type="group">
                             <visible>Control.HasFocus(101)</visible>
                             <posx>63</posx>
-                            <posy>21</posy>
+                            <posy>{{ vscale(21) }}</posy>
                             <control type="image">
                                 <posx>-40</posx>
-                                <posy>-40</posy>
+                                <posy>{{ vscale(-40) }}</posy>
                                 <width>1130</width>
-                                <height>156</height>
+                                <height>{{ vscale(156) }}</height>
                                 <texture border="40">script.plex/square-rounded-shadow.png</texture>
                             </control>
                             <control type="image">
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <width>1044</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <texture border="12">script.plex/white-square-rounded.png</texture>
                                 <colordiffuse>FFE5A00D</colordiffuse>
                             </control>
@@ -263,7 +263,7 @@
                                 <posx>48</posx>
                                 <posy>0</posy>
                                 <width>50</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <font>font12</font>
                                 <align>left</align>
                                 <aligny>center</aligny>
@@ -273,9 +273,9 @@
                             <control type="image">
                                 <visible>String.IsEqual(ListItem.Property(track.ID),Window(10000).Property(script.plex.track.ID))</visible>
                                 <posx>36</posx>
-                                <posy>21</posy>
+                                <posy>{{ vscale(21) }}</posy>
                                 <width>35</width>
-                                <height>35</height>
+                                <height>{{ vscale(35) }}</height>
                                 <texture>script.plex/indicators/playing-circle.png</texture>
                                 <colordiffuse>FF000000</colordiffuse>
                             </control>
@@ -286,7 +286,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>738</width>
-                                    <height>76</height>
+                                    <height>{{ vscale(76) }}</height>
                                     <font>font12</font>
                                     <align>left</align>
                                     <aligny>center</aligny>
@@ -298,7 +298,7 @@
                                 <posx>796</posx>
                                 <posy>0</posy>
                                 <width>200</width>
-                                <height>76</height>
+                                <height>{{ vscale(76) }}</height>
                                 <font>font12</font>
                                 <align>right</align>
                                 <aligny>center</aligny>
@@ -311,9 +311,9 @@
                     <control type="label">
                         <visible>!String.IsEmpty(ListItem.Property(is.header))</visible>
                         <posx>120</posx>
-                        <posy>24</posy>
+                        <posy>{{ vscale(24) }}</posy>
                         <width>400</width>
-                        <height>76</height>
+                        <height>{{ vscale(76) }}</height>
                         <font>font10</font>
                         <align>left</align>
                         <aligny>center</aligny>
@@ -328,7 +328,7 @@
                 <left>1128</left>
                 <top>33</top>
                 <width>10</width>
-                <height>874</height>
+                <height>{{ vscale(874) }}</height>
                 <onleft>101</onleft>
                 <visible>true</visible>
                 <texturesliderbackground colordiffuse="40000000" border="5">script.plex/white-square-rounded.png</texturesliderbackground>

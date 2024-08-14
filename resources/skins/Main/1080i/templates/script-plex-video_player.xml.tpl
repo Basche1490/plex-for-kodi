@@ -20,25 +20,25 @@
     </control>
 
     <control type="group" id="50">
-        <animation effect="slide" end="0,-300" time="200" tween="quadratic" easing="out" condition="!String.IsEmpty(Window.Property(on.extras))">Conditional</animation>
+        <animation effect="slide" end="0,{{ vscale(-300) }}" time="200" tween="quadratic" easing="out" condition="!String.IsEmpty(Window.Property(on.extras))">Conditional</animation>
 
         <animation type="Conditional" condition="Integer.IsGreater(Window.Property(hub.focus),0) + Control.IsVisible(500)" reversible="true">
-            <effect type="slide" end="0,-500" time="200" tween="quadratic" easing="out"/>
+            <effect type="slide" end="0,{{ vscale(-500) }}" time="200" tween="quadratic" easing="out"/>
         </animation>
 
         <animation type="Conditional" condition="Integer.IsGreater(Window.Property(hub.focus),1) + Control.IsVisible(501)" reversible="true">
-            <effect type="slide" end="0,-500" time="200" tween="quadratic" easing="out"/>
+            <effect type="slide" end="0,{{ vscale(-500) }}" time="200" tween="quadratic" easing="out"/>
         </animation>
 
         <posx>0</posx>
-        <posy>135</posy>
+        <posy>{{ vscale(135) }}</posy>
         <defaultcontrol>102</defaultcontrol>
 
         <control type="image">
             <posx>60</posx>
             <posy>0</posy>
             <width>1800</width>
-            <height>2</height>
+            <height>{{ vscale(2) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>A0000000</colordiffuse>
         </control>
@@ -46,9 +46,9 @@
         <control type="label">
             <scroll>false</scroll>
             <posx>60</posx>
-            <posy>57</posy>
+            <posy>{{ vscale(57) }}</posy>
             <width>462</width>
-            <height>40</height>
+            <height>{{ vscale(40) }}</height>
             <font>font12</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -62,10 +62,10 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1920</width>
-                <height>580</height>
+                <height>{{ vscale(580) }}</height>
                 <control type="group">
                     <posx>60</posx>
-                    <posy>131</posy>
+                    <posy>{{ vscale(131) }}</posy>
                     <control type="group">
                         <animation effect="zoom" start="100" end="110" time="100" center="231,129.5" reversible="true" condition="Control.HasFocus(101)">Conditional</animation>
                         <posx>0</posx>
@@ -73,9 +73,9 @@
                         <control type="image">
                             <visible>Control.HasFocus(101)</visible>
                             <posx>-45</posx>
-                            <posy>-45</posy>
+                            <posy>{{ vscale(-45) }}</posy>
                             <width>552</width>
-                            <height>349</height>
+                            <height>{{ vscale(349) }}</height>
                             <texture border="42">script.plex/drop-shadow.png</texture>
                         </control>
                         <control type="group">
@@ -85,7 +85,7 @@
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <width>462</width>
-                                <height>259</height>
+                                <height>{{ vscale(259) }}</height>
                                 <texture>$INFO[Window.Property(thumb.fallback)]</texture>
                                 <aspectratio>scale</aspectratio>
                             </control>
@@ -93,34 +93,34 @@
                                 <posx>0</posx>
                                 <posy>0</posy>
                                 <width>462</width>
-                                <height>259</height>
+                                <height>{{ vscale(259) }}</height>
                                 <texture background="true">$INFO[Window.Property(prev.thumb)]</texture>
                                 <aspectratio>scale</aspectratio>
                             </control>
                             <control type="group">
                                 <posx>193</posx>
-                                <posy>91.5</posy>
+                                <posy>{{ vscale(91.5) }}</posy>
                                 <control type="image">
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>76</width>
-                                    <height>76</height>
+                                    <height>{{ vscale(76) }}</height>
                                     <texture colordiffuse="99000000">script.plex/indicators/circle-152.png</texture>
                                 </control>
                                 <control type="image">
                                     <posx>15</posx>
-                                    <posy>15</posy>
+                                    <posy>{{ vscale(15) }}</posy>
                                     <width>46</width>
-                                    <height>46</height>
+                                    <height>{{ vscale(46) }}</height>
                                     <texture>script.plex/indicators/replay.png</texture>
                                 </control>
                             </control>
                             <control type="label">
                                 <scroll>false</scroll>
                                 <posx>0</posx>
-                                <posy>269</posy>
+                                <posy>{{ vscale(269) }}</posy>
                                 <width>462</width>
-                                <height>35</height>
+                                <height>{{ vscale(35) }}</height>
                                 <font>font10</font>
                                 <align>center</align>
                                 <textcolor>FFFFFFFF</textcolor>
@@ -129,9 +129,9 @@
                             <control type="label">
                                 <scroll>false</scroll>
                                 <posx>0</posx>
-                                <posy>301</posy>
+                                <posy>{{ vscale(301) }}</posy>
                                 <width>462</width>
-                                <height>35</height>
+                                <height>{{ vscale(35) }}</height>
                                 <font>font10</font>
                                 <align>center</align>
                                 <textcolor>FFFFFFFF</textcolor>
@@ -140,9 +140,9 @@
                         </control>
                         <control type="button" id="101">
                             <posx>-5</posx>
-                            <posy>-5</posy>
+                            <posy>{{ vscale(-5) }}</posy>
                             <width>472</width>
-                            <height>269</height>
+                            <height>{{ vscale(269) }}</height>
                             <onup>200</onup>
                             <ondown>400</ondown>
                             <onright>102</onright>
@@ -157,9 +157,9 @@
                     <control type="label">
                         <scroll>false</scroll>
                         <posx>572</posx>
-                        <posy>57</posy>
+                        <posy>{{ vscale(57) }}</posy>
                         <width>462</width>
-                        <height>40</height>
+                        <height>{{ vscale(40) }}</height>
                         <font>font12</font>
                         <align>left</align>
                         <aligny>center</aligny>
@@ -168,7 +168,7 @@
                     </control>
                     <control type="group">
                         <posx>582</posx>
-                        <posy>131</posy>
+                        <posy>{{ vscale(131) }}</posy>
                         <control type="group">
                             <animation effect="zoom" start="100" end="110" time="100" center="268.5,151.5" reversible="true" condition="Control.HasFocus(102)">Conditional</animation>
                             <posx>0</posx>
@@ -176,9 +176,9 @@
                             <control type="image">
                                 <visible>Control.HasFocus(102)</visible>
                                 <posx>-45</posx>
-                                <posy>-45</posy>
+                                <posy>{{ vscale(-45) }}</posy>
                                 <width>627</width>
-                                <height>393</height>
+                                <height>{{ vscale(393) }}</height>
                                 <texture border="42">script.plex/drop-shadow.png</texture>
                             </control>
                             <control type="group">
@@ -188,7 +188,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>537</width>
-                                    <height>303</height>
+                                    <height>{{ vscale(303) }}</height>
                                     <texture>$INFO[Window.Property(thumb.fallback)]</texture>
                                     <aspectratio>scale</aspectratio>
                                 </control>
@@ -196,42 +196,42 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>537</width>
-                                    <height>303</height>
+                                    <height>{{ vscale(303) }}</height>
                                     <texture background="true">$INFO[Window.Property(next.thumb)]</texture>
                                     <aspectratio>scale</aspectratio>
                                 </control>
                                 <control type="group">
                                     <visible>!String.IsEmpty(Window.Property(countdown)) + Integer.IsGreaterOrEqual(Window.Property(countdown), 0)</visible>
                                     <posx>192.5</posx>
-                                    <posy>75.5</posy>
+                                    <posy>{{ vscale(75.5) }}</posy>
                                     <control type="image">
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>152</width>
-                                        <height>152</height>
+                                        <height>{{ vscale(152) }}</height>
                                         <texture colordiffuse="99000000">script.plex/indicators/circle-152.png</texture>
                                     </control>
                                     <control type="image">
                                         <posx>8</posx>
                                         <posy>8</posy>
                                         <width>136</width>
-                                        <height>136</height>
+                                        <height>{{ vscale(136) }}</height>
                                         <texture colordiffuse="FFCC7B19">script.plex/circle-progress/$INFO[Window.Property(countdown)].png</texture>
                                     </control>
                                     <control type="image">
                                         <posx>59.5</posx>
-                                        <posy>57</posy>
+                                        <posy>{{ vscale(57) }}</posy>
                                         <width>33</width>
-                                        <height>38</height>
+                                        <height>{{ vscale(38) }}</height>
                                         <texture>script.plex/indicators/pause.png</texture>
                                     </control>
                                 </control>
                                 <control type="label">
                                     <scroll>false</scroll>
                                     <posx>0</posx>
-                                    <posy>313</posy>
+                                    <posy>{{ vscale(313) }}</posy>
                                     <width>537</width>
-                                    <height>30</height>
+                                    <height>{{ vscale(30) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -240,9 +240,9 @@
                                 <control type="label">
                                     <scroll>false</scroll>
                                     <posx>0</posx>
-                                    <posy>345</posy>
+                                    <posy>{{ vscale(345) }}</posy>
                                     <width>537</width>
-                                    <height>30</height>
+                                    <height>{{ vscale(30) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -251,9 +251,9 @@
                             </control>
                             <control type="button" id="102">
                                 <posx>-5</posx>
-                                <posy>-5</posy>
+                                <posy>{{ vscale(-5) }}</posy>
                                 <width>547</width>
-                                <height>313</height>
+                                <height>{{ vscale(313) }}</height>
                                 <onup>200</onup>
                                 <ondown>400</ondown>
                                 <onleft>101</onleft>
@@ -270,9 +270,9 @@
                 <control type="label">
                     <scroll>false</scroll>
                     <posx>1177</posx>
-                    <posy>131</posy>
+                    <posy>{{ vscale(131) }}</posy>
                     <width>683</width>
-                    <height>43</height>
+                    <height>{{ vscale(43) }}</height>
                     <font>font13</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -282,9 +282,9 @@
                 <control type="label">
                     <scroll>false</scroll>
                     <posx>1177</posx>
-                    <posy>189</posy>
+                    <posy>{{ vscale(189) }}</posy>
                     <width>683</width>
-                    <height>32</height>
+                    <height>{{ vscale(32) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -294,9 +294,9 @@
                 <control type="textbox">
                     <scroll>false</scroll>
                     <posx>1177</posx>
-                    <posy>300</posy>
+                    <posy>{{ vscale(300) }}</posy>
                     <width>683</width>
-                    <height>215</height>
+                    <height>{{ vscale(215) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <textcolor>FFFFFFFF</textcolor>
@@ -309,9 +309,9 @@
                 <control type="label">
                     <scroll>false</scroll>
                     <posx>580</posx>
-                    <posy>131</posy>
+                    <posy>{{ vscale(131) }}</posy>
                     <width>1280</width>
-                    <height>43</height>
+                    <height>{{ vscale(43) }}</height>
                     <font>font13</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -321,9 +321,9 @@
                 <control type="label">
                     <scroll>false</scroll>
                     <posx>580</posx>
-                    <posy>189</posy>
+                    <posy>{{ vscale(189) }}</posy>
                     <width>1280</width>
-                    <height>32</height>
+                    <height>{{ vscale(32) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -333,9 +333,9 @@
                 <control type="textbox">
                     <scroll>false</scroll>
                     <posx>580</posx>
-                    <posy>300</posy>
+                    <posy>{{ vscale(300) }}</posy>
                     <width>1280</width>
-                    <height>225</height>
+                    <height>{{ vscale(225) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <textcolor>FFFFFFFF</textcolor>
@@ -346,22 +346,22 @@
 
         <control type="grouplist" id="60">
             <posx>0</posx>
-            <posy>585</posy>
+            <posy>{{ vscale(585) }}</posy>
             <width>1920</width>
-            <height>1610</height>
+            <height>{{ vscale(1610) }}</height>
 
             <onup>300</onup>
             <itemgap>0</itemgap>
 
             <control type="group" id="500">
                 <visible>Integer.IsGreater(Container(400).NumItems,0) + String.IsEmpty(Window.Property(drawing))</visible>
-                <height>360</height>
+                <height>{{ vscale(360) }}</height>
                 <width>1920</width>
                 <control type="image">
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>1920</width>
-                    <height>360</height>
+                    <height>{{ vscale(360) }}</height>
                     <texture>script.plex/white-square.png</texture>
                     <colordiffuse>40000000</colordiffuse>
                 </control>
@@ -369,7 +369,7 @@
                     <posx>60</posx>
                     <posy>0</posy>
                     <width>800</width>
-                    <height>80</height>
+                    <height>{{ vscale(80) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -378,9 +378,9 @@
                 </control>
                 <control type="list" id="400">
                     <posx>0</posx>
-                    <posy>18</posy>
+                    <posy>{{ vscale(18) }}</posy>
                     <width>1920</width>
-                    <height>430</height>
+                    <height>{{ vscale(430) }}</height>
                     <onup>100</onup>
                     <ondown>401</ondown>
                     <onleft>false</onleft>
@@ -392,7 +392,7 @@
                     <itemlayout width="359">
                         <control type="group">
                             <posx>55</posx>
-                            <posy>61</posy>
+                            <posy>{{ vscale(61) }}</posy>
                             <control type="group">
                                 <posx>5</posx>
                                 <posy>5</posy>
@@ -400,7 +400,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>299</width>
-                                    <height>168</height>
+                                    <height>{{ vscale(168) }}</height>
                                     <texture>$INFO[ListItem.Property(thumb.fallback)]</texture>
                                     <aspectratio>scale</aspectratio>
                                 </control>
@@ -408,19 +408,19 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>299</width>
-                                    <height>168</height>
+                                    <height>{{ vscale(168) }}</height>
                                     <texture background="true">$INFO[ListItem.Thumb]</texture>
                                     <aspectratio>scale</aspectratio>
                                 </control>
                                 <control type="group">
                                     <visible>!String.IsEmpty(ListItem.Property(progress))</visible>
                                     <posx>0</posx>
-                                    <posy>158</posy>
+                                    <posy>{{ vscale(158) }}</posy>
                                     <control type="image">
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>299</width>
-                                        <height>10</height>
+                                        <height>{{ vscale(10) }}</height>
                                         <texture>script.plex/white-square.png</texture>
                                         <colordiffuse>C0000000</colordiffuse>
                                     </control>
@@ -428,7 +428,7 @@
                                         <posx>0</posx>
                                         <posy>1</posy>
                                         <width>299</width>
-                                        <height>8</height>
+                                        <height>{{ vscale(8) }}</height>
                                         <texture>$INFO[ListItem.Property(progress)]</texture>
                                         <colordiffuse>FFCC7B19</colordiffuse>
                                     </control>
@@ -438,9 +438,9 @@
                                 <control type="label">
                                     <scroll>false</scroll>
                                     <posx>0</posx>
-                                    <posy>180</posy>
+                                    <posy>{{ vscale(180) }}</posy>
                                     <width>299</width>
-                                    <height>35</height>
+                                    <height>{{ vscale(35) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -449,9 +449,9 @@
                                 <control type="label">
                                     <scroll>false</scroll>
                                     <posx>0</posx>
-                                    <posy>212</posy>
+                                    <posy>{{ vscale(212) }}</posy>
                                     <width>299</width>
-                                    <height>35</height>
+                                    <height>{{ vscale(35) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -463,31 +463,31 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>299</width>
-                                        <height>168</height>
+                                        <height>{{ vscale(168) }}</height>
                                         <texture colordiffuse="FF404040">script.plex/white-square.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(right.boundary))</visible>
                                         <posx>119</posx>
-                                        <posy>34</posy>
+                                        <posy>{{ vscale(34) }}</posy>
                                         <width>61</width>
-                                        <height>100</height>
+                                        <height>{{ vscale(100) }}</height>
                                         <texture colordiffuse="40000000">script.plex/indicators/chevron-white.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(left.boundary))</visible>
                                         <posx>119</posx>
-                                        <posy>34</posy>
+                                        <posy>{{ vscale(34) }}</posy>
                                         <width>61</width>
-                                        <height>100</height>
+                                        <height>{{ vscale(100) }}</height>
                                         <texture colordiffuse="40000000">script.plex/indicators/chevron-white-l.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>!String.IsEmpty(ListItem.Property(is.updating))</visible>
                                         <posx>85.5</posx>
-                                        <posy>20</posy>
+                                        <posy>{{ vscale(20) }}</posy>
                                         <width>128</width>
-                                        <height>128</height>
+                                        <height>{{ vscale(128) }}</height>
                                         <texture>script.plex/home/busy.gif</texture>
                                     </control>
                                 </control>
@@ -499,7 +499,7 @@
                     <focusedlayout width="359">
                         <control type="group">
                             <posx>55</posx>
-                            <posy>61</posy>
+                            <posy>{{ vscale(61) }}</posy>
                             <control type="group">
                                 <animation effect="zoom" start="100" end="110" time="100" center="154.5,87.5" reversible="false">Focus</animation>
                                 <animation effect="zoom" start="110" end="100" time="100" center="154.5,87.5" reversible="false">UnFocus</animation>
@@ -508,9 +508,9 @@
                                 <control type="image">
                                     <visible>Control.HasFocus(400)</visible>
                                     <posx>-40</posx>
-                                    <posy>-40</posy>
+                                    <posy>{{ vscale(-40) }}</posy>
                                     <width>389</width>
-                                    <height>258</height>
+                                    <height>{{ vscale(258) }}</height>
                                     <texture border="42">script.plex/drop-shadow.png</texture>
                                 </control>
                                 <control type="group">
@@ -520,7 +520,7 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>299</width>
-                                        <height>168</height>
+                                        <height>{{ vscale(168) }}</height>
                                         <texture>$INFO[ListItem.Property(thumb.fallback)]</texture>
                                         <aspectratio>scale</aspectratio>
                                     </control>
@@ -528,19 +528,19 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>299</width>
-                                        <height>168</height>
+                                        <height>{{ vscale(168) }}</height>
                                         <texture background="true">$INFO[ListItem.Thumb]</texture>
                                         <aspectratio>scale</aspectratio>
                                     </control>
                                     <control type="group">
                                         <visible>!String.IsEmpty(ListItem.Property(progress))</visible>
                                         <posx>0</posx>
-                                        <posy>158</posy>
+                                        <posy>{{ vscale(158) }}</posy>
                                         <control type="image">
                                             <posx>0</posx>
                                             <posy>0</posy>
                                             <width>299</width>
-                                            <height>10</height>
+                                            <height>{{ vscale(10) }}</height>
                                             <texture>script.plex/white-square.png</texture>
                                             <colordiffuse>C0000000</colordiffuse>
                                         </control>
@@ -548,7 +548,7 @@
                                             <posx>0</posx>
                                             <posy>1</posy>
                                             <width>299</width>
-                                            <height>8</height>
+                                            <height>{{ vscale(8) }}</height>
                                             <texture>$INFO[ListItem.Property(progress)]</texture>
                                             <colordiffuse>FFCC7B19</colordiffuse>
                                         </control>
@@ -557,9 +557,9 @@
                                     <control type="label">
                                         <scroll>false</scroll>
                                         <posx>0</posx>
-                                        <posy>180</posy>
+                                        <posy>{{ vscale(180) }}</posy>
                                         <width>299</width>
-                                        <height>35</height>
+                                        <height>{{ vscale(35) }}</height>
                                         <font>font10</font>
                                         <align>center</align>
                                         <textcolor>FFFFFFFF</textcolor>
@@ -568,9 +568,9 @@
                                     <control type="label">
                                         <scroll>false</scroll>
                                         <posx>0</posx>
-                                        <posy>212</posy>
+                                        <posy>{{ vscale(212) }}</posy>
                                         <width>299</width>
-                                        <height>35</height>
+                                        <height>{{ vscale(35) }}</height>
                                         <font>font10</font>
                                         <align>center</align>
                                         <textcolor>FFFFFFFF</textcolor>
@@ -582,31 +582,31 @@
                                             <posx>0</posx>
                                             <posy>0</posy>
                                             <width>299</width>
-                                            <height>168</height>
+                                            <height>{{ vscale(168) }}</height>
                                             <texture colordiffuse="FF404040">script.plex/white-square.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(right.boundary))</visible>
                                             <posx>119</posx>
-                                            <posy>34</posy>
+                                            <posy>{{ vscale(34) }}</posy>
                                             <width>61</width>
-                                            <height>100</height>
+                                            <height>{{ vscale(100) }}</height>
                                             <texture colordiffuse="40000000">script.plex/indicators/chevron-white.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(left.boundary))</visible>
                                             <posx>119</posx>
-                                            <posy>34</posy>
+                                            <posy>{{ vscale(34) }}</posy>
                                             <width>61</width>
-                                            <height>100</height>
+                                            <height>{{ vscale(100) }}</height>
                                             <texture colordiffuse="40000000">script.plex/indicators/chevron-white-l.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>!String.IsEmpty(ListItem.Property(is.updating))</visible>
                                             <posx>85.5</posx>
-                                            <posy>20</posy>
+                                            <posy>{{ vscale(20) }}</posy>
                                             <width>128</width>
-                                            <height>128</height>
+                                            <height>{{ vscale(128) }}</height>
                                             <texture>script.plex/home/busy.gif</texture>
                                         </control>
                                     </control>
@@ -616,7 +616,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>309</width>
-                                    <height>178</height>
+                                    <height>{{ vscale(178) }}</height>
                                     <texture border="10">script.plex/home/selected.png</texture>
                                 </control>
                             </control>
@@ -629,13 +629,13 @@
                 <visible>Integer.IsGreater(Container(401).NumItems,0) + String.IsEmpty(Window.Property(drawing))</visible>
                 <defaultcontrol>401</defaultcontrol>
                 <width>1920</width>
-                <height>520</height>
+                <height>{{ vscale(520) }}</height>
                 <control type="image">
                     <visible>!String.IsEmpty(Window.Property(divider.401))</visible>
                     <posx>60</posx>
                     <posy>0</posy>
                     <width>1800</width>
-                    <height>2</height>
+                    <height>{{ vscale(2) }}</height>
                     <texture>script.plex/white-square.png</texture>
                     <colordiffuse>A0000000</colordiffuse>
                 </control>
@@ -643,7 +643,7 @@
                     <posx>60</posx>
                     <posy>0</posy>
                     <width>1000</width>
-                    <height>80</height>
+                    <height>{{ vscale(80) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -652,9 +652,9 @@
                 </control>
                 <control type="list" id="401">
                     <posx>0</posx>
-                    <posy>16</posy>
+                    <posy>{{ vscale(16) }}</posy>
                     <width>1920</width>
-                    <height>520</height>
+                    <height>{{ vscale(520) }}</height>
                     <onup>400</onup>
                     <ondown>403</ondown>
                     <onleft>false</onleft>
@@ -666,7 +666,7 @@
                     <itemlayout width="304">
                         <control type="group">
                             <posx>55</posx>
-                            <posy>72</posy>
+                            <posy>{{ vscale(72) }}</posy>
                             <control type="group">
                                 <posx>5</posx>
                                 <posy>5</posy>
@@ -676,31 +676,31 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>361</height>
+                                        <height>{{ vscale(361) }}</height>
                                         <texture colordiffuse="FF404040">script.plex/white-square.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(right.boundary))</visible>
                                         <posx>91.5</posx>
-                                        <posy>130.5</posy>
+                                        <posy>{{ vscale(130.5) }}</posy>
                                         <width>61</width>
-                                        <height>100</height>
+                                        <height>{{ vscale(100) }}</height>
                                         <texture colordiffuse="40000000">script.plex/indicators/chevron-white.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(left.boundary))</visible>
                                         <posx>91.5</posx>
-                                        <posy>130.5</posy>
+                                        <posy>{{ vscale(130.5) }}</posy>
                                         <width>61</width>
-                                        <height>100</height>
+                                        <height>{{ vscale(100) }}</height>
                                         <texture colordiffuse="40000000">script.plex/indicators/chevron-white-l.png</texture>
                                     </control>
                                     <control type="image">
                                         <visible>!String.IsEmpty(ListItem.Property(is.updating))</visible>
                                         <posx>58</posx>
-                                        <posy>116.5</posy>
+                                        <posy>{{ vscale(116.5) }}</posy>
                                         <width>128</width>
-                                        <height>128</height>
+                                        <height>{{ vscale(128) }}</height>
                                         <texture>script.plex/home/busy.gif</texture>
                                     </control>
                                 </control>
@@ -708,26 +708,26 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>244</width>
-                                    <height>361</height>
+                                    <height>{{ vscale(361) }}</height>
                                     <texture>$INFO[ListItem.Property(thumb.fallback)]</texture>
                                 </control>
                                 <control type="image">
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>244</width>
-                                    <height>361</height>
+                                    <height>{{ vscale(361) }}</height>
                                     <texture background="true">$INFO[ListItem.Thumb]</texture>
                                     <aspectratio>scale</aspectratio>
                                 </control>
                                 <control type="group">
                                     <visible>!String.IsEmpty(ListItem.Property(progress))</visible>
                                     <posx>0</posx>
-                                    <posy>351</posy>
+                                    <posy>{{ vscale(351) }}</posy>
                                     <control type="image">
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>10</height>
+                                        <height>{{ vscale(10) }}</height>
                                         <texture>script.plex/white-square.png</texture>
                                         <colordiffuse>C0000000</colordiffuse>
                                     </control>
@@ -735,7 +735,7 @@
                                         <posx>0</posx>
                                         <posy>1</posy>
                                         <width>244</width>
-                                        <height>8</height>
+                                        <height>{{ vscale(8) }}</height>
                                         <texture>$INFO[ListItem.Property(progress)]</texture>
                                         <colordiffuse>FFCC7B19</colordiffuse>
                                     </control>
@@ -745,9 +745,9 @@
                                 <control type="label">
                                     <scroll>false</scroll>
                                     <posx>0</posx>
-                                    <posy>369</posy>
+                                    <posy>{{ vscale(369) }}</posy>
                                     <width>244</width>
-                                    <height>38</height>
+                                    <height>{{ vscale(38) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -761,7 +761,7 @@
                     <focusedlayout width="304">
                         <control type="group">
                             <posx>55</posx>
-                            <posy>72</posy>
+                            <posy>{{ vscale(72) }}</posy>
                             <control type="group">
                                 <animation effect="zoom" start="100" end="110" time="100" center="127,180.5" reversible="false">Focus</animation>
                                 <animation effect="zoom" start="110" end="100" time="100" center="127,180.5" reversible="false">UnFocus</animation>
@@ -770,9 +770,9 @@
                                 <control type="image">
                                     <visible>Control.HasFocus(401)</visible>
                                     <posx>-40</posx>
-                                    <posy>-40</posy>
+                                    <posy>{{ vscale(-40) }}</posy>
                                     <width>324</width>
-                                    <height>441</height>
+                                    <height>{{ vscale(441) }}</height>
                                     <texture border="42">script.plex/drop-shadow.png</texture>
                                 </control>
                                 <control type="group">
@@ -784,31 +784,31 @@
                                             <posx>0</posx>
                                             <posy>0</posy>
                                             <width>244</width>
-                                            <height>361</height>
+                                            <height>{{ vscale(361) }}</height>
                                             <texture colordiffuse="FF404040">script.plex/white-square.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(right.boundary))</visible>
                                             <posx>91.5</posx>
-                                            <posy>130.5</posy>
+                                            <posy>{{ vscale(130.5) }}</posy>
                                             <width>61</width>
-                                            <height>100</height>
+                                            <height>{{ vscale(100) }}</height>
                                             <texture colordiffuse="40000000">script.plex/indicators/chevron-white.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>String.IsEmpty(ListItem.Property(is.updating)) + !String.IsEmpty(ListItem.Property(left.boundary))</visible>
                                             <posx>91.5</posx>
-                                            <posy>130.5</posy>
+                                            <posy>{{ vscale(130.5) }}</posy>
                                             <width>61</width>
-                                            <height>100</height>
+                                            <height>{{ vscale(100) }}</height>
                                             <texture colordiffuse="40000000">script.plex/indicators/chevron-white-l.png</texture>
                                         </control>
                                         <control type="image">
                                             <visible>!String.IsEmpty(ListItem.Property(is.updating))</visible>
                                             <posx>58</posx>
-                                            <posy>116.5</posy>
+                                            <posy>{{ vscale(116.5) }}</posy>
                                             <width>128</width>
-                                            <height>128</height>
+                                            <height>{{ vscale(128) }}</height>
                                             <texture>script.plex/home/busy.gif</texture>
                                         </control>
                                     </control>
@@ -816,26 +816,26 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>361</height>
+                                        <height>{{ vscale(361) }}</height>
                                         <texture>$INFO[ListItem.Property(thumb.fallback)]</texture>
                                     </control>
                                     <control type="image">
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>361</height>
+                                        <height>{{ vscale(361) }}</height>
                                         <texture background="true">$INFO[ListItem.Thumb]</texture>
                                         <aspectratio>scale</aspectratio>
                                     </control>
                                     <control type="group">
                                         <visible>!String.IsEmpty(ListItem.Property(progress))</visible>
                                         <posx>0</posx>
-                                        <posy>351</posy>
+                                        <posy>{{ vscale(351) }}</posy>
                                         <control type="image">
                                             <posx>0</posx>
                                             <posy>0</posy>
                                             <width>244</width>
-                                            <height>10</height>
+                                            <height>{{ vscale(10) }}</height>
                                             <texture>script.plex/white-square.png</texture>
                                             <colordiffuse>C0000000</colordiffuse>
                                         </control>
@@ -843,7 +843,7 @@
                                             <posx>0</posx>
                                             <posy>1</posy>
                                             <width>244</width>
-                                            <height>8</height>
+                                            <height>{{ vscale(8) }}</height>
                                             <texture>$INFO[ListItem.Property(progress)]</texture>
                                             <colordiffuse>FFCC7B19</colordiffuse>
                                         </control>
@@ -852,9 +852,9 @@
                                     <control type="label">
                                         <scroll>false</scroll>
                                         <posx>0</posx>
-                                        <posy>369</posy>
+                                        <posy>{{ vscale(369) }}</posy>
                                         <width>244</width>
-                                        <height>38</height>
+                                        <height>{{ vscale(38) }}</height>
                                         <font>font10</font>
                                         <align>center</align>
                                         <textcolor>FFFFFFFF</textcolor>
@@ -866,7 +866,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>254</width>
-                                    <height>371</height>
+                                    <height>{{ vscale(371) }}</height>
                                     <texture border="10">script.plex/home/selected.png</texture>
                                 </control>
                             </control>
@@ -879,21 +879,21 @@
                 <visible>Integer.IsGreater(Container(403).NumItems,0) + String.IsEmpty(Window.Property(drawing))</visible>
                 <defaultcontrol>403</defaultcontrol>
                 <width>1920</width>
-                <height>410</height>
+                <height>{{ vscale(410) }}</height>
                 <control type="image">
                     <visible>!String.IsEmpty(Window.Property(divider.403))</visible>
                     <posx>60</posx>
-                    <posy>20</posy>
+                    <posy>{{ vscale(20) }}</posy>
                     <width>1800</width>
-                    <height>2</height>
+                    <height>{{ vscale(2) }}</height>
                     <texture>script.plex/white-square.png</texture>
                     <colordiffuse>A0000000</colordiffuse>
                 </control>
                 <control type="label">
                     <posx>60</posx>
-                    <posy>20</posy>
+                    <posy>{{ vscale(20) }}</posy>
                     <width>1000</width>
-                    <height>80</height>
+                    <height>{{ vscale(80) }}</height>
                     <font>font12</font>
                     <align>left</align>
                     <aligny>center</aligny>
@@ -902,9 +902,9 @@
                 </control>
                 <control type="list" id="403">
                     <posx>0</posx>
-                    <posy>36</posy>
+                    <posy>{{ vscale(36) }}</posy>
                     <width>1920</width>
-                    <height>410</height>
+                    <height>{{ vscale(410) }}</height>
                     <onup>401</onup>
                     <ondown>404</ondown>
                     <scrolltime>200</scrolltime>
@@ -914,7 +914,7 @@
                     <itemlayout width="304">
                         <control type="group">
                            <posx>55</posx>
-                            <posy>61</posy>
+                            <posy>{{ vscale(61) }}</posy>
                             <control type="group">
                                 <posx>5</posx>
                                 <posy>5</posy>
@@ -922,22 +922,22 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>244</width>
-                                    <height>244</height>
+                                    <height>{{ vscale(244) }}</height>
                                     <texture diffuse="script.plex/masks/role.png">script.plex/thumb_fallbacks/role.png</texture>
                                 </control>
                                 <control type="image">
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>244</width>
-                                    <height>244</height>
+                                    <height>{{ vscale(244) }}</height>
                                     <texture background="true" diffuse="script.plex/masks/role.png">$INFO[ListItem.Thumb]</texture>
                                     <aspectratio scalediffuse="false" aligny="top">scale</aspectratio>
                                 </control>
                                 <control type="textbox">
                                     <posx>0</posx>
-                                    <posy>253</posy>
+                                    <posy>{{ vscale(253) }}</posy>
                                     <width>244</width>
-                                    <height>90</height>
+                                    <height>{{ vscale(90) }}</height>
                                     <font>font10</font>
                                     <align>center</align>
                                     <textcolor>FFFFFFFF</textcolor>
@@ -951,7 +951,7 @@
                     <focusedlayout width="304">
                         <control type="group">
                             <posx>55</posx>
-                            <posy>61</posy>
+                            <posy>{{ vscale(61) }}</posy>
                             <control type="group">
                                 <animation effect="zoom" start="100" end="110" time="100" center="127,127" reversible="false">Focus</animation>
                                 <animation effect="zoom" start="110" end="100" time="100" center="127,127" reversible="false">UnFocus</animation>
@@ -960,9 +960,9 @@
                                 <control type="image">
                                     <visible>Control.HasFocus(403)</visible>
                                     <posx>-40</posx>
-                                    <posy>-40</posy>
+                                    <posy>{{ vscale(-40) }}</posy>
                                     <width>334</width>
-                                    <height>334</height>
+                                    <height>{{ vscale(334) }}</height>
                                     <texture border="42">script.plex/buttons/role-shadow.png</texture>
                                 </control>
                                 <control type="group">
@@ -972,22 +972,22 @@
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>244</height>
+                                        <height>{{ vscale(244) }}</height>
                                         <texture diffuse="script.plex/masks/role.png">script.plex/thumb_fallbacks/role.png</texture>
                                     </control>
                                     <control type="image">
                                         <posx>0</posx>
                                         <posy>0</posy>
                                         <width>244</width>
-                                        <height>244</height>
+                                        <height>{{ vscale(244) }}</height>
                                         <texture background="true" diffuse="script.plex/masks/role.png">$INFO[ListItem.Thumb]</texture>
                                         <aspectratio scalediffuse="false" aligny="top">scale</aspectratio>
                                     </control>
                                     <control type="textbox">
                                         <posx>0</posx>
-                                        <posy>253</posy>
+                                        <posy>{{ vscale(253) }}</posy>
                                         <width>244</width>
-                                        <height>90</height>
+                                        <height>{{ vscale(90) }}</height>
                                         <font>font10</font>
                                         <align>center</align>
                                         <textcolor>FFFFFFFF</textcolor>
@@ -999,7 +999,7 @@
                                     <posx>0</posx>
                                     <posy>0</posy>
                                     <width>254</width>
-                                    <height>254</height>
+                                    <height>{{ vscale(254) }}</height>
                                     <texture>script.plex/buttons/role-selected.png</texture>
                                 </control>
                             </control>

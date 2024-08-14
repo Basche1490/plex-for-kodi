@@ -592,6 +592,21 @@ def vscale(h, r=3):
     return round(ratio * h, r) if r > 0 else int(round(ratio * h, r))
 
 
+def vscalei(h):
+    return vscale(h, r=0)
+
+
+def vperc(height, perc=50, ref=1080, rel=50, r=2):
+    ret = perc * ref / 100.0 - height * rel / 100
+    if r > 0:
+        return round(ret, r)
+    return int(round(ret, r))
+
+
+def vperci(height, perc=50, ref=1080, rel=50):
+    return vperc(height, perc=perc, ref=ref, rel=rel, r=0)
+
+
 class TextBox:
     # constants
     WINDOW = 10147

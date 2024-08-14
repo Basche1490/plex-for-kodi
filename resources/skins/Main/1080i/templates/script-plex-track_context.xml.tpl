@@ -11,17 +11,17 @@
 
 <control type="image">
     <posx>236</posx>
-    <posy>131</posy>
+    <posy>{{ vscale(131) }}</posy>
     <width>638</width>
-    <height>638</height>
+    <height>{{ vscale(638) }}</height>
     <texture>$INFO[Window.Property(track.thumb)]</texture>
 </control>
 
 <control type="textbox">
     <posx>236</posx>
-    <posy>131</posy>
+    <posy>{{ vscale(131) }}</posy>
     <width>1502</width>
-    <height>530</height>
+    <height>{{ vscale(530) }}</height>
     <font>font13</font>
     <textcolor>FFFFFFFF</textcolor>
     <align>left</align>
@@ -32,15 +32,15 @@
         <animation effect="fade" start="0" end="100" time="200" reversible="true">VisibleChange</animation>
         <defaultcontrol>301</defaultcontrol>
         <posx>965</posx>
-        <posy>131</posy>
+        <posy>{{ vscale(131) }}</posy>
         <width>750</width>
-        <height>638</height>
+        <height>{{ vscale(638) }}</height>
         <itemgap>30</itemgap>
         <orientation>vertical</orientation>
         <scrolltime tween="quadratic" easing="out">200</scrolltime>
         <control type="button" id="100">
             <posx>30</posx>
-            <posy>30</posy>
+            <posy>{{ vscale(30) }}</posy>
             <width>1920</width>
             <height>1080</height>
             <font>font20</font>

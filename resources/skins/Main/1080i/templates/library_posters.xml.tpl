@@ -4,9 +4,9 @@
 <control type="grouplist">
     <visible>String.IsEmpty(Window.Property(hide.filteroptions))</visible>
     <right>340</right>
-    <posy>35</posy>
+    <posy>{{ vscale(35) }}</posy>
     <width>870</width>
-    <height>65</height>
+    <height>{{ vscale(65) }}</height>
     <align>right</align>
     <itemgap>30</itemgap>
     <orientation>horizontal</orientation>
@@ -17,7 +17,7 @@
         <visible>!String.IsEqual(Window.Property(media.itemType),folder)</visible>
         <enable>false</enable>
         <width max="300">auto</width>
-        <height>65</height>
+        <height>{{ vscale(65) }}</height>
         <font>font10</font>
         <textcolor>A0FFFFFF</textcolor>
         <focusedcolor>A0FFFFFF</focusedcolor>
@@ -33,7 +33,7 @@
     <control type="button" id="211">
         <visible>!String.IsEqual(Window.Property(media.itemType),folder)</visible>
         <width max="400">auto</width>
-        <height>65</height>
+        <height>{{ vscale(65) }}</height>
         <font>font10</font>
         <textcolor>A0FFFFFF</textcolor>
         <focusedcolor>FF000000</focusedcolor>
@@ -49,7 +49,7 @@
         <visible>String.IsEqual(Window.Property(subDir),1) | ![String.IsEqual(Window.Property(media),show) | String.IsEqual(Window.Property(media),movie)]</visible>
         <enable>false</enable>
         <width max="300">auto</width>
-        <height>65</height>
+        <height>{{ vscale(65) }}</height>
         <font>font12</font>
         <textcolor>FFFFFFFF</textcolor>
         <focusedcolor>FFFFFFFF</focusedcolor>
@@ -65,7 +65,7 @@
     <control type="button" id="312">
         <visible>!String.IsEqual(Window.Property(subDir),1) + [String.IsEqual(Window.Property(media),show) | String.IsEqual(Window.Property(media),movie)]</visible>
         <width max="300">auto</width>
-        <height>65</height>
+        <height>{{ vscale(65) }}</height>
         <font>font12</font>
         <textcolor>FFFFFFFF</textcolor>
         <focusedcolor>FF000000</focusedcolor>
@@ -81,7 +81,7 @@
     <control type="button" id="210">
         <visible>!String.IsEqual(Window.Property(media.itemType),folder)</visible>
         <width max="300">auto</width>
-        <height>65</height>
+        <height>{{ vscale(65) }}</height>
         <font>font10</font>
         <textcolor>A0FFFFFF</textcolor>
         <focusedcolor>FF000000</focusedcolor>

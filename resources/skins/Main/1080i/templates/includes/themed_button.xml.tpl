@@ -1,6 +1,6 @@
 <control type="button" id="{{ id }}">
     {% if visible %}<visible{% if allowhiddenfocus %} allowhiddenfocus="true"{% endif %}>{{ visible }}</visible>{% endif %}
-    <hitrect x="{{ hitrect.x|default(40) }}" y="{{ hitrect.y|default(40) }}" w="{{ hitrect.w|default(96) }}" h="{{ hitrect.h|default(60) }}" />
+    <hitrect x="{{ hitrect.x|default(40) }}" y="{{ hitrect.y|default(40)|vscale }}" w="{{ hitrect.w|default(96) }}" h="{{ hitrect.h|default(60)|vscale }}" />
     {% if enable %}<enable>{{ enable }}</enable>{% endif %}
     {% if elements %}{% spaceless %} {# simple key/value elements #}
         {% for var, value in elements %}<{{ var }}>{{ value }}</{{ var }}>{% endfor %}{% endspaceless %}
@@ -13,9 +13,9 @@
         {% if resolve("direction") %}<{{ direction }}>{{ resolve("direction") }}</{{ direction }}>{% endif %}
     {% endspaceless %}{% endfor %}
     <posx>{{ attr.posx|default(0) }}</posx>
-    <posy>{{ attr.posy|default(0) }}</posy>
+    <posy>{{ attr.posy|default(0)|vscale }}</posy>
     <width>{{ attr.width }}</width>
-    <height>{{ attr.height }}</height>
+    <height>{{ attr.height|vscale }}</height>
     <font>{{ font|default("font12") }}</font>
     <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}{{ name }}{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
     <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}{{ name }}.png</texturenofocus>

@@ -16,13 +16,13 @@
 	</control>
 	<control type="group" id="100">
 		<posx>20</posx>
-		<posy>20</posy>
-		<height>100</height>
+		<posy>{{ vscale(20) }}</posy>
+		<height>{{ vscale(100) }}</height>
 		<width>1880</width>
 		<control type="label" id="101">
 			<visible>String.IsEqual(Window.Property(align),0)</visible>
 			<posy>0</posy>
-			<height>50</height>
+			<height>{{ vscale(50) }}</height>
 			<font>font45</font>
 			<align>left</align>
 			<textcolor>FFFFFFFF</textcolor>
@@ -31,8 +31,8 @@
 		</control>
 		<control type="label" id="105">
 			<visible>String.IsEqual(Window.Property(align),0)</visible>
-			<posy>50</posy>
-			<height>20</height>
+			<posy>{{ vscale(50) }}</posy>
+			<height>{{ vscale(20) }}</height>
 			<font>font13</font>
 			<align>left</align>
 			<textcolor>FFFFFFFF</textcolor>
@@ -42,7 +42,7 @@
 		<control type="label" id="111">
 			<visible>String.IsEqual(Window.Property(align),1)</visible>
 			<posy>0</posy>
-			<height>50</height>
+			<height>{{ vscale(50) }}</height>
 			<font>font45</font>
 			<align>right</align>
 			<textcolor>FFFFFFFF</textcolor>
@@ -51,8 +51,8 @@
 		</control>
 		<control type="label" id="115">
 			<visible>String.IsEqual(Window.Property(align),1)</visible>
-			<posy>50</posy>
-			<height>20</height>
+			<posy>{{ vscale(50) }}</posy>
+			<height>{{ vscale(20) }}</height>
 			<font>font13</font>
 			<align>right</align>
 			<textcolor>FFFFFFFF</textcolor>

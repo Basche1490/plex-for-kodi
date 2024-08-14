@@ -18,35 +18,35 @@
 <control type="group">
     <visible>!Window.IsVisible(sliderdialog) + !Window.IsVisible(osdvideosettings) + !Window.IsVisible(osdaudiosettings) + !Window.IsVisible(osdsubtitlesettings) + !Window.IsVisible(subtitlesearch) + !Window.IsActive(selectdialog) + !Window.IsVisible(osdcmssettings)</visible>
     <posx>460</posx>
-    <posy>200</posy>
+    <posy>{{ vperc(vscale(600)) }}</posy>
     <control type="image">
         <posx>-40</posx>
-        <posy>-40</posy>
+        <posy>{{ vscale(-40) }}</posy>
         <width>1080</width>
-        <height>770</height>
+        <height>{{ vscale(770) }}</height>
         <texture border="42">script.plex/drop-shadow.png</texture>
     </control>
     <control type="image">
         <posx>0</posx>
         <posy>0</posy>
         <width>1000</width>
-        <height>80</height>
+        <height>{{ vscale(80) }}</height>
         <texture border="10">script.plex/white-square-top-rounded.png</texture>
         <colordiffuse>F21F1F1F</colordiffuse>
     </control>
     <control type="image">
         <posx>0</posx>
-        <posy>80</posy>
+        <posy>{{ vscale(80) }}</posy>
         <width>1000</width>
-        <height>610</height>
+        <height>{{ vscale(610) }}</height>
         <texture flipy="true" border="10">script.plex/white-square-top-rounded.png</texture>
         <colordiffuse>F2606060</colordiffuse>
     </control>
     <control type="image">
         <posx>0</posx>
-        <posy>80</posy>
+        <posy>{{ vscale(80) }}</posy>
         <width>400</width>
-        <height>610</height>
+        <height>{{ vscale(610) }}</height>
         <texture flipy="true" border="10">script.plex/white-square-tl-rounded.png</texture>
         <colordiffuse>30000000</colordiffuse>
     </control>
@@ -54,7 +54,7 @@
         <posx>0</posx>
         <posy>0</posy>
         <width>1000</width>
-        <height>80</height>
+        <height>{{ vscale(80) }}</height>
         <font>font12</font>
         <align>center</align>
         <aligny>center</aligny>
@@ -63,9 +63,9 @@
     </control>
     <control type="list" id="100">
         <posx>0</posx>
-        <posy>80</posy>
+        <posy>{{ vscale(80) }}</posy>
         <width>990</width>
-        <height>600</height>
+        <height>{{ vscale(600) }}</height>
         <onup>noop</onup>
         <ondown>noop</ondown>
         <scrolltime>200</scrolltime>
@@ -73,12 +73,12 @@
         <pagecontrol>101</pagecontrol>
         <onright>101</onright>
         <!-- ITEM LAYOUT ########################################## -->
-        <itemlayout height="100">
+        <itemlayout height="{{ vscale(100) }}">
             <control type="label">
                 <posx>20</posx>
                 <posy>0</posy>
                 <width>300</width>
-                <height>100</height>
+                <height>{{ vscale(100) }}</height>
                 <font>font12</font>
                 <align>left</align>
                 <aligny>center</aligny>
@@ -89,7 +89,7 @@
                 <posx>320</posx>
                 <posy>0</posy>
                 <width>650</width>
-                <height>100</height>
+                <height>{{ vscale(100) }}</height>
                 <font>font12</font>
                 <align>right</align>
                 <aligny>center</aligny>
@@ -97,19 +97,19 @@
                 <label>$INFO[ListItem.Label2]</label>
             </control>
         </itemlayout>
-        <focusedlayout height="100">
+        <focusedlayout height="{{ vscale(100) }}">
             <control type="image">
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1000</width>
-                <height>100</height>
+                <height>{{ vscale(100) }}</height>
                 <texture colordiffuse="FFE5A00D">script.plex/white-square.png</texture>
             </control>
             <control type="label">
                 <posx>20</posx>
                 <posy>0</posy>
                 <width>300</width>
-                <height>100</height>
+                <height>{{ vscale(100) }}</height>
                 <font>font12</font>
                 <align>left</align>
                 <aligny>center</aligny>
@@ -120,7 +120,7 @@
                 <posx>320</posx>
                 <posy>0</posy>
                 <width>650</width>
-                <height>100</height>
+                <height>{{ vscale(100) }}</height>
                 <font>font12</font>
                 <align>right</align>
                 <aligny>center</aligny>
@@ -133,9 +133,9 @@
 <control type="scrollbar" id="101">
     <hitrect x="1108" y="33" w="90" h="734" />
     <left>1450</left>
-    <top>280</top>
+    <top>{{ vperc(vscale(600)) + vscale(80) }}</top>
     <width>10</width>
-    <height>600</height>
+    <height>{{ vscale(600) }}</height>
     <onleft>100</onleft>
     <visible>!Window.IsVisible(sliderdialog) + Control.IsVisible(100) + !Window.IsVisible(osdvideosettings) + !Window.IsVisible(osdaudiosettings) + !Window.IsVisible(osdsubtitlesettings) + !Window.IsVisible(subtitlesearch) + !Window.IsVisible(osdcmssettings)</visible>
     <texturesliderbackground colordiffuse="30000000" border="5">script.plex/white-square.png</texturesliderbackground>

@@ -136,6 +136,10 @@ class VideoSettingsDialog(kodigui.BaseDialog, util.CronReceiver):
         else:
             self.settingsList.replaceItems(items)
 
+        if self.nonPlayback:
+            # we don't have enough items for a scrollbar, increase width
+            self.settingsList.setWidth(1000)
+
         self.setFocusId(self.SETTINGS_LIST_ID)
 
     def getAudioAndSubtitleInfo(self):

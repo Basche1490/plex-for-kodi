@@ -11,9 +11,9 @@
 
 <control type="button" id="100">
     <posx>1437</posx>
-    <posy>801</posy>
+    <posy>{{ vscale(801) }}</posy>
     <width>275</width>
-    <height>104</height>
+    <height>{{ vscale(104) }}</height>
     <onup>200</onup>
     <font>font13</font>
     <textcolor>FFFFFFFF</textcolor>

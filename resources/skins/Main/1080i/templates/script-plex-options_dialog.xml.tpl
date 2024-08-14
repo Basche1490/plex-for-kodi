@@ -12,34 +12,34 @@
 <control type="group">
     <visible>!String.IsEmpty(Window.Property(initialized))</visible>
     <posx>585</posx>
-    <posy>360</posy>
+    <posy>{{ vperc(vscale(440)) }}</posy>
     <control type="image">
         <posx>-40</posx>
-        <posy>-40</posy>
+        <posy>{{ vscale(-40) }}</posy>
         <width>830</width>
-        <height>440</height>
+        <height>{{ vscale(440) }}</height>
         <texture border="42">script.plex/drop-shadow.png</texture>
     </control>
     <control type="image">
         <posx>0</posx>
         <posy>0</posy>
         <width>750</width>
-        <height>360</height>
+        <height>{{ vscale(360) }}</height>
         <texture colordiffuse="EE323232" border="10">script.plex/white-square-rounded.png</texture>
     </control>
     <control type="image">
         <posx>0</posx>
         <posy>0</posy>
         <width>750</width>
-        <height>80</height>
+        <height>{{ vscale(80) }}</height>
         <texture colordiffuse="99000000" border="10">script.plex/white-square-top-rounded.png</texture>
     </control>
 
     <control type="image">
         <posx>48</posx>
-        <posy>31</posy>
+        <posy>{{ vscale(31) }}</posy>
         <width>19</width>
-        <height>19</height>
+        <height>{{ vscale(19) }}</height>
         <texture colordiffuse="FFE5A00D">script.plex/indicators/circle-19.png</texture>
     </control>
 
@@ -47,7 +47,7 @@
         <posx>115</posx>
         <posy>0</posy>
         <width>575</width>
-        <height>80</height>
+        <height>{{ vscale(80) }}</height>
         <font>font12</font>
         <align>left</align>
         <aligny>center</aligny>
@@ -57,9 +57,9 @@
 
     <control type="textbox">
         <posx>115</posx>
-        <posy>105</posy>
+        <posy>{{ vscale(105) }}</posy>
         <width>575</width>
-        <height>125</height>
+        <height>{{ vscale(125) }}</height>
         <font>font10</font>
         <align>left</align>
         <textcolor>FFFFFFFF</textcolor>
@@ -71,9 +71,9 @@
     <control type="grouplist" id="100">
         <defaultcontrol always="true">1001</defaultcontrol>
         <posx>-10</posx>
-        <posy>220</posy>
+        <posy>{{ vscale(220) }}</posy>
         <width>770</width>
-        <height>155</height>
+        <height>{{ vscale(155) }}</height>
         <align>center</align>
         <itemgap>-50</itemgap>
         <orientation>horizontal</orientation>
@@ -86,7 +86,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width min="120">auto</width>
-            <height>143</height>
+            <height>{{ vscale(143, 1.1) }}</height>
             <font>font10</font>
             <texturefocus colordiffuse="FFE5A00D" border="50">script.plex/buttons/blank-focus.png</texturefocus>
             <texturenofocus colordiffuse="99FFFFFF" border="50">script.plex/buttons/blank.png</texturenofocus>
@@ -102,7 +102,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width min="120">auto</width>
-            <height>143</height>
+            <height>{{ vscale(143, 1.1) }}</height>
             <font>font10</font>
             <texturefocus colordiffuse="FFE5A00D" border="50">script.plex/buttons/blank-focus.png</texturefocus>
             <texturenofocus colordiffuse="99FFFFFF" border="50">script.plex/buttons/blank.png</texturenofocus>
@@ -118,7 +118,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width min="120">auto</width>
-            <height>143</height>
+            <height>{{ vscale(143, 1.1) }}</height>
             <font>font10</font>
             <texturefocus colordiffuse="FFE5A00D" border="50">script.plex/buttons/blank-focus.png</texturefocus>
             <texturenofocus colordiffuse="99FFFFFF" border="50">script.plex/buttons/blank.png</texturenofocus>

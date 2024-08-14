@@ -1,12 +1,12 @@
             <control type="group" id="421">
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <control type="button" id="401">
                     <hitrect x="28" y="28" w="69" h="45" />
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <onup>100</onup>
                     <onright>402</onright>
                     <onleft>411</onleft>
@@ -22,7 +22,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}repeat.png</texture>
                     </control>
                     <control type="image">
@@ -30,7 +30,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture colordiffuse="FFCC7B19">{{ theme.assets.buttons.base }}repeat.png</texture>
                     </control>
                     <control type="image">
@@ -38,7 +38,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture colordiffuse="FFCC7B19">{{ theme.assets.buttons.base }}repeat-one.png</texture>
                     </control>
                 </control>
@@ -49,7 +49,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat{{ theme.assets.buttons.focusSuffix }}.png</texture>
                     </control>
                     <control type="image">
@@ -57,7 +57,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat{{ theme.assets.buttons.focusSuffix }}.png</texture>
                     </control>
                     <control type="image">
@@ -65,7 +65,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat-one{{ theme.assets.buttons.focusSuffix }}.png</texture>
                     </control>
                 </control>
@@ -75,7 +75,7 @@
                 <visible>String.IsEmpty(Window.Property(pq.isremote))</visible>
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle.png</texturenofocus>
@@ -90,13 +90,13 @@
             <control type="group" id="432">
                 <visible>!String.IsEmpty(Window.Property(pq.isremote))</visible>
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <control type="button" id="422">
                     <hitrect x="28" y="28" w="69" h="45" />
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <onup>100</onup>
                     <onright>404</onright>
                     <onleft>401</onleft>
@@ -112,7 +112,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle.png</texture>
                     </control>
                     <control type="image">
@@ -120,7 +120,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle{{ theme.assets.buttons.focusSuffix }}.png</texture>
                     </control>
                 </control>
@@ -131,7 +131,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture colordiffuse="FFCC7B19">{{ theme.assets.buttons.base }}shuffle.png</texture>
                     </control>
                     <control type="image">
@@ -139,7 +139,7 @@
                         <posx>0</posx>
                         <posy>0</posy>
                         <width>125</width>
-                        <height>101</height>
+                        <height>{{ vscale(101) }}</height>
                         <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle{{ theme.assets.buttons.focusSuffix }}.png</texture>
                     </control>
                 </control>
@@ -149,7 +149,7 @@
                 <visible>MusicPlayer.HasPrevious | !String.IsEmpty(Window.Property(pq.hasprevious))</visible>
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus flipx="true"{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus flipx="true"{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -161,7 +161,7 @@
                 <posx>30</posx>
                 <posy>0</posy>
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus flipx="true" colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturefocus>
                 <texturenofocus flipx="true" colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -174,7 +174,7 @@
                     <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
                 {% endif %}
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}pause{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}pause.png</texturenofocus>
@@ -188,7 +188,7 @@
             <control type="button" id="407">
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}stop{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}stop.png</texturenofocus>
@@ -199,7 +199,7 @@
                 <visible>MusicPlayer.HasNext | !String.IsEmpty(Window.Property(pq.hasnext))</visible>
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -211,7 +211,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <texturefocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturefocus>
                 <texturenofocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturenofocus>
                 <label> </label>
@@ -220,7 +220,7 @@
             <control type="button" id="410">
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}pqueue{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}pqueue.png</texturenofocus>
@@ -230,7 +230,7 @@
             <control type="button" id="411">
                 <hitrect x="28" y="28" w="69" h="45" />
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <font>font12</font>
                 <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}more{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
                 <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}more.png</texturenofocus>

@@ -11,9 +11,9 @@
 
 <control type="textbox">
     <posx>210</posx>
-    <posy>375</posy>
+    <posy>{{ vscale(375) }}</posy>
     <width>1502</width>
-    <height>530</height>
+    <height>{{ vscale(530) }}</height>
     <font>font13</font>
     <textcolor>FFFFFFFF</textcolor>
     <align>left</align>

@@ -31,7 +31,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>1920</width>
-            <height>140</height>
+            <height>{{ vscale(140) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>A0000000</colordiffuse>
         </control>
@@ -40,7 +40,7 @@
             <posx>0</posx>
             <posy>940</posy>
             <width>1920</width>
-            <height>140</height>
+            <height>{{ vscale(140) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>A0000000</colordiffuse>
         </control>
@@ -48,13 +48,13 @@
 
     <control type="group">
         <posx>0</posx>
-        <posy>40</posy>
+        <posy>{{ vscale(40) }}</posy>
         <control type="label">
             <visible>!String.IsEmpty(Window.Property(is.show)) + String.IsEmpty(Window.Property(hide.title))</visible>
             <posx>60</posx>
             <posy>0</posy>
             <width>1720</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -68,7 +68,7 @@
             <posx>60</posx>
             <posy>0</posy>
             <width>1720</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -82,7 +82,7 @@
             <posx>60</posx>
             <posy>0</posy>
             <width>1720</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -95,7 +95,7 @@
             <posx>1860</posx>
             <posy>0</posy>
             <width>300</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font12</font>
             <align>right</align>
             <aligny>center</aligny>
@@ -112,7 +112,7 @@
             <posx>60</posx>
             <posy>0</posy>
             <width>1000</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -124,7 +124,7 @@
             <posx>60</posx>
             <posy>0</posy>
             <width>1000</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -134,9 +134,9 @@
         <control type="label">
             <visible>Player.IsTempo</visible>
             <posx>60</posx>
-            <posy>40</posy>
+            <posy>{{ vscale(40) }}</posy>
             <width>1000</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -148,7 +148,7 @@
             <posx>1860</posx>
             <posy>0</posy>
             <width>800</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>right</align>
             <aligny>center</aligny>
@@ -160,7 +160,7 @@
             <posx>1860</posx>
             <posy>0</posy>
             <width>800</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>right</align>
             <aligny>center</aligny>
@@ -170,9 +170,9 @@
         <control type="label">
             <visible>!String.IsEmpty(Window.Property(media.show_ends)) + !String.IsEmpty(Window.Property(direct.play)) + [String.IsEmpty(Window.Property(no.osd.hide_info)) | !String.IsEmpty(Window.Property(show.OSD))]</visible>
             <posx>1860</posx>
-            <posy>40</posy>
+            <posy>{{ vscale(40) }}</posy>
             <width>800</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>right</align>
             <aligny>center</aligny>
@@ -182,9 +182,9 @@
         <control type="label">
             <visible>!String.IsEmpty(Window.Property(media.show_ends)) + String.IsEmpty(Window.Property(direct.play)) + [String.IsEmpty(Window.Property(no.osd.hide_info)) | !String.IsEmpty(Window.Property(show.OSD))]</visible>
             <posx>1860</posx>
-            <posy>40</posy>
+            <posy>{{ vscale(40) }}</posy>
             <width>800</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>right</align>
             <aligny>center</aligny>
@@ -195,9 +195,9 @@
             <visible>Player.Paused + String.IsEmpty(Window.Property(show.OSD))</visible>
             <animation effect="fade" time="200" delay="200" end="100">Visible</animation>
             <posx>0</posx>
-            <posy>20</posy>
+            <posy>{{ vscale(20) }}</posy>
             <width>1920</width>
-            <height>60</height>
+            <height>{{ vscale(60) }}</height>
             <font>font13</font>
             <align>center</align>
             <aligny>center</aligny>
@@ -214,7 +214,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>1920</width>
-            <height>10</height>
+            <height>{{ vscale(10) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>A0000000</colordiffuse>
         </control>
@@ -223,7 +223,7 @@
             <posx>0</posx>
             <posy>2</posy>
             <width>1</width>
-            <height>6</height>
+            <height>{{ vscale(6) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>EE4E4842</colordiffuse>
         </control>
@@ -232,7 +232,7 @@
             <posx>0</posx>
             <posy>2</posy>
             <width>1</width>
-            <height>6</height>
+            <height>{{ vscale(6) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>FFAC5B00</colordiffuse>
         </control>
@@ -241,7 +241,7 @@
             <posx>0</posx>
             <posy>2</posy>
             <width>1</width>
-            <height>6</height>
+            <height>{{ vscale(6) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>FFE5A00D</colordiffuse>
         </control>
@@ -262,7 +262,7 @@
 <!-- PPI -->
 <control type="group" id="803">
     <bottom>0</bottom>
-    <height>350</height>
+    <height>{{ vscale(350) }}</height>
     <visible>!String.IsEmpty(Window.Property(show.PPI)) + String.IsEmpty(Window.Property(settings.visible)) + String.IsEmpty(Window.Property(playlist.visible))</visible>
     <animation effect="fade" start="0" end="100" time="300">Visible</animation>
     <animation effect="fade" start="100" end="0" time="200">Hidden</animation>
@@ -270,14 +270,14 @@
         <left>10</left>
         <top>-220</top>
         <right>10</right>
-        <height>420</height>
+        <height>{{ vscale(420) }}</height>
         <texture border="40">buttons/dialogbutton-nofo.png</texture>
     </control>
     <control type="grouplist">
         <left>52</left>
         <top>-184</top>
         <width>1786</width>
-        <height>350</height>
+        <height>{{ vscale(350) }}</height>
         <orientation>horizontal</orientation>
         <itemgap>10</itemgap>
         <control type="grouplist">
@@ -286,7 +286,7 @@
             <width>793</width>
             <control type="label">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Player.Process(videodecoder),[COLOR FFE5A00D]$LOCALIZE[31139]:[/COLOR] ]$VAR[VideoHWDecoder, (,)]</label>
                 <font>font14</font>
@@ -295,7 +295,7 @@
             </control>
             <control type="label">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Player.Process(pixformat),[COLOR FFE5A00D]$LOCALIZE[31140]:[/COLOR] ]</label>
                 <font>font14</font>
@@ -304,7 +304,7 @@
             </control>
             <control type="label">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Player.Process(deintmethod),[COLOR FFE5A00D]$LOCALIZE[16038]:[/COLOR] ]</label>
                 <font>font14</font>
@@ -313,7 +313,7 @@
             </control>
             <control type="label">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Player.Process(videowidth),[COLOR FFE5A00D]$LOCALIZE[38031]:[/COLOR] ,x]$INFO[Player.Process(videoheight),, px]$INFO[Player.Process(videodar),$COMMA , AR]$INFO[Player.Process(videofps),$COMMA , FPS]</label>
                 <font>font14</font>
@@ -322,7 +322,7 @@
             </control>
             <control type="textbox">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <autoscroll delay="1000" time="1000" repeat="2000"></autoscroll>
                 <label>[COLOR FFE5A00D]$LOCALIZE[460]:[/COLOR] $INFO[Player.Process(audiochannels),,$COMMA ]$INFO[Player.Process(audiodecoder)]$INFO[Player.Process(audiobitspersample),$COMMA , bits]$INFO[Player.Process(audiosamplerate),$COMMA , Hz]</label>
@@ -331,7 +331,7 @@
             </control>
             <control type="label">
                 <width>793</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[System.Memory(used.percent),[COLOR FFE5A00D]$LOCALIZE[31030]:[/COLOR] ,]</label>
                 <font>font14</font>
@@ -344,7 +344,7 @@
             <width>993</width>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Window.Property(ppi.Status)]</label>
                 <font>font14</font>
@@ -353,7 +353,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Mode:[/COLOR] $INFO[Window.Property(ppi.Mode)]</label>
                 <font>font14</font>
@@ -362,7 +362,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Container:[/COLOR] $INFO[Window.Property(ppi.Container)]</label>
                 <font>font14</font>
@@ -371,7 +371,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Video:[/COLOR] $INFO[Window.Property(ppi.Video)]</label>
                 <font>font14</font>
@@ -380,7 +380,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>$INFO[Window.Property(ppi.Audio),[COLOR FFE5A00D]Audio:[/COLOR] ]$INFO[Window.Property(ppi.Subtitles),   [COLOR FFE5A00D]Subtitle:[/COLOR] ]</label>
                 <font>font14</font>
@@ -389,7 +389,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Server:[/COLOR] $INFO[Window.Property(ppi.User)]</label>
                 <font>font14</font>
@@ -398,7 +398,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Buffer:[/COLOR] $INFO[Player.CacheLevel]%</label>
                 <font>font14</font>
@@ -407,7 +407,7 @@
             </control>
             <control type="label">
                 <width>893</width>
-                <height>50</height>
+                <height>{{ vscale(50) }}</height>
                 <aligny>bottom</aligny>
                 <label>[COLOR FFE5A00D]Buffer:[/COLOR] $INFO[Window.Property(ppi.Buffered)]% (% of Video cached)</label>
                 <font>font14</font>
@@ -420,7 +420,7 @@
         <left>52</left>
         <top>120</top>
         <width>1786</width>
-        <height>50</height>
+        <height>{{ vscale(50) }}</height>
         <aligny>bottom</aligny>
         <label>$INFO[System.CpuUsage,[COLOR FFE5A00D]$LOCALIZE[13271][/COLOR] ]</label>
         <font>font14</font>
@@ -439,7 +439,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>324</width>
-            <height>184</height>
+            <height>{{ vscale(184) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>FF000000</colordiffuse>
         </control>
@@ -447,7 +447,7 @@
             <posx>2</posx>
             <posy>2</posy>
             <width>320</width>
-            <height>180</height>
+            <height>{{ vscale(180) }}</height>
             <fadetime>10</fadetime>
             <texture>$INFO[Window.Property(bif.image)]</texture>
         </control>
@@ -459,8 +459,7 @@
         <posx>360</posx>
         <posy>964</posy>
         <width>1200</width>
-
-        <height>124</height>
+        <height>{{ vscale(124) }}</height>
         <align>center</align>
         <onup>100</onup>
         <itemgap>-40</itemgap>
@@ -470,13 +469,13 @@
         <control type="group" id="421">
             <visible>!String.IsEmpty(Window.Property(nav.repeat))</visible>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <control type="button" id="401">
                 <hitrect x="28" y="28" w="69" h="45" />
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <onup>100</onup>
                 <onright>402</onright>
                 <onleft>412</onleft>
@@ -493,7 +492,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}repeat.png</texture>
                 </control>
                 <control type="image">
@@ -501,7 +500,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture colordiffuse="FFCC7B19">{{ theme.assets.buttons.base }}repeat.png</texture>
                 </control>
                 <control type="image">
@@ -509,7 +508,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture colordiffuse="FFCC7B19">{{ theme.assets.buttons.base }}repeat-one.png</texture>
                 </control>
             </control>
@@ -520,7 +519,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat{{ theme.assets.buttons.focusSuffix }}.png</texture>
                 </control>
                 <control type="image">
@@ -528,7 +527,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat{{ theme.assets.buttons.focusSuffix }}.png</texture>
                 </control>
                 <control type="image">
@@ -536,7 +535,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}repeat-one{{ theme.assets.buttons.focusSuffix }}.png</texture>
                 </control>
             </control>
@@ -548,7 +547,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}shuffle.png</texturenofocus>
@@ -563,7 +562,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}shuffle{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}shuffle.png</texturenofocus>
@@ -575,7 +574,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}settings{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}settings.png</texturenofocus>
@@ -589,7 +588,7 @@
             <posx>30</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus flipx="true"{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus flipx="true"{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -601,7 +600,7 @@
             <posx>30</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus flipx="true" colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus flipx="true" colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -613,7 +612,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus flipx="true" colordiffuse="FFE5A00D">{{ theme.assets.buttons.base }}skip-forward{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus flipx="true"{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}skip-forward.png</texturenofocus>
@@ -626,13 +625,13 @@
                 <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
             {% endif %}
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <control type="button" id="406">
                 <hitrect x="28" y="28" w="69" h="45" />
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>125</width>
-                <height>101</height>
+                <height>{{ vscale(101) }}</height>
                 <onup>100</onup>
                 <onright>407</onright>
                 <onleft>405</onleft>
@@ -650,7 +649,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}pause.png</texture>
                 </control>
                 <control type="image">
@@ -658,7 +657,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}play.png</texture>
                 </control>
             </control>
@@ -669,7 +668,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}pause{{ theme.assets.buttons.focusSuffix }}.png</texture>
                 </control>
                 <control type="image">
@@ -677,7 +676,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>125</width>
-                    <height>101</height>
+                    <height>{{ vscale(101) }}</height>
                     <texture{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}play{{ theme.assets.buttons.focusSuffix }}.png</texture>
                 </control>
             </control>
@@ -688,7 +687,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}stop{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}stop.png</texturenofocus>
@@ -700,7 +699,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}skip-forward{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}skip-forward.png</texturenofocus>
@@ -712,7 +711,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}next.png</texturenofocus>
@@ -724,7 +723,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <texturefocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}next.png</texturenofocus>
             <label> </label>
@@ -737,7 +736,7 @@
             <posx>30</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}pqueue{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}pqueue.png</texturenofocus>
@@ -750,7 +749,7 @@
             <posx>30</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}pqueue{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus colordiffuse="40FFFFFF">{{ theme.assets.buttons.base }}pqueue.png</texturenofocus>
@@ -762,7 +761,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>125</width>
-            <height>101</height>
+            <height>{{ vscale(101) }}</height>
             <font>font12</font>
             <texturefocus{% if theme.buttons.useFocusColor %} colordiffuse="{{ theme.buttons.focusColor|default("FFE5A00D") }}"{% endif %}>{{ theme.assets.buttons.base }}subtitle{{ theme.assets.buttons.focusSuffix }}.png</texturefocus>
             <texturenofocus{% if theme.buttons.useNoFocusColor %} colordiffuse="{{ theme.buttons.noFocusColor|default('99FFFFFF') }}"{% endif %}>{{ theme.assets.buttons.base }}subtitle.png</texturenofocus>
@@ -778,7 +777,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>1920</width>
-            <height>10</height>
+            <height>{{ vscale(10) }}</height>
             <onup>501</onup>
             <ondown>400</ondown>
             <texturefocus>-</texturefocus>
@@ -787,10 +786,10 @@
     </control>
 
     <control type="group" id="500">
-        <animation effect="slide" time="100" start="0,0" end="0,20" reversible="true" condition="Control.HasFocus(501) + String.IsEmpty(Window.Property(has.chapters))">Conditional</animation>
+        <animation effect="slide" time="100" start="0,0" end="0,{{ vscale(20) }}" reversible="true" condition="Control.HasFocus(501) + String.IsEmpty(Window.Property(has.chapters))">Conditional</animation>
 
         <!-- CHAPTERS -->
-        <animation effect="slide" time="100" start="0,0" end="0,-60" reversible="true" condition="Control.HasFocus(501) + !String.IsEmpty(Window.Property(has.chapters)) + !String.IsEmpty(Window.Property(show.chapters))">Conditional</animation>
+        <animation effect="slide" time="100" start="0,0" end="0,{{ vscale(-60) }}" reversible="true" condition="Control.HasFocus(501) + !String.IsEmpty(Window.Property(has.chapters)) + !String.IsEmpty(Window.Property(show.chapters))">Conditional</animation>
         <!-- /CHAPTERS -->
 
         <visible>String.IsEmpty(Window.Property(mouse.mode)) + String.IsEmpty(Window.Property(hide.bigseek)) + [Control.HasFocus(501) | Control.HasFocus(100)] + [!String.IsEmpty(Window.Property(show.chapters)) | String.IsEmpty(Window.Property(has.chapters))]</visible>
@@ -800,7 +799,7 @@
             <posx>-200</posx>
             <posy>5</posy>
             <width>2320</width>
-            <height>6</height>
+            <height>{{ vscale(6) }}</height>
             <texture>script.plex/white-square.png</texture>
             <colordiffuse>A0000000</colordiffuse>
             <visible>String.IsEmpty(Window.Property(has.chapters))</visible>
@@ -819,7 +818,7 @@
             <posx>40</posx>
             <posy>-162</posy>
             <width>auto</width>
-            <height>20</height>
+            <height>{{ vscale(20) }}</height>
             <font>font10</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -831,7 +830,7 @@
             <posx>40</posx>
             <posy>-162</posy>
             <width>auto</width>
-            <height>20</height>
+            <height>{{ vscale(20) }}</height>
             <font>font10</font>
             <align>left</align>
             <aligny>center</aligny>
@@ -845,7 +844,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>1928</width>
-            <height>16</height>
+            <height>{{ vscale(16) }}</height>
             <ondown>100</ondown>
             <onfocus>SetProperty(hide.bigseek,)</onfocus>
             <scrolltime>200</scrolltime>
@@ -857,7 +856,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>16</width>
-                    <height>16</height>
+                    <height>{{ vscale(16) }}</height>
                     <texture>script.plex/indicators/seek-selection-marker.png</texture>
                     <colordiffuse>FF606060</colordiffuse>
                 </control>
@@ -870,7 +869,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>16</width>
-                    <height>16</height>
+                    <height>{{ vscale(16) }}</height>
                     <texture>script.plex/indicators/seek-selection-marker.png</texture>
                     <colordiffuse>FF606060</colordiffuse>
                 </control>
@@ -879,7 +878,7 @@
                     <posx>0</posx>
                     <posy>0</posy>
                     <width>16</width>
-                    <height>16</height>
+                    <height>{{ vscale(16) }}</height>
                     <texture>script.plex/indicators/seek-selection-marker.png</texture>
                     <colordiffuse>FFE5A00D</colordiffuse>
                 </control>
@@ -892,7 +891,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>script.plex/thumb_fallbacks/movie16x9.png</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>CC606060</colordiffuse>
@@ -902,7 +901,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>$INFO[ListItem.Thumb]</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>DDAAAAAA</colordiffuse>
@@ -912,7 +911,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>script.plex/thumb_fallbacks/movie16x9.png</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>FFAAAAAA</colordiffuse>
@@ -922,7 +921,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>$INFO[ListItem.Thumb]</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>FFAAAAAA</colordiffuse>
@@ -930,9 +929,9 @@
                     </control>
                     <control type="label">
                         <posx>40</posx>
-                        <posy>120</posy>
+                        <posy>{{ vscale(120) }}</posy>
                         <width>auto</width>
-                        <height>10</height>
+                        <height>{{ vscale(10) }}</height>
                         <font>font10</font>
                         <align>center</align>
                         <aligny>center</aligny>
@@ -942,9 +941,9 @@
                     </control>
                     <control type="label">
                         <posx>40</posx>
-                        <posy>120</posy>
+                        <posy>{{ vscale(120) }}</posy>
                         <width>auto</width>
-                        <height>10</height>
+                        <height>{{ vscale(10) }}</height>
                         <font>font10</font>
                         <align>center</align>
                         <aligny>center</aligny>
@@ -958,12 +957,12 @@
             <!-- FOCUSED LAYOUT CHAPTERS ####################################### -->
             <focusedlayout width="218" condition="!String.IsEmpty(Window.Property(has.chapters))">
                 <control type="group">
-                    <animation effect="slide" time="100" start="0,0" end="0,-10" reversible="true">Focus</animation>
+                    <animation effect="slide" time="100" start="0,0" end="0,{{ vscale(-10) }}" reversible="true">Focus</animation>
                     <control type="image">
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>script.plex/thumb_fallbacks/movie16x9.png</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>CC909090</colordiffuse>
@@ -973,7 +972,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>$INFO[ListItem.Thumb]</texture>
                         <aspectratio>scale</aspectratio>
                         <colordiffuse>FF666666</colordiffuse>
@@ -983,7 +982,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>script.plex/thumb_fallbacks/movie16x9.png</texture>
                         <aspectratio>scale</aspectratio>
 <!--                                <colordiffuse>FF606060</colordiffuse>-->
@@ -993,7 +992,7 @@
                         <posx>40</posx>
                         <posy>0</posy>
                         <width>178</width>
-                        <height>100</height>
+                        <height>{{ vscale(100) }}</height>
                         <texture>$INFO[ListItem.Thumb]</texture>
                         <aspectratio>scale</aspectratio>
 <!--                                <colordiffuse>FFFFFFFF</colordiffuse>-->
@@ -1001,9 +1000,9 @@
                     </control>
                     <control type="label">
                         <posx>40</posx>
-                        <posy>120</posy>
+                        <posy>{{ vscale(120) }}</posy>
                         <width>auto</width>
-                        <height>10</height>
+                        <height>{{ vscale(10) }}</height>
                         <font>font10</font>
                         <align>center</align>
                         <aligny>center</aligny>
@@ -1013,9 +1012,9 @@
                     </control>
                     <control type="label">
                         <posx>40</posx>
-                        <posy>120</posy>
+                        <posy>{{ vscale(120) }}</posy>
                         <width>auto</width>
-                        <height>10</height>
+                        <height>{{ vscale(10) }}</height>
                         <font>font10</font>
                         <align>center</align>
                         <aligny>center</aligny>
@@ -1040,7 +1039,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>101</width>
-            <height>39</height>
+            <height>{{ vscale(39) }}</height>
             <texture>script.plex/indicators/player-selection-time_box.png</texture>
             <colordiffuse>D0000000</colordiffuse>
         </control>
@@ -1048,7 +1047,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>101</width>
-            <height>40</height>
+            <height>{{ vscale(40) }}</height>
             <font>font10</font>
             <align>center</align>
             <aligny>center</aligny>
@@ -1059,9 +1058,9 @@
     <control type="image">
         <animation effect="fade" time="100" delay="100" end="100">Visible</animation>
         <posx>-6</posx>
-        <posy>39</posy>
+        <posy>{{ vscale(39) }}</posy>
         <width>15</width>
-        <height>7</height>
+        <height>{{ vscale(7) }}</height>
         <texture>script.plex/indicators/player-selection-time_arrow.png</texture>
         <colordiffuse>D0000000</colordiffuse>
     </control>
@@ -1083,7 +1082,7 @@
             <effect type="slide" end="0,100" time="100" delay="100"></effect>
         </animation>
         <width min="200">auto</width>
-        <height>143</height>
+        <height>{{ vscale(143, up=1.1) }}</height>
         <align>center</align>
         <right>0</right>
         <top>0</top>
