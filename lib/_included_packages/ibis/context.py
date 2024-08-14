@@ -13,15 +13,32 @@ builtins = {
 
 # A wrapper around a stack of dictionaries.
 class DataStack:
+    strict_mode = False
 
-    def __init__(self):
-       self.stack = []
+    def __init__(self, strict_mode):
+        self.stack = []
+        self.strict_mode = strict_mode
 
     def __getitem__(self, key):
         for d in reversed(self.stack):
             if key in d:
-                return d[key]
+                try:
+                    return d[key]
+                except KeyError:
+                    if self.strict_mode:
+                        raise
+                    return
         raise KeyError(key)
+
+    def __getattr__(self, key):
+        if key not in self.__dict__:
+            try:
+                return self[key]
+            except KeyError:
+                if self.strict_mode:
+                    raise
+                return
+        return self.__dict__[key]
 
 
 # A Context object is a wrapper around the user's input data. Its `.resolve()` method contains
@@ -30,7 +47,7 @@ class Context:
 
     def __init__(self, data_dict, strict_mode):
         # Stack of data dictionaries for the .resolve() method.
-        self.data = DataStack()
+        self.data = DataStack(strict_mode)
 
         # Standard builtins.
         self.data.stack.append({
@@ -59,6 +76,16 @@ class Context:
     def __getitem__(self, key):
         return self.data[key]
 
+    def __getattr__(self, key):
+        if key not in self.__dict__:
+            try:
+                return self.get(key)
+            except KeyError:
+                if self.strict_mode:
+                    raise
+                return
+        return self.__dict__[key]
+
     def push(self, data=None):
         self.data.stack.append(data or {})
 
@@ -70,6 +97,9 @@ class Context:
             if key in d:
                 return d[key]
         return default
+
+    def set_global(self, key, value):
+        self.data.stack[2][key] = value
 
     def update(self, data_dict):
         self.data.stack[-1].update(data_dict)
