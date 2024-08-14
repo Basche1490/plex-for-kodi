@@ -2,6 +2,7 @@
 import os
 import glob
 
+from pprint import pformat
 from kodi_six import xbmcvfs, xbmc
 
 from lib.logging import log as LOG, log_error as ERROR
@@ -49,6 +50,7 @@ class TemplateEngine(object):
     custom_template_dir = None
     initialized = False
     context = None
+    debug_log = None
     TEMPLATES = None
 
     def init(self, target_dir, template_dir, custom_template_dir):
@@ -116,7 +118,8 @@ class TemplateEngine(object):
 
     def apply(self, theme, update_callback, templates=None):
         templates = self.TEMPLATES if templates is None else templates
-        theme_data = prepare_template_data(theme, self.context)
+        template_context = prepare_template_data(theme, self.context)
+        self.debug_log("Final template context: {}".format(pformat(template_context)))
 
         progress = {"at": 0, "steps": len(templates)}
 
@@ -137,7 +140,7 @@ class TemplateEngine(object):
         for template in templates:
             fn = "script-plex-{}{}.xml.tpl".format(template, ".custom" if theme == "custom" and
                                                    template in custom_templates else "")
-            compiled_template = self.compile(fn, theme_data)
+            compiled_template = self.compile(fn, template_context)
             if self.write(template, compiled_template):
                 applied.append(template)
             else:
