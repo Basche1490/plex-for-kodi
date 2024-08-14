@@ -95,7 +95,7 @@ PROFILE = translatePath(ADDON.getAddonInfo('profile'))
 
 
 DEF_THEME = "modern-colored"
-THEME_VERSION = 20
+THEME_VERSION = 21
 
 
 def getChannelMapping():
