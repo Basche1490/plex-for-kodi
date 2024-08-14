@@ -187,6 +187,7 @@ class Expression:
                         self.varstring = lambda *args: apply_math_context(expr, matheval, args)
 
                         self.func_args = func_args
+                        self.func_kwargs = {}
                         return
 
                     self.literal = matheval
@@ -196,7 +197,7 @@ class Expression:
                     pass
 
             self.is_literal = False
-            self.is_func_call, self.varstring, self.func_args = self._try_parse_as_func_call(expr)
+            self.is_func_call, self.varstring, self.func_args, self.func_kwargs = self._try_parse_as_func_call(expr)
             if not self.is_func_call and not self.re_varstring.match(expr):
                 msg = "Unparsable expression '{}'.".format(expr)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token), None)
@@ -204,36 +205,47 @@ class Expression:
     def _try_parse_as_func_call(self, expr):
         match = self.re_func_call.match(expr)
         if not match:
-            return False, expr, []
+            return False, expr, [], {}
         func_name = match.group(1)
         func_args = utils.splitc(match.group(2), ',', True, True)
+        func_kwargs = {}
         for index, arg in enumerate(func_args):
+            kwarg = None
+            if "=" in arg:
+                func_args.pop(index)
+                kwarg, arg = arg.split("=", 1)
             try:
-                func_args[index] = ast.literal_eval(arg)
+                if kwarg:
+                    func_kwargs[kwarg] = ast.literal_eval(arg)
+                else:
+                    func_args[index] = ast.literal_eval(arg)
             except Exception:
                 # try resolving as variable
                 if arg.isidentifier():
-                    func_args[index] = ContextVariable(arg)
+                    if kwarg:
+                        func_kwargs[kwarg] = ContextVariable(arg)
+                    else:
+                        func_args[index] = ContextVariable(arg)
                     continue
 
                 msg = "Unparsable argument '{}'. Arguments must be valid Python literals.".format(arg)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token))
 
-        return True, func_name, func_args
+        return True, func_name, func_args, func_kwargs
 
     def _parse_filters(self, filter_list):
         for filter_expr in filter_list:
-            _, filter_name, filter_args = self._try_parse_as_func_call(filter_expr)
+            _, filter_name, filter_args, filter_kwargs = self._try_parse_as_func_call(filter_expr)
             if filter_name in filters.filtermap:
-                self.filters.append((filter_name, filters.filtermap[filter_name], filter_args))
+                self.filters.append((filter_name, filters.filtermap[filter_name], filter_args, filter_kwargs))
             else:
                 msg = "Unrecognised filter name '{}'.".format(filter_name)
                 raise errors.TemplateSyntaxError(msg, self.token)
 
     def _apply_filters_to_literal(self, obj):
-        for name, func, args in self.filters:
+        for name, func, args, kwargs in self.filters:
             try:
-                obj = func(obj, *args)
+                obj = func(obj, *args, **kwargs)
             except Exception as err:
                 msg = "Error applying filter '{}'. ".format(name)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token), err)
@@ -262,10 +274,15 @@ class Expression:
                 for index, arg in enumerate(self.func_args):
                     func_args.append(self._resolve_arg_to_variable(arg, context))
 
+                fkw = {}
+                for kwarg, value in self.func_kwargs.items():
+                    fkw[kwarg] = self._resolve_arg_to_variable(value, context)
+
                 if getattr(obj, "with_context", False):
-                    obj = obj(*func_args, context=context)
+                    fkw["context"] = context
+                    obj = obj(*func_args, **fkw)
                 else:
-                    obj = obj(*func_args)
+                    obj = obj(*func_args, **fkw)
 
                 # a filter/builtin might return a masked variable name whose content should be resolved in the current
                 # context. try to do so.
@@ -279,16 +296,21 @@ class Expression:
         return self._apply_filters_to_variable(obj, context)
 
     def _apply_filters_to_variable(self, obj, context):
-        for name, func, args in self.filters:
+        for name, func, args, kwargs in self.filters:
             try:
                 _args = []
                 for index, arg in enumerate(args):
                     _args.append(self._resolve_arg_to_variable(arg, context))
 
+                fkw = {}
+                for kwarg, value in kwargs.items():
+                    fkw[kwarg] = self._resolve_arg_to_variable(value, context)
+
                 if getattr(func, "with_context", False):
-                    obj = func(obj, *_args, context=context)
+                    fkw["context"] = context
+                    obj = func(obj, *_args, **fkw)
                 else:
-                    obj = func(obj, *_args)
+                    obj = func(obj, *_args, **fkw)
             except Exception as err:
                 msg = "Error applying filter '{}'.".format(name)
                 errors.raise_(errors.TemplateRenderingError(msg, self.token), err)
