@@ -11,6 +11,14 @@ builtins = {
 }
 
 
+class ContextDict(dict):
+    def __getattr__(self, attr):
+        return self.get(attr)
+
+    def __setattr__(self, attr, value):
+        self[attr] = value
+
+
 # A wrapper around a stack of dictionaries.
 class DataStack:
     strict_mode = False
@@ -43,23 +51,23 @@ class DataStack:
 
 # A Context object is a wrapper around the user's input data. Its `.resolve()` method contains
 # the lookup-logic for resolving dotted variable names.
-class Context:
+class Context(object):
 
     def __init__(self, data_dict, strict_mode):
         # Stack of data dictionaries for the .resolve() method.
         self.data = DataStack(strict_mode)
 
         # Standard builtins.
-        self.data.stack.append({
+        self.data.stack.append(ContextDict({
             'context': self,
             'is_defined': self.is_defined,
-        })
+        }))
 
         # User-configurable builtins.
-        self.data.stack.append(builtins)
+        self.data.stack.append(ContextDict(builtins))
 
         # Instance-specific data.
-        self.data.stack.append(data_dict)
+        self.data.stack.append(ContextDict(data_dict))
 
         # Nodes can store state information here to avoid threading issues.
         self.stash = {}
@@ -87,7 +95,7 @@ class Context:
         return self.__dict__[key]
 
     def push(self, data=None):
-        self.data.stack.append(data or {})
+        self.data.stack.append(ContextDict(data or {}))
 
     def pop(self):
         self.data.stack.pop()

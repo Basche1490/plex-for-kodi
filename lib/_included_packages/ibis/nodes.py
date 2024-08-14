@@ -155,10 +155,17 @@ class Expression:
     def __init__(self, expr, token):
         self.token = token
         self.filters = []
+        self.literal = None
+        self.is_literal = False
+        self.varstring = None
+        self.func_args = None
+        self.func_kwargs = None
+        self.is_func_call = False
+        self.dyn_args = False
         pipe_split = utils.splitc(expr.strip(), '|', strip=True)
         self._parse_primary_expr(pipe_split[0])
         self._parse_filters(pipe_split[1:])
-        if self.is_literal:
+        if self.is_literal and not self.dyn_args:
             self.literal = self._apply_filters_to_literal(self.literal)
 
     def _parse_primary_expr(self, expr):
@@ -197,7 +204,7 @@ class Expression:
                     pass
 
             self.is_literal = False
-            self.is_func_call, self.varstring, self.func_args, self.func_kwargs = self._try_parse_as_func_call(expr)
+            self.is_func_call, self.dyn_args, self.varstring, self.func_args, self.func_kwargs = self._try_parse_as_func_call(expr)
             if not self.is_func_call and not self.re_varstring.match(expr):
                 msg = "Unparsable expression '{}'.".format(expr)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token), None)
@@ -205,10 +212,11 @@ class Expression:
     def _try_parse_as_func_call(self, expr):
         match = self.re_func_call.match(expr)
         if not match:
-            return False, expr, [], {}
+            return False, False, expr, [], {}
         func_name = match.group(1)
         func_args = utils.splitc(match.group(2), ',', True, True)
         func_kwargs = {}
+        dyn_args = False
         for index, arg in enumerate(func_args):
             kwarg = None
             if "=" in arg:
@@ -226,33 +234,41 @@ class Expression:
                         func_kwargs[kwarg] = ContextVariable(arg)
                     else:
                         func_args[index] = ContextVariable(arg)
+                    dyn_args = True
                     continue
 
                 msg = "Unparsable argument '{}'. Arguments must be valid Python literals.".format(arg)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token))
 
-        return True, func_name, func_args, func_kwargs
+        return True, dyn_args, func_name, func_args, func_kwargs
 
     def _parse_filters(self, filter_list):
         for filter_expr in filter_list:
-            _, filter_name, filter_args, filter_kwargs = self._try_parse_as_func_call(filter_expr)
+            _, dyn_args, filter_name, filter_args, filter_kwargs = self._try_parse_as_func_call(filter_expr)
             if filter_name in filters.filtermap:
-                self.filters.append((filter_name, filters.filtermap[filter_name], filter_args, filter_kwargs))
+                self.filters.append((filter_name, filters.filtermap[filter_name], filter_args, filter_kwargs, dyn_args))
             else:
                 msg = "Unrecognised filter name '{}'.".format(filter_name)
                 raise errors.TemplateSyntaxError(msg, self.token)
 
     def _apply_filters_to_literal(self, obj):
-        for name, func, args, kwargs in self.filters:
+        for filt in self.filters[:]:
+            name, func, args, kwargs, dyn_args = filt
+            if dyn_args:
+                continue
             try:
                 obj = func(obj, *args, **kwargs)
+                self.filters.remove(filt)
             except Exception as err:
                 msg = "Error applying filter '{}'. ".format(name)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token), err)
         return obj
 
     def eval(self, context):
-        if self.is_literal:
+        if self.is_literal and not self.dyn_args:
+            if self.filters:
+                # we have filters left
+                return self._apply_filters_to_variable(self.literal, context)
             return self.literal
         else:
             return self._resolve_variable(context)
@@ -296,7 +312,7 @@ class Expression:
         return self._apply_filters_to_variable(obj, context)
 
     def _apply_filters_to_variable(self, obj, context):
-        for name, func, args, kwargs in self.filters:
+        for name, func, args, kwargs, _ in self.filters:
             try:
                 _args = []
                 for index, arg in enumerate(args):
