@@ -1,45 +1,7 @@
 {% extends "base.xml.tpl" %}
 {% block headers %}<defaultcontrol>406</defaultcontrol>{% endblock %}
 {% block controls %}
-<control type="group">
-    <visible>String.IsEmpty(Window.Property(use_solid_background))</visible>
-    <control type="image">
-        <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture background="true">script.plex/home/background-fallback_black.png</texture>
-    </control>
-    <control type="image">
-        <visible>!String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture background="true">script.plex/home/background-fallback.png</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
-    <control type="image">
-        <visible>!String.IsEmpty(Window.Property(dynamic_backgrounds))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture background="true" fallback="script.plex/home/background-fallback_black.png">$INFO[Window.Property(background_static)]</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
-    <control type="image">
-        <visible>!String.IsEmpty(Window.Property(dynamic_backgrounds))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <fadetime>1000</fadetime>
-        <texture background="true">$INFO[Player.Art(landscape)]</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
-</control>
+{% include "includes/default_background.xml.tpl" with background_source="$INFO[Player.Art(landscape)]" %}
 
 <control type="image">
     <posx>75</posx>
@@ -197,7 +159,7 @@
     <defaultcontrol>406</defaultcontrol>
     <hitrect x="460" y="998" w="1000" h="55" />
     <posx>360</posx>
-    <posy>{{ vscale(964) }}</posy>
+    <posy>964</posy>
     <width>1200</width>
 
     <height>{{ vscale(124) }}</height>
@@ -214,7 +176,7 @@
 
 <control type="group">
     <posx>0</posx>
-    <posy>{{ vscale(940) }}</posy>
+    <posy>940</posy>
     <control type="button" id="100">
         <enable>Player.HasAudio</enable>
         <hitrect x="0" y="-19" w="1920" h="48" />
@@ -293,7 +255,7 @@
 <control type="group" id="202">
     <visible>Control.HasFocus(100)</visible>
     <posx>0</posx>
-    <posy>{{ vscale(896) }}</posy>
+    <posy>896</posy>
     <control type="group" id="203">
         <posx>-50</posx>
         <posy>0</posy>

@@ -1,5 +1,4 @@
 {% extends "library.xml.tpl" %}
-
 {% block filteropts_grouplist %}
 <control type="grouplist">
     <visible>String.IsEmpty(Window.Property(hide.filteroptions))</visible>

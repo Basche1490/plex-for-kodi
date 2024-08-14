@@ -230,10 +230,10 @@ class Expression:
         func_args = utils.splitc(match.group(2), ',', True, True)
         func_kwargs = {}
         dyn_args = False
-        for index, arg in enumerate(func_args):
+        for index, arg in enumerate(func_args[:]):
             kwarg = None
             if "=" in arg:
-                func_args.pop(index)
+                func_args.remove(arg)
                 kwarg, arg = arg.split("=", 1)
             try:
                 if kwarg:

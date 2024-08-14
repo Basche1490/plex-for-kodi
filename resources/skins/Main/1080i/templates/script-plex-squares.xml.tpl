@@ -93,8 +93,8 @@
 {% endblock filteropts_grouplist %}
 {% block content %}
 <control type="group" id="50">
-    <animation effect="slide" time="200" end="0,-135" condition="Integer.IsGreater(Container(101).ListItem.Property(index),5)">Conditional</animation>
-    <animation effect="slide" time="200" end="0,-200" condition="Integer.IsGreater(Container(101).ListItem.Property(index),5) + Integer.IsGreater(Container(101).Position,5)">Conditional</animation>
+    <animation effect="slide" time="200" end="0,{{ vscale(-135) }}" condition="Integer.IsGreater(Container(101).ListItem.Property(index),5)">Conditional</animation>
+    <animation effect="slide" time="200" end="0,{{ vscale(-200) }}" condition="Integer.IsGreater(Container(101).ListItem.Property(index),5) + Integer.IsGreater(Container(101).Position,5)">Conditional</animation>
     <posx>0</posx>
     <posy>{{ vscale(135) }}</posy>
     <defaultcontrol>101</defaultcontrol>
@@ -137,7 +137,7 @@
             <posx>0</posx>
             <posy>0</posy>
             <width>1800</width>
-            <height>{{ vscale(1280) }}</height>
+            <height>1280</height>
             <onup>300</onup>
             <onright>151</onright>
             <scrolltime>200</scrolltime>
@@ -198,8 +198,8 @@
                     <posx>55</posx>
                     <posy>{{ vscale(97) }}</posy>
                     <control type="group">
-                        <animation effect="zoom" start="100" end="110" time="100" center="127,127" reversible="false">Focus</animation>
-                        <animation effect="zoom" start="110" end="100" time="100" center="127,127" reversible="false">UnFocus</animation>
+                        <animation effect="zoom" start="100" end="110" time="100" center="127,{{ vscale(127) }}" reversible="false">Focus</animation>
+                        <animation effect="zoom" start="110" end="100" time="100" center="127,{{ vscale(127) }}" reversible="false">UnFocus</animation>
                         <posx>0</posx>
                         <posy>0</posy>
                         <control type="group">
@@ -293,18 +293,18 @@
     <posx>1780</posx>
     <posy>{{ vscale(150) }}</posy>
     <width>20</width>
-    <height>{{ vscale(920) }}</height>
+    <height>920</height>
     <control type="list" id="151">
         <posx>0</posx>
         <posy>0</posy>
         <width>34</width>
-        <height>{{ vscale(1050) }}</height>
+        <height>1050</height>
         <onleft>100</onleft>
         <onright>152</onright>
         <scrolltime>200</scrolltime>
         <orientation>vertical</orientation>
         <!-- ITEM LAYOUT ########################################## -->
-        <itemlayout height="{{ vscale(34) }}">
+        <itemlayout height="34">
             <control type="group">
                 <posx>0</posx>
                 <posy>0</posy>
@@ -340,7 +340,7 @@
         </itemlayout>
 
         <!-- FOCUSED LAYOUT ####################################### -->
-        <focusedlayout height="{{ vscale(34) }}">
+        <focusedlayout height="34">
             <control type="group">
                 <posx>0</posx>
                 <posy>0</posy>
@@ -395,9 +395,9 @@
 <control type="scrollbar" id="152">
     <hitrect x="1820" y="150" w="100" h="910" />
     <left>1860</left>
-    <top>150</top>
+    <top>{{ vscale(150) }}</top>
     <width>12</width>
-    <height>{{ vscale(910) }}</height>
+    <height>910</height>
     <visible>true</visible>
     <texturesliderbackground colordiffuse="40000000" border="5">script.plex/white-square-rounded.png</texturesliderbackground>
     <texturesliderbar colordiffuse="77FFFFFF" border="5">script.plex/white-square-rounded.png</texturesliderbar>

@@ -197,7 +197,8 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
 
         try:
             if self.started:
-                self.onReInit()
+                if hasattr(self, "onReInit"):
+                    self.onReInit()
             else:
                 self.started = True
                 if LAST_BG_URL:
@@ -206,7 +207,8 @@ class BaseWindow(XMLBase, xbmcgui.WindowXML, BaseFunctions):
                 if self.__class__.__name__ not in ("HomeWindow", "BackgroundWindow"):
                     plexapp.util.APP.on('close.windows', self.onCloseSignal)
 
-                self.onFirstInit()
+                if hasattr(self, "onFirstInit"):
+                    self.onFirstInit()
                 self.finishedInit = True
 
         except util.NoDataException:

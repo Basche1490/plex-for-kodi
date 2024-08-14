@@ -6,43 +6,6 @@
 
 {% block content %}
     <control type="group">
-        <visible>String.IsEmpty(Window.Property(use_solid_background))</visible>
-        <control type="image">
-            <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true">script.plex/home/background-fallback_black.png</texture>
-        </control>
-        <control type="image">
-            <visible>!String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true">script.plex/home/background-fallback.png</texture>
-        </control>
-        <control type="image">
-            <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true" fallback="script.plex/home/background-fallback_black.png">$INFO[Window.Property(background_static)]</texture>
-        </control>
-        <control type="image">
-            <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <fadetime>1000</fadetime>
-            <texture background="true">$INFO[Window.Property(background)]</texture>
-        </control>
-    </control>
-
-    <control type="group">
         <posx>60</posx>
         <posy>{{ vscale(248) }}</posy>
         <control type="group">
@@ -184,7 +147,7 @@
                 <posx>0</posx>
                 <posy>0</posy>
                 <width>1170</width>
-                <height>{{ vscale(945) }}</height>
+                <height>945</height>
                 <onup>600</onup>
                 <onright>151</onright>
                 <onleft>304</onleft>
@@ -354,8 +317,8 @@
                 <hitrect x="1108" y="33" w="90" h="879" />
                 <left>1128</left>
                 <top>33</top>
-                <width>10</width>
-                <height>{{ vscale(879) }}</height>
+                <width>12</width>
+                <height>879</height>
                 <onleft>101</onleft>
                 <visible>true</visible>
                 <texturesliderbackground colordiffuse="40000000" border="5">script.plex/white-square-rounded.png</texturesliderbackground>
@@ -375,20 +338,20 @@
         <visible>String.IsEqual(Window(10000).Property(script.plex.sort),titleSort) + Integer.IsGreater(Container(101).NumItems,0) + String.IsEmpty(Window.Property(drawing))</visible>
         <defaultcontrol>151</defaultcontrol>
         <posx>1830</posx>
-        <posy>{{ vscale(150) }}</posy>
+        <posy>{{ vscale(135) + 33 }}</posy>
         <width>20</width>
-        <height>{{ vscale(920) }}</height>
+        <height>920</height>
         <control type="list" id="151">
             <posx>0</posx>
             <posy>0</posy>
             <width>34</width>
-            <height>{{ vscale(1050) }}</height>
+            <height>1050</height>
             <onleft>100</onleft>
             <onright>152</onright>
             <scrolltime>200</scrolltime>
             <orientation>vertical</orientation>
             <!-- ITEM LAYOUT ########################################## -->
-            <itemlayout height="{{ vscale(34) }}">
+            <itemlayout height="34">
                 <control type="group">
                     <posx>0</posx>
                     <posy>0</posy>
@@ -424,7 +387,7 @@
             </itemlayout>
 
             <!-- FOCUSED LAYOUT ####################################### -->
-            <focusedlayout height="{{ vscale(34) }}">
+            <focusedlayout height="34">
                 <control type="group">
                     <posx>0</posx>
                     <posy>0</posy>

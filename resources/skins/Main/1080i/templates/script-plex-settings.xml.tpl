@@ -70,7 +70,7 @@
 
     <control type="group" id="50">
         <posx>248</posx>
-        <posy>{{ vscale(131.5) }}</posy>
+        <posy>131.5</posy>
         <defaultcontrol always="true">75</defaultcontrol>
         <control type="list" id="75">
             <posx>0</posx>
@@ -176,7 +176,7 @@
             <posx>604</posx>
             <posy>0</posy>
             <width>776</width>
-            <height>715</height>
+            <height>{{ 715 + 715 - vscale(715) }}</height>
             <onleft>75</onleft>
             <onright>150</onright>
             <scrolltime>200</scrolltime>
@@ -405,7 +405,7 @@
             <posx>1383</posx>
             <posy>0</posy>
             <width>845</width>
-            <height>715</height>
+            <height>{{ 715 + 715 - vscale(715) }}</height>
             <onleft>100</onleft>
             <scrolltime>200</scrolltime>
             <orientation>vertical</orientation>
@@ -542,8 +542,8 @@
             <width>40</width>
             <height>{{ vscale(40) }}</height>
             <control type="button" id="201">
-                <animation effect="zoom" start="100" end="177" time="100" center="20,20" reversible="false">Focus</animation>
-                <animation effect="zoom" start="177" end="100" time="100" center="20,20" reversible="false">UnFocus</animation>
+                <animation effect="zoom" start="100" end="177" time="100" center="20,{{ vscale(20) }}" reversible="false">Focus</animation>
+                <animation effect="zoom" start="177" end="100" time="100" center="20,{{ vscale(20) }}" reversible="false">UnFocus</animation>
                 <width>40</width>
                 <height>{{ vscale(40) }}</height>
                 <onright>204</onright>

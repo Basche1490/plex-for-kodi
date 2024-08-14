@@ -7,7 +7,7 @@ import copy
 from .core import engine
 # noinspection PyUnresolvedReferences
 from lib.util import (DEF_THEME, ADDON, PROFILE, getSetting, translatePath, THEME_VERSION, setSetting, DEBUG_LOG, LOG,
-                      T, MONITOR, xbmcvfs, addonSettings, DISPLAY_RESOLUTION)
+                      T, MONITOR, xbmcvfs, addonSettings, DISPLAY_RESOLUTION, NEEDS_SCALING)
 from .context import TEMPLATE_CONTEXTS
 from .util import deep_update
 from lib.os_utils import fast_glob
@@ -62,7 +62,7 @@ def render_templates(theme=None, templates=None, force=False):
             overrides = {
                 "core": {
                     "resolution": DISPLAY_RESOLUTION,
-                    "needs_scaling": DISPLAY_RESOLUTION != [1920, 1080]
+                    "needs_scaling": NEEDS_SCALING
                 },
                 "indicators": {
                     "START": {

@@ -621,8 +621,8 @@
 
         <control type="group" id="426">
             {% if theme.buttons.zoomPlayButton %}
-                <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false" condition="Control.HasFocus(406)">Conditional</animation>
-                <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
+                <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="Control.HasFocus(406)">Conditional</animation>
+                <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="!Control.HasFocus(406)">Conditional</animation>
             {% endif %}
             <width>125</width>
             <height>{{ vscale(101) }}</height>

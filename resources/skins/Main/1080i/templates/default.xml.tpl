@@ -1,45 +1,7 @@
 {% extends "base.xml.tpl" %}{# this extends base and adds background and default header blocks #}
 {% block controls %}
     {% block background %}
-    <control type="group">
-        <visible>String.IsEmpty(Window.Property(use_solid_background))</visible>
-        <control type="image">
-            <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true">script.plex/home/background-fallback_black.png</texture>
-        </control>
-        <control type="image">
-            <visible>!String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true">script.plex/home/background-fallback.png</texture>
-            {% include "includes/scale_background.xml.tpl" %}
-        </control>
-        <control type="image">
-            <visible>!String.IsEmpty(Window.Property(dynamic_backgrounds))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <texture background="true" fallback="script.plex/home/background-fallback_black.png">$INFO[Window.Property(background_static)]</texture>
-            {% include "includes/scale_background.xml.tpl" %}
-        </control>
-        <control type="image">
-            <visible>!String.IsEmpty(Window.Property(dynamic_backgrounds))</visible>
-            <posx>0</posx>
-            <posy>0</posy>
-            <width>1920</width>
-            <height>1080</height>
-            <fadetime>1000</fadetime>
-            <texture background="true">$INFO[Window.Property(background)]</texture>
-            {% include "includes/scale_background.xml.tpl" %}
-        </control>
-    </control>
+        {% include "includes/default_background.xml.tpl" %}
     {% endblock %}
     <!-- block content -->
     {% block content %}{% endblock %}
@@ -77,8 +39,8 @@
                 <width>40</width>
                 <height>{{ vscale(40) }}</height>
                 <control type="button" id="201">
-                    <animation effect="zoom" start="100" end="177" time="100" center="20,20" reversible="false">Focus</animation>
-                    <animation effect="zoom" start="177" end="100" time="100" center="20,20" reversible="false">UnFocus</animation>
+                    <animation effect="zoom" start="100" end="177" time="100" center="20,{{ vscale(20) }}" reversible="false">Focus</animation>
+                    <animation effect="zoom" start="177" end="100" time="100" center="20,{{ vscale(20) }}" reversible="false">UnFocus</animation>
                     <width>40</width>
                     <height>{{ vscale(40) }}</height>
                     <onright>202</onright>
@@ -95,8 +57,8 @@
                 <width>40</width>
                 <height>{{ vscale(40) }}</height>
                 <control type="button" id="202">
-                    <animation effect="zoom" start="100" end="177" time="100" center="20,20" reversible="false">Focus</animation>
-                    <animation effect="zoom" start="177" end="100" time="100" center="20,20" reversible="false">UnFocus</animation>
+                    <animation effect="zoom" start="100" end="177" time="100" center="20,{{ vscale(20) }}" reversible="false">Focus</animation>
+                    <animation effect="zoom" start="177" end="100" time="100" center="20,{{ vscale(20) }}" reversible="false">UnFocus</animation>
                     <width>40</width>
                     <height>{{ vscale(40) }}</height>
                     <onright>204</onright>

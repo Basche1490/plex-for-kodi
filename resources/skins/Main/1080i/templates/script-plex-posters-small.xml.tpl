@@ -155,8 +155,8 @@
                     <posx>55</posx>
                     <posy>{{ vscale(137) }}</posy>
                     <control type="group">
-                        <animation effect="zoom" start="100" end="110" time="100" center="127,185" reversible="false">Focus</animation>
-                        <animation effect="zoom" start="110" end="100" time="100" center="127,185" reversible="false">UnFocus</animation>
+                        <animation effect="zoom" start="100" end="110" time="100" center="127,{{ vscale(185) }}" reversible="false">Focus</animation>
+                        <animation effect="zoom" start="110" end="100" time="100" center="127,{{ vscale(185) }}" reversible="false">UnFocus</animation>
                         <posx>0</posx>
                         <posy>0</posy>
                         <control type="image">
@@ -264,7 +264,7 @@
     <visible>String.IsEqual(Window(10000).Property(script.plex.sort),titleSort) + Integer.IsGreater(Container(101).NumItems,0) + String.IsEmpty(Window.Property(drawing))</visible>
     <defaultcontrol>151</defaultcontrol>
     <posx>1810</posx>
-    <posy>150</posy>
+    <posy>{{ vscale(150) }}</posy>
     <width>20</width>
     <height>920</height>
     <control type="list" id="151">
@@ -368,9 +368,9 @@
 <control type="scrollbar" id="152">
     <hitrect x="1820" y="150" w="100" h="910" />
     <left>1860</left>
-    <top>150</top>
+    <top>{{ vscale(150) }}</top>
     <width>12</width>
-    <height>{{ vscale(910) }}</height>
+    <height>910</height>
     <visible>true</visible>
     <texturesliderbackground colordiffuse="40000000" border="5">script.plex/white-square-rounded.png</texturesliderbackground>
     <texturesliderbar colordiffuse="77FFFFFF" border="5">script.plex/white-square-rounded.png</texturesliderbar>

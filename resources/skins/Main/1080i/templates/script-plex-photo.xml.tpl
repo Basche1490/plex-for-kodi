@@ -6,43 +6,7 @@
 
 {% block controls %}
 <control type="group">
-    <visible>String.IsEmpty(Window.Property(use_solid_background))</visible>
-    <control type="image">
-        <visible>String.IsEmpty(Window.Property(use_solid_background)) + String.IsEmpty(Window.Property(use_bg_fallback)) + String.IsEmpty(Window.Property(background_static))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture>script.plex/home/background-fallback_black.png</texture>
-    </control>
-    <control type="image">
-        <visible>!String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture>script.plex/home/background-fallback.png</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
-    <control type="image">
-        <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <texture background="true">$INFO[Window.Property(background_static)]</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
-    <control type="image">
-        <visible>String.IsEmpty(Window.Property(use_bg_fallback))</visible>
-        <posx>0</posx>
-        <posy>0</posy>
-        <width>1920</width>
-        <height>1080</height>
-        <fadetime>1000</fadetime>
-        <texture background="true">$INFO[Window.Property(background)]</texture>
-        {% include "includes/scale_background.xml.tpl" %}
-    </control>
+    {% include "includes/default_background.xml.tpl" %}
     <control type="image" id="600">
         <!-- Doesn't work for all aspects -->
         <!-- <animation effect="zoom" start="56" end="100" time="200" center="960,540" reversible="false" condition="String.IsEqual(Window.Property(rotate),90) | String.IsEqual(Window.Property(rotate),270)">Conditional</animation>

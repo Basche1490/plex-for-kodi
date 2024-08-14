@@ -1,27 +1,34 @@
 {% extends "base.xml.tpl" %}
 {% block controls %}
 <control type="image">
-    <visible>!String.IsEmpty(Window.Property(pin.image.0))</visible>
     <posx>0</posx>
     <posy>0</posy>
     <width>1920</width>
     <height>1080</height>
+    <texture background="true">script.plex/home/background-fallback_black.png</texture>
+</control>
+<control type="image">
+    <visible>!String.IsEmpty(Window.Property(pin.image.0))</visible>
+    <posx>0</posx>
+    <posy>{% if core.needs_scaling %}{{ vperc(vscale(1080)) }}{% else %}1080{% endif %}</posy>
+    <width>1920</width>
+    <height>{{ vscale(1080) }}</height>
     <texture>script.plex/sign_in/pin-display.jpg</texture>
 </control>
 <control type="image">
     <visible>String.IsEmpty(Window.Property(pin.image.0)) + String.IsEmpty(Window.Property(linking))</visible>
     <posx>0</posx>
-    <posy>0</posy>
+    <posy>{% if core.needs_scaling %}{{ vperc(vscale(1080)) }}{% else %}1080{% endif %}</posy>
     <width>1920</width>
-    <height>1080</height>
+    <height>{{ vscale(1080) }}</height>
     <texture>script.plex/sign_in/generating-code.jpg</texture>
 </control>
 <control type="image">
     <visible>!String.IsEmpty(Window.Property(linking))</visible>
     <posx>0</posx>
-    <posy>0</posy>
+    <posy>{% if core.needs_scaling %}{{ vperc(vscale(1080)) }}{% else %}1080{% endif %}</posy>
     <width>1920</width>
-    <height>1080</height>
+    <height>{{ vscale(1080) }}</height>
     <texture>script.plex/sign_in/linking-account.jpg</texture>
 </control>
 

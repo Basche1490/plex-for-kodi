@@ -889,7 +889,7 @@ class LibraryWindow(mixins.PlaybackBtnMixin, kodigui.MultiWindow, windowutils.Ut
                 for k in ('year', 'genre', 'contentRating', 'network', 'collection', 'actor', 'labels'):
                     options.append(optionsMap[k])
         elif self.section.TYPE == 'artist':
-            for k in ('genre', 'country', 'collection', 'track'):
+            for k in ('genre', 'country', 'collection'):
                 options.append(optionsMap[k])
         elif self.section.TYPE == 'photo':
             for k in ('year', 'make', 'model', 'aperture', 'exposure', 'iso', 'lens', 'labels'):

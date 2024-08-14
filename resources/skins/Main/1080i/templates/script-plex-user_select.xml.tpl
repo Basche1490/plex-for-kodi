@@ -90,8 +90,8 @@
 
         <control type="button" id="404">
             <enable>MusicPlayer.HasPrevious</enable>
-            <animation effect="zoom" start="100" end="124" time="100" center="93,50" reversible="false">Focus</animation>
-            <animation effect="zoom" start="124" end="100" time="100" center="93,50" reversible="false">UnFocus</animation>
+            <animation effect="zoom" start="100" end="124" time="100" center="93,{{ vscale(50) }}" reversible="false">Focus</animation>
+            <animation effect="zoom" start="124" end="100" time="100" center="93,{{ vscale(50) }}" reversible="false">UnFocus</animation>
             <hitrect x="28" y="28" w="69" h="45" />
             <posx>30</posx>
             <posy>0</posy>
@@ -104,8 +104,8 @@
             <label> </label>
         </control>
         <control type="togglebutton" id="406">
-            <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false">Focus</animation>
-            <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false">UnFocus</animation>
+            <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false">Focus</animation>
+            <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false">UnFocus</animation>
             <hitrect x="28" y="28" w="69" h="45" />
             <posx>0</posx>
             <posy>0</posy>
@@ -122,8 +122,8 @@
         </control>
         <control type="button" id="409">
             <enable>MusicPlayer.HasNext</enable>
-            <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false">Focus</animation>
-            <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false">UnFocus</animation>
+            <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false">Focus</animation>
+            <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false">UnFocus</animation>
             <hitrect x="28" y="28" w="69" h="45" />
             <posx>0</posx>
             <posy>0</posy>
@@ -136,8 +136,8 @@
             <label> </label>
         </control>
         <control type="button" id="407">
-            <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false">Focus</animation>
-            <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false">UnFocus</animation>
+            <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false">Focus</animation>
+            <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false">UnFocus</animation>
             <hitrect x="28" y="28" w="69" h="45" />
             <posx>0</posx>
             <posy>0</posy>

@@ -6,8 +6,8 @@
         {% for var, value in elements %}<{{ var }}>{{ value }}</{{ var }}>{% endfor %}{% endspaceless %}
     {% endif %}
     {% if name == "play" and theme.buttons.zoomPlayButton %}
-        <animation effect="zoom" start="100" end="124" time="100" center="63,50" reversible="false" condition="Control.HasFocus({{ id }})">Conditional</animation>
-        <animation effect="zoom" start="124" end="100" time="100" center="63,50" reversible="false" condition="!Control.HasFocus({{ id }})">Conditional</animation>
+        <animation effect="zoom" start="100" end="124" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="Control.HasFocus({{ id }})">Conditional</animation>
+        <animation effect="zoom" start="124" end="100" time="100" center="63,{{ vscale(50) }}" reversible="false" condition="!Control.HasFocus({{ id }})">Conditional</animation>
     {% endif %}
     {% for direction in ("onleft", "onright", "onup", "ondown") %}{% spaceless %}
         {% if resolve("direction") %}<{{ direction }}>{{ resolve("direction") }}</{{ direction }}>{% endif %}
