@@ -237,6 +237,16 @@ class Expression:
                     dyn_args = True
                     continue
 
+                # arg is a func call?
+                arg_is_func = self.re_func_call.match(expr)
+                if arg_is_func:
+                    func_ret = Expression(arg, self.token)
+                    if kwarg:
+                        func_kwargs[kwarg] = func_ret
+                    else:
+                        func_args[index] = func_ret
+                    continue
+
                 msg = "Unparsable argument '{}'. Arguments must be valid Python literals.".format(arg)
                 errors.raise_(errors.TemplateSyntaxError(msg, self.token))
 
@@ -254,7 +264,8 @@ class Expression:
     def _apply_filters_to_literal(self, obj):
         for filt in self.filters[:]:
             name, func, args, kwargs, dyn_args = filt
-            if dyn_args:
+            if dyn_args or any(isinstance(a, Expression) for a in args) or any(isinstance(a, Expression)
+                                                                               for a in kwargs.values()):
                 continue
             try:
                 obj = func(obj, *args, **kwargs)
@@ -276,6 +287,8 @@ class Expression:
     def _resolve_arg_to_variable(self, arg, context):
         if isinstance(arg, ContextVariable):
             return context.resolve(arg, self.token)
+        elif isinstance(arg, Expression):
+            return arg.eval(context)
         return arg
 
     def _resolve_variable(self, context):
@@ -315,11 +328,17 @@ class Expression:
         for name, func, args, kwargs, _ in self.filters:
             try:
                 _args = []
-                for index, arg in enumerate(args):
+                for arg in args:
+                    if isinstance(arg, Expression):
+                        _args.append(arg.eval(context))
+                        continue
                     _args.append(self._resolve_arg_to_variable(arg, context))
 
                 fkw = {}
                 for kwarg, value in kwargs.items():
+                    if isinstance(value, Expression):
+                        fkw[kwarg] = value.eval(context)
+                        continue
                     fkw[kwarg] = self._resolve_arg_to_variable(value, context)
 
                 if getattr(func, "with_context", False):
