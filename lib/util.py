@@ -583,7 +583,7 @@ def scaleResolution(w, h, by=None):
     return w, h
 
 
-def vscale(h, r=3):
+def vscale(h, r=2):
     if not NEEDS_SCALING:
         return h
     ratio = aspectratio.V_AR_RATIO

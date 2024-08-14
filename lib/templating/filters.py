@@ -33,9 +33,12 @@ def calc(a, b, op="add"):
 
 @ibis.filters.register('vscale', with_context=True)
 @register_builtin
-def vscale(h, context=None):
+def vscale(h, up=1, context=None):
     """
     scale integer based on the aspect ratio difference between the current resolution and our default resolution
+
+    up is there to optionally apply a factor on top of the scaled value. this is important for buttons without a set
+    width, as they tend to get crushed
     """
     if not context.core["needs_scaling"]:
         return h
@@ -45,7 +48,7 @@ def vscale(h, context=None):
         w, h = context.core["resolution"]
         cached_scale = v_ar_ratio(w, h)
         context.set_global("cached_scale", cached_scale)
-    return round(cached_scale * h, 3)
+    return round(cached_scale * h, 2) * up
 
 
 @ibis.filters.register('add')
