@@ -66,9 +66,15 @@ class ResolveContextVariable(str):
     pass
 
 
+class KeepExpr(Exception):
+    pass
+
+
 def safe_math_eval(s):
     def checkmath(x, *args):
         if x not in [a for a in dir(math) if "__" not in a]:
+            if x in filters.filtermap or x in ibis.context.builtins:
+                raise KeepExpr
             msg = "Unknown func {}()".format(x)
             raise SyntaxError(msg)
         fun = getattr(math, x)
@@ -128,7 +134,10 @@ def safe_math_eval(s):
             return un_ops[type(node.op)](operand)
         if isinstance(node, ast.Call):
             args = [_eval(x) for x in node.args]
-            return checkmath(node.func.id, *args)
+            try:
+                return checkmath(node.func.id, *args)
+            except KeepExpr as e:
+                return "{}({})".format(node.func.id, ",".join(map(str, args)))
         msg = "Bad syntax, {}".format(type(node))
         raise SyntaxError(msg)
 
@@ -173,7 +182,7 @@ class Expression:
             self.literal = ast.literal_eval(expr)
             self.is_literal = True
         except:
-            if any(ext in expr for ext in ('+', '-', '/', '*', '**', '%')):
+            if any(ext in expr for ext in ('+', '- ', '/', '*', '**', '%')):
                 # fixme: this currently doesn't work with variables with filters applied, e.g.: a|default(10) + 20
                 try:
                     matheval = safe_math_eval(expr)
@@ -188,6 +197,10 @@ class Expression:
                                 # try resolving as variable
                                 if arg.isidentifier():
                                     func_args.append(ContextVariable(arg))
+                                    continue
+                                elif self.re_func_call.match(arg):
+                                    # func call
+                                    func_args.append(Expression(arg, self.token))
                                     continue
                             func_args.append(arg)
 
