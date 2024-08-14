@@ -285,7 +285,10 @@ class Expression:
                 for index, arg in enumerate(args):
                     _args.append(self._resolve_arg_to_variable(arg, context))
 
-                obj = func(obj, *_args)
+                if getattr(func, "with_context", False):
+                    obj = func(obj, *_args, context=context)
+                else:
+                    obj = func(obj, *_args)
             except Exception as err:
                 msg = "Error applying filter '{}'.".format(name)
                 errors.raise_(errors.TemplateRenderingError(msg, self.token), err)
