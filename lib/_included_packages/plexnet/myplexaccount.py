@@ -115,6 +115,7 @@ class MyPlexAccount(object):
                 if self.homeUsers:
                     util.LOG("cached home users: {0} (last update: {1})".format(self.homeUsers,
                                                                                 self.lastHomeUserUpdate))
+                util.APP.trigger("loaded:cached_user", account=None)
 
     def setAdminByCHU(self):
         for user in self.homeUsers:

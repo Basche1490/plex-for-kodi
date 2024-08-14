@@ -59,11 +59,13 @@ class PlaybackManager(object):
             plexapp.util.APP.on('change:{}'.format(v), lambda **kwargs: self.setGlob(**kwargs))
 
         plexapp.util.APP.on('change:selectedServer', lambda **kwargs: self.setServerUUID(**kwargs))
+        plexapp.util.APP.on("loaded:cached_user", lambda **kwargs: self.setUserID(**kwargs))
         plexapp.util.APP.on("change:user", lambda **kwargs: self.setUserID(**kwargs))
         plexapp.util.APP.on('init', lambda **kwargs: self.setUserID(**kwargs))
 
     def deinit(self):
         plexapp.util.APP.off('change:selectedServer', lambda **kwargs: self.setServerUUID(**kwargs))
+        plexapp.util.APP.off("loaded:cached_user", lambda **kwargs: self.setUserID(**kwargs))
         plexapp.util.APP.off("change:user", lambda **kwargs: self.setUserID(**kwargs))
         plexapp.util.APP.off('init', lambda **kwargs: self.setUserID(**kwargs))
 
