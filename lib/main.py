@@ -24,9 +24,6 @@ from . import backgroundthread
 from . import util
 from .data_cache import dcm
 
-
-util.setGlobalProperty('started', '1')
-
 BACKGROUND = None
 quitKodi = False
 restart = False
@@ -95,7 +92,6 @@ def main(force_render=False):
             util.setGlobalProperty('stop_running', '')
             util.setGlobalProperty('ignore_spinner', '')
             util.setGlobalProperty('is_active', '')
-            util.setGlobalProperty('started', '')
         except:
             pass
 

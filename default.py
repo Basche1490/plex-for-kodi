@@ -3,17 +3,20 @@ from __future__ import absolute_import
 import logging
 import tempfile
 
-from lib import main
+from lib.logging import log
+# noinspection PyUnresolvedReferences
+from lib.kodi_util import translatePath, xbmc, setGlobalProperty, getGlobalProperty
 from tendo_singleton import SingleInstance, SingleInstanceException
 
+
 # tempfile's standard temp dirs won't work on specific OS's (android)
-tempfile.tempdir = main.util.translatePath("special://temp/")
+tempfile.tempdir = translatePath("special://temp/")
 
 
 class KodiLogProxyHandler(logging.Handler):
     def emit(self, record):
         try:
-            main.util.LOG(self.format(record))
+            log(self.format(record))
         except:
             self.handleError(record)
 
@@ -24,16 +27,22 @@ logger.addHandler(KodiLogProxyHandler())
 logger.setLevel(logging.DEBUG)
 
 
+started = False
 try:
-    if (main.xbmc.getInfoLabel('Window(10000).Property(script.plex.running)') == "1" and
-            not main.xbmc.getInfoLabel('Window(10000).Property(script.plex.is_active)')):
+    if getGlobalProperty('running') and not getGlobalProperty('is_active'):
         try:
-            main.xbmc.executebuiltin('NotifyAll({0},{1},{2})'.format('script.plexmod', 'RESTORE', '{}'))
+            xbmc.executebuiltin('NotifyAll({0},{1},{2})'.format('script.plexmod', 'RESTORE', '{}'))
         except:
-            main.util.LOG('Main: script.plex: Already running, couldn\'t reactivate other instance, exiting.')
+            log('Main: script.plex: Already running, couldn\'t reactivate other instance, exiting.')
     else:
-        with SingleInstance("pm4k"):
-            main.main()
+        if not getGlobalProperty('started'):
+            with SingleInstance("pm4k"):
+                setGlobalProperty('started', '1')
+                started = True
+                from lib import main
+                main.main()
+        else:
+            log('Main: script.plex: Already running, exiting')
 
 except SingleInstanceException:
     pass
@@ -41,3 +50,7 @@ except SingleInstanceException:
 except SystemExit as e:
     if e.code not in (-1, 0):
         raise
+
+finally:
+    if started:
+        setGlobalProperty('started', '')
