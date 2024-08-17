@@ -268,14 +268,14 @@
     <animation effect="fade" start="100" end="0" time="200">Hidden</animation>
     <control type="image">
         <left>10</left>
-        <top>-220</top>
+        <top>{{ vscale(-220) }}</top>
         <right>10</right>
         <height>{{ vscale(420) }}</height>
         <texture border="40">buttons/dialogbutton-nofo.png</texture>
     </control>
     <control type="grouplist">
         <left>52</left>
-        <top>-184</top>
+        <top>{{ vscale(-184) }}</top>
         <width>1786</width>
         <height>{{ vscale(350) }}</height>
         <orientation>horizontal</orientation>
@@ -341,6 +341,7 @@
         <control type="grouplist">
             <left>0</left>
             <top>0</top>
+            <height>{{ vscale(350) }}</height>
             <width>993</width>
             <control type="label">
                 <width>893</width>
@@ -418,7 +419,7 @@
     </control>
     <control type="label">
         <left>52</left>
-        <top>120</top>
+        <top>{{ vscale(120) }}</top>
         <width>1786</width>
         <height>{{ vscale(50) }}</height>
         <aligny>bottom</aligny>
