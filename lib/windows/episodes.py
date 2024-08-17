@@ -171,6 +171,17 @@ class RelatedPaginator(pagination.BaseRelatedPaginator):
         return self.parentWindow.show_.getRelated(offset=offset, limit=amount)
 
 
+class RedirectToEpisode(Exception):
+    episode = None
+    season = None
+    select_episode = True
+
+    def __init__(self, episode, season=None, select_episode=True):
+        self.episode = episode
+        self.season = season
+        self.select_episode = select_episode
+
+
 VIDEO_PROGRESS = {}
 
 
@@ -321,20 +332,20 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         util.DEBUG_LOG("Episodes: {}: Got progress info: {}, came from: {}".format(
             self.episode and self.episode.ratingKey or None, VIDEO_PROGRESS, self.cameFrom))
         try:
-            redirect = self.selectEpisode(from_reinit=True)
+            self.selectEpisode(from_reinit=True)
+        except RedirectToEpisode as redirect:
+            if redirect.select_episode:
+                util.DEBUG_LOG("Got episode progress for a different season, redirecting")
+            self.episodeListControl.reset()
+            self.relatedListControl.reset()
+            self.reset(episode=redirect.episode if redirect.select_episode else None, season=redirect.season)
+            self._setup()
+            self.postSetup()
+            return
         except AttributeError:
             raise util.NoDataException
 
         VIDEO_PROGRESS.clear()
-
-        if redirect:
-            util.DEBUG_LOG("Got episode progress for a different season, redirecting")
-            self.episodeListControl.reset()
-            self.relatedListControl.reset()
-            self.reset(episode=redirect)
-            self._setup()
-            self.postSetup()
-            return
 
         mli = self.episodeListControl.getSelectedItem()
         if not mli or not self.episodesPaginator:
@@ -422,12 +433,15 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         set_main_progress_to = None
         selected_new = False
 
+        last_mli_seen = None
+        was_last_mli = False
+
         for mli in self.episodeListControl:
             # pagination boundary
             if not mli.dataSource:
                 continue
 
-            is_last_mli = self.episodeListControl.isLastItem(mli)
+            is_last_mli = was_last_mli = self.episodeListControl.isLastItem(mli)
 
             just_fully_watched = False
 
@@ -442,7 +456,8 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
                     mli.setProperty('watched', '1')
                     mli.setProperty('progress', '')
                     mli.setProperty('unwatched.count', '')
-                    mli.dataSource.set('viewCount', 1)
+                    mli.dataSource.set('viewCount', mli.dataSource.get('viewCount', 0).asInt() + 1)
+                    mli.dataSource.set('viewOffset', 0)
                     self.setUserItemInfo(mli, fully_watched=True)
 
                 elif progress and progress > 60000:
@@ -462,6 +477,8 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
                 # after immediately updating the watched state, if we still have data left, continue
                 if progress is True and progress_data_left:
                     continue
+
+            last_mli_seen = mli
 
             # first condition: we select self.episode if we've got no progress data or we haven't watched it just now.
             # second condition: we've just come from playback with progress upon reinit. select the next available
@@ -494,7 +511,15 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
             key = '/library/metadata/{0}'.format(list(progress_data_left.keys())[-1])
             ep = plexapp.SERVERMANAGER.selectedServer.getObject(key)
             if ep.parentIndex != self.season.index:
-                return ep
+                raise RedirectToEpisode(ep)
+        elif was_last_mli and last_mli_seen.dataSource.isFullyWatched and self.getSeasons():
+            # check if we need to go to the next season
+            remaining_seasons = self.seasons[self.seasons.index(self.season)+1:]
+            if remaining_seasons:
+                season = remaining_seasons[0]
+                VIDEO_PROGRESS.clear()
+                util.LOG("Season watched, going to next season: {}", season)
+                raise RedirectToEpisode(season.episodes()[0], season=season, select_episode=False)
 
         if selected_new:
             self.setProperty('hub.focus', "0")
