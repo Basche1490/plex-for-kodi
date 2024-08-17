@@ -71,7 +71,7 @@ def vperc(height, perc=50, ref=1080, rel=50, r=2):
     @param ref:
     @return: float
     """
-    return round(perc * ref / 100.0 - height * rel / 100., r)
+    return round(perc * ref / 100.0 - height * rel / 100.0, r)
 
 
 @ibis.filters.register('valign')
