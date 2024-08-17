@@ -437,7 +437,7 @@ class PlexContainer(PlexObject):
             self.address = address
 
         # TODO(schuyler): Do we need to make sure that we only hang onto the path here and not a full URL?
-        if not self.address.startswith("/") and "node.plexapp.com" not in self.address:
+        if not self.address.startswith("/") and not self.upNext.asBool() and "node.plexapp.com" not in self.address:
             util.FATAL("Container address is not an expected path: {0}".format(address))
 
     def getAbsolutePath(self, path):
