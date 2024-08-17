@@ -2315,14 +2315,10 @@ class SeekDialog(kodigui.BaseDialog):
         self.setProperty('playlist.visible', '1' if value else '')
 
     def showPlaylistDialog(self):
-        created = False
         if not self.playlistDialog:
             self.playlistDialog = PlaylistDialog.create(show=False, handler=self.handler)
-            created = True
 
         self.playlistDialogVisible = True
-        if not created:
-            self.playlistDialog.updatePlayingItem()
         self.playlistDialog.doModal()
         self.resetTimeout()
         self.playlistDialogVisible = False
@@ -2382,6 +2378,10 @@ class PlaylistDialog(kodigui.BaseDialog, SpoilersMixin):
         self.handler.player.on('session.ended', self.sessionEnded)
         self.playlistListControl = kodigui.ManagedControlList(self, self.PLAYLIST_LIST_ID, 6)
         self.fillPlaylist()
+        self.updatePlayingItem()
+        self.setFocusId(self.PLAYLIST_LIST_ID)
+
+    def onReInit(self):
         self.updatePlayingItem()
         self.setFocusId(self.PLAYLIST_LIST_ID)
 
@@ -2471,7 +2471,7 @@ class PlaylistDialog(kodigui.BaseDialog, SpoilersMixin):
                 selectIndex = index
 
         if selectIndex is not None:
-            xbmc.executebuiltin('Control.SetFocus({0}, {1})'.format(self.PLAYLIST_LIST_ID, selectIndex))
+            self.playlistListControl.setSelectedItemByPos(selectIndex)
 
     def fillPlaylist(self):
         items = []
