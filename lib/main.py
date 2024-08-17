@@ -89,7 +89,6 @@ def main(force_render=False):
                 util.LOG("Couldn't start main loop, exiting.")
     finally:
         try:
-            util.setGlobalProperty('stop_running', '')
             util.setGlobalProperty('ignore_spinner', '')
             util.setGlobalProperty('is_active', '')
         except:
@@ -119,11 +118,11 @@ def _main():
     util.setGlobalProperty('is_active', '1')
 
     try:
-        while not util.MONITOR.abortRequested() and not util.getGlobalProperty('stop_running'):
+        while not util.MONITOR.abortRequested():
             if plex.init():
                 background.setSplash(False)
                 fromSwitch = False
-                while not util.MONITOR.abortRequested() and not util.getGlobalProperty('stop_running'):
+                while not util.MONITOR.abortRequested():
                     if (
                         not plexapp.ACCOUNT.isOffline and not
                         plexapp.ACCOUNT.isAuthenticated and
@@ -156,7 +155,8 @@ def _main():
                                 for timeout, skip_preferred, skip_owned in ((10, False, False), (10, True, True)):
                                     plex.CallbackEvent(plexapp.util.APP, 'change:selectedServer', timeout=timeout).wait()
 
-                                    selectedServer = plexapp.SERVERMANAGER.checkSelectedServerSearch(skip_preferred=skip_preferred, skip_owned=skip_owned)
+                                    selectedServer = plexapp.SERVERMANAGER.checkSelectedServerSearch(
+                                        skip_preferred=skip_preferred, skip_owned=skip_owned)
                                     if selectedServer:
                                         break
                                 else:

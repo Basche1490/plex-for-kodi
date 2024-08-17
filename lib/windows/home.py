@@ -736,6 +736,10 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                 not xbmc.Player().isPlayingVideo()):
             self.showHubs(self.lastSection, update=True)
 
+    def doClose(self):
+        plexapp.util.APP.trigger('close.windows')
+        super(HomeWindow, self).doClose()
+
     def shutdown(self):
         self._shuttingDown = True
         try:

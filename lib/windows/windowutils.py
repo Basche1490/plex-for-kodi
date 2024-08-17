@@ -92,8 +92,6 @@ class UtilMixin():
 def shutdownHome():
     global HOME
     if HOME:
-        HOME._shuttingDown = True
         HOME.shutdown()
     del HOME
     HOME = None
-    HOME

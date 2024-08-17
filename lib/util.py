@@ -303,20 +303,21 @@ class UtilityMonitor(xbmc.Monitor, signalsmixin.SignalsMixin):
     def onNotification(self, sender, method, data):
         LOG("Notification: {} {} {}".format(sender, method, data))
         if sender == 'script.plexmod' and method.endswith('RESTORE'):
-            from .windows import kodigui
+            from .windows import kodigui, windowutils
+
+            def exit_mainloop():
+                LOG("Addon never properly started, can't reactivate")
+                windowutils.HOME.doClose()
+
             if not kodigui.BaseFunctions.lastWinID:
-                ERROR("Addon never properly started, can't reactivate")
-                setGlobalProperty('stop_running', '1')
-                setGlobalProperty('is_active', '')
+                exit_mainloop()
                 return
             if kodigui.BaseFunctions.lastWinID > 13000:
                 reInitAddon()
                 setGlobalProperty('is_active', '1')
                 xbmc.executebuiltin('ActivateWindow({0})'.format(kodigui.BaseFunctions.lastWinID))
             else:
-                ERROR("Addon never properly started, can't reactivate")
-                setGlobalProperty('stop_running', '1')
-                setGlobalProperty('is_active', '')
+                exit_mainloop()
                 return
 
         elif sender == "xbmc" and method == "System.OnSleep":
