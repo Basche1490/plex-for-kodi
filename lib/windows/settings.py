@@ -410,6 +410,14 @@ class Settings(object):
     SETTINGS = {
         'main': (
             T(32000, 'Main'), (
+                BoolSetting('kiosk.mode', T(32043, 'Start Plex On Kodi Startup'), False),
+                OptionsSetting(
+                    'kiosk.delay', T(33651, 'Start Delay'),
+                    0,
+                    [(0, T(32481))] + [
+                        (a, T(33091).format(sec_or_ms=a, unit_s_or_ms="s")) for a in
+                        list(range(1, 11, 1)) + list(range(15, 125, 5))]
+                ),
                 BoolSetting(
                     'auto_signin', T(32038, 'Automatically Sign In'), False
                 ).description(
@@ -753,7 +761,6 @@ class Settings(object):
         'system': (
             T(33600, 'System'), (
 
-                BoolSetting('kiosk.mode', T(32043, 'Start Plex On Kodi Startup'), False),
                 BoolSetting('exit_default_is_quit', T(32965, 'Start Plex On Kodi Startup'), False)
                 .description(T(32966, "stub")),
                 BoolSetting('path_mapping', T(33000, ''), True).description(T(33001, '')),
