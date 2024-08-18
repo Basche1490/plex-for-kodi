@@ -270,7 +270,7 @@ msgid "Skip user selection and pin entry on startup."
 msgstr ""
 
 msgctxt "#32101"
-msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a 15 second delay."
+msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a {} second delay."
 msgstr ""
 
 msgctxt "#32102"

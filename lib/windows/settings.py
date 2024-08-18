@@ -687,8 +687,8 @@ class Settings(object):
                     T(
                         32101,
                         "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatical"
-                        "ly be played after a 15 second delay."
-                    )
+                        "ly be played after a {} second delay."
+                    ).format(util.addonSettings.postplayTimeout)
                 ),
                 BoolUserSetting(
                     'binge_mode', T(33618, 'TV binge-viewing mode'), False
