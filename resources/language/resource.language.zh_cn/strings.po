@@ -1225,7 +1225,7 @@ msgstr "关闭"
 #: 
 msgctxt "#32482"
 msgid "%(percentage)s %%"
-msgstr "%(百分比)s %%"
+msgstr "%(percentage)s %%"
 
 #: 
 msgctxt "#32483"
