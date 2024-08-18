@@ -3028,3 +3028,7 @@ msgstr "Dies passt die Wartezeit zwischen Sprungversuchen auf CoreELEC an, welch
 msgctxt "#33651"
 msgid "Startup delay"
 msgstr "Start-Verzögerung"
+
+msgctxt "#33652"
+msgid "Never show Post Play"
+msgstr "Niemals Post-Play-Fenster anzeigen"

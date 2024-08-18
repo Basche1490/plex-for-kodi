@@ -287,6 +287,9 @@ class SeekPlayerHandler(BasePlayerHandler):
                 return self.player.currentTime + self.player.playerObject.startOffset
 
     def shouldShowPostPlay(self):
+        if util.getUserSetting('post_play_never', False):
+            return False
+
         if self.playlist and self.playlist.TYPE == 'playlist':
             return False
 

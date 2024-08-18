@@ -691,6 +691,9 @@ class Settings(object):
                     ).format(util.addonSettings.postplayTimeout)
                 ),
                 BoolUserSetting(
+                    'post_play_never', T(33652, 'Never show Post Play'), False
+                ),
+                BoolUserSetting(
                     'binge_mode', T(33618, 'TV binge-viewing mode'), False
                 ).description(
                     T(33619, 'Automatically skips episode intros, credits and tries to skip episode recaps. Doesn\'t '

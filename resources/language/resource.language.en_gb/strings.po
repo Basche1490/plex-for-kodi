@@ -2265,3 +2265,7 @@ msgstr ""
 msgctxt "#33651"
 msgid "Startup delay"
 msgstr ""
+
+msgctxt "#33652"
+msgid "Never show Post Play"
+msgstr ""
