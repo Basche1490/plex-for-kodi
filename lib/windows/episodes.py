@@ -512,7 +512,7 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
             ep = plexapp.SERVERMANAGER.selectedServer.getObject(key)
             if ep.parentIndex != self.season.index:
                 raise RedirectToEpisode(ep)
-        elif was_last_mli and last_mli_seen.dataSource.isFullyWatched and self.getSeasons():
+        elif from_reinit and was_last_mli and last_mli_seen.dataSource.isFullyWatched and self.getSeasons():
             # check if we need to go to the next season
             remaining_seasons = self.seasons[self.seasons.index(self.season)+1:]
             if remaining_seasons:
