@@ -1011,21 +1011,6 @@ def getOpenSubtitlesHash(size, url):
 
     return format(hash_, "016x")
 
-
-def ensureHome():
-    if xbmcgui.getCurrentWindowId() != 10000:
-        LOG("Switching to home screen before starting addon: {}", xbmcgui.getCurrentWindowId())
-        xbmc.executebuiltin('Action(back)')
-        xbmc.executebuiltin('Dialog.Close(all,1)')
-        xbmc.executebuiltin('ActivateWindow(home)')
-        ct = 0
-        while xbmcgui.getCurrentWindowId() != 10000 and ct <= 50:
-            xbmc.Monitor().waitForAbort(0.1)
-            ct += 1
-        if ct > 50:
-            DEBUG_LOG("Still active window: {}", xbmcgui.getCurrentWindowId())
-
-
 SETTING_RE = re.compile(r'<setting id="(?P<name>.+?)"[^>]*?>', re.MULTILINE | re.DOTALL)
 
 

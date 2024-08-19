@@ -52,3 +52,18 @@ def setGlobalBoolProperty(key, boolean, base='script.plex.{0}'):
 
 def getGlobalProperty(key):
     return xbmc.getInfoLabel('Window(10000).Property(script.plex.{0})'.format(key))
+
+
+def ensureHome():
+    if xbmcgui.getCurrentWindowId() != 10000:
+        xbmc.log("Switching to home screen before starting addon: {}".format(xbmcgui.getCurrentWindowId()),
+                 xbmc.LOGINFO)
+        xbmc.executebuiltin('Action(back)')
+        xbmc.executebuiltin('Dialog.Close(all,1)')
+        xbmc.executebuiltin('ActivateWindow(home)')
+        ct = 0
+        while xbmcgui.getCurrentWindowId() != 10000 and ct <= 50:
+            xbmc.Monitor().waitForAbort(0.1)
+            ct += 1
+        if ct > 50:
+            xbmc.log("Still active window: {}", xbmc.LOGINFO)
