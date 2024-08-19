@@ -445,7 +445,14 @@ class PrePlayWindow(kodigui.ControlledWindow, windowutils.UtilMixin, RatingsMixi
         if xbmc.getCondVisibility('Integer.IsGreater(Window.Property(hub.focus),2) + Control.IsVisible(502)'):
             y -= 500
 
-        focus = int(xbmc.getInfoLabel('Container(400).Position'))
+        tries = 0
+        focus = xbmc.getInfoLabel('Container(400).Position')
+        while tries < 2 and focus == '':
+            focus = xbmc.getInfoLabel('Container(400).Position')
+            xbmc.sleep(250)
+            tries += 1
+
+        focus = int(focus)
 
         x = ((focus + 1) * 304) - 100
         return x, y
