@@ -362,9 +362,11 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
 
         self.setBackground()
         if self.playQueue:
-            player.PLAYER.playVideoPlaylist(self.playQueue, resume=self.resume, session_id=id(self), handler=handler)
+            player.PLAYER.playVideoPlaylist(self.playQueue, resume=resume or self.resume, session_id=id(self),
+                                            handler=handler)
         elif self.video:
-            player.PLAYER.playVideo(self.video, resume=self.resume, force_update=True, session_id=id(self), handler=handler)
+            player.PLAYER.playVideo(self.video, resume=resume or self.resume, force_update=True, session_id=id(self),
+                                    handler=handler)
 
     def openItem(self, control=None, item=None):
         if not item:
@@ -636,6 +638,7 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
 
     def playVideo(self, prev=False):
         self.cancelTimer()
+        resume = False
         try:
             if not self.next and self.playlist:
                 if prev:
@@ -643,7 +646,6 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
                 self.aborted = False
                 self.playQueue = self.playlist
                 self.video = None
-                self.play(handler=self.handler)
             else:
                 video = self.next
                 if prev:
@@ -654,9 +656,30 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
                     self.video = None
                     return
 
+                if not prev:
+                    if video.viewOffset.asInt():
+                        choice = dropdown.showDropdown(
+                            options=[
+                                {'key': 'resume', 'display': T(32429, 'Resume from {0}').format(
+                                    util.timeDisplay(video.viewOffset.asInt()).lstrip('0').lstrip(':'))},
+                                {'key': 'play', 'display': T(32317, 'Play from beginning')}
+                            ],
+                            pos=(660, "middle"),
+                            close_direction='none',
+                            set_dropdown_prop=False,
+                            header=T(32314, 'In Progress'),
+                        )
+
+                        if not choice:
+                            return
+
+                        if choice['key'] == 'resume':
+                            resume = True
+
                 self.playQueue = None
                 self.video = video
-                self.play(handler=self.handler)
+
+            self.play(handler=self.handler, resume=resume)
         except:
             util.ERROR()
 
