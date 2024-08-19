@@ -13,7 +13,7 @@ HANDLE = int(sys.argv[1])
 BASE_LOG = util.LOG
 
 
-def LOG(msg):
+def LOG(msg, *args, **kwargs):
     BASE_LOG('(plugin) - {0}'.format(plexnetUtil.cleanToken(msg)))
 
 
