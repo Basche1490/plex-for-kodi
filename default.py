@@ -34,7 +34,7 @@ if len(sys.argv) > 1:
 started = False
 set_waiting_for_start = False
 try:
-    if getGlobalProperty('running') and not getGlobalProperty('is_active'):
+    if getGlobalProperty('running'):
         try:
             xbmc.executebuiltin('NotifyAll({0},{1},{2})'.format('script.plexmod', 'RESTORE', '{}'))
         except:
