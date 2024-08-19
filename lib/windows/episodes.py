@@ -1179,6 +1179,8 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
             self.setUserItemInfo(item)
         else:
             self.fillEpisodes(update=True)
+            if not self.cameFrom:
+                VIDEO_PROGRESS.clear()
 
         if self.episode:
             self.episode.reload()
