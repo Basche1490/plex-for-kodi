@@ -427,7 +427,7 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
         self.fillRoles(hasPrev)
 
     def selectEpisode(self, from_reinit=False):
-        util.DEBUG_LOG("SelectEpisode called: {}, {}, {}", from_reinit, VIDEO_PROGRESS, self.cameFrom)
+        util.DEBUG_LOG("SelectEpisode called: {}, {}, {}, {}", from_reinit, self.episode, VIDEO_PROGRESS, self.cameFrom)
         if not self.episodesPaginator:
             return
 
