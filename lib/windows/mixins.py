@@ -69,7 +69,7 @@ class SeasonsMixin:
                 mli.setProperty('thumb.fallback', 'script.plex/thumb_fallbacks/show.png')
                 mli.setProperty('unwatched.count', not season.isWatched and str(season.unViewedLeafCount) or '')
                 mli.setBoolProperty('watched', season.isFullyWatched)
-                if not season.isWatched and focus is None:
+                if not season.isWatched and focus is None and season.index.asInt() > 0:
                     focus = idx
                     mli.setProperty('progress', util.getProgressImage(None, self.getSeasonProgress(show, season)))
                 items.append(mli)

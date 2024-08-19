@@ -529,8 +529,8 @@ class EpisodesWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMix
                     raise RedirectToEpisode(season.episodes()[0], season=season, select_episode=False)
 
         if selected_new:
-            self.setProperty('hub.focus', "0")
-            self.setProperty('on.extras', '')
+            #self.setProperty('hub.focus', "0")
+            #self.setProperty('on.extras', '')
             self.lastFocusID = None
             if not from_reinit:
                 self.currentItemLoaded = False
