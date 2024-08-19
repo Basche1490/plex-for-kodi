@@ -373,7 +373,7 @@ class VideoPlayerWindow(kodigui.ControlledWindow, windowutils.UtilMixin, Spoiler
                 return
             item = mli.dataSource
 
-        self.processCommand(opener.open(item))
+        self.processCommand(opener.open(item, came_from="postplay"))
 
     def showPostPlay(self):
         self.postPlayMode = True

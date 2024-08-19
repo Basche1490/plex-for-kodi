@@ -51,7 +51,7 @@ class SeasonsMixin:
                 watchedPerc += vPerc / season.leafCount.asFloat()
         return watchedPerc > 0 and math.ceil(watchedPerc) or 0
 
-    def fillSeasons(self, show, update=False, seasonsFilter=None, selectSeason=None):
+    def fillSeasons(self, show, update=False, seasonsFilter=None, selectSeason=None, do_focus=True):
         seasons = show.seasons()
         if not seasons or (seasonsFilter and not seasonsFilter(seasons)):
             return False
@@ -82,7 +82,7 @@ class SeasonsMixin:
             subItemListControl.reset()
             subItemListControl.addItems(items)
 
-        if focus is not None:
+        if focus is not None and do_focus:
             subItemListControl.setSelectedItemByPos(focus)
 
         return True

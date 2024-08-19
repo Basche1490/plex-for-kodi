@@ -75,6 +75,7 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
         self.exitCommand = None
         self.lastFocusID = None
         self.lastNonOptionsFocusID = None
+        self.manuallySelectedSeason = False
         self.initialized = False
         self.relatedPaginator = None
 
@@ -177,7 +178,10 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
             if not controlID and self.lastFocusID and not action == xbmcgui.ACTION_MOUSE_MOVE:
                 self.setFocusId(self.lastFocusID)
 
-            if action == xbmcgui.ACTION_CONTEXT_MENU:
+            if controlID == self.SUB_ITEM_LIST_ID and action in (xbmcgui.ACTION_MOVE_LEFT, xbmcgui.ACTION_MOVE_RIGHT):
+                self.manuallySelectedSeason = True
+
+            elif action == xbmcgui.ACTION_CONTEXT_MENU:
                 if controlID == self.SUB_ITEM_LIST_ID:
                     self.optionsButtonClicked(from_item=True)
                     return
@@ -191,7 +195,7 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
                         self.lastNonOptionsFocusID = None
                         return
 
-            elif action in(xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_CONTEXT_MENU):
+            elif action in (xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_CONTEXT_MENU):
                 if not xbmc.getCondVisibility('ControlGroup({0}).HasFocus(0)'.format(
                         self.OPTIONS_GROUP_ID)) and \
                         (not util.addonSettings.fastBack or action == xbmcgui.ACTION_CONTEXT_MENU):
@@ -563,7 +567,7 @@ class ShowWindow(kodigui.ControlledWindow, windowutils.UtilMixin, SeasonsMixin, 
 
     @busy.dialog()
     def fill(self, update=False):
-        self.fillSeasons(self.mediaItem, update=update)
+        self.fillSeasons(self.mediaItem, update=update, do_focus=not self.manuallySelectedSeason)
 
     def fillExtras(self):
         items = []
