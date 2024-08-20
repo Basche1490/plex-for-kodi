@@ -92,9 +92,10 @@ class SectionHubsTask(backgroundthread.Task):
 
 
 class UpdateHubTask(backgroundthread.Task):
-    def setup(self, hub, callback):
+    def setup(self, hub, callback, reselect_pos=None):
         self.hub = hub
         self.callback = callback
+        self.reselect_pos = reselect_pos
         return self
 
     def run(self):
@@ -109,7 +110,7 @@ class UpdateHubTask(backgroundthread.Task):
             self.hub.reload(limit=HUB_PAGE_SIZE)
             if self.isCanceled():
                 return
-            self.callback(self.hub)
+            self.callback(self.hub, reselect_pos=self.reselect_pos)
         except plexnet.exceptions.BadRequest:
             util.DEBUG_LOG('404 on hub: {0}', repr(self.hub.hubIdentifier))
         except util.NoDataException:
@@ -139,9 +140,11 @@ class ExtendHubTask(backgroundthread.Task):
 
         try:
             size = self.size
-            if self.reselect_pos == -1:
-                # we need the full hub if we want to round-robin
-                size = util.addonSettings.hubsRrMax
+            if self.reselect_pos is not None:
+                rk, pos = self.reselect_pos
+                if pos == -1:
+                    # we need the full hub if we want to round-robin
+                    size = util.addonSettings.hubsRrMax
             start = self.hub.offset.asInt() + self.hub.size.asInt()
             items = self.hub.extend(start=start, size=size)
             if self.isCanceled():
@@ -1011,7 +1014,10 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
             tasks = [SectionHubsTask().setup(s, self.sectionHubsCallback, self.wantedSections, self.ignoredHubs)
                      for s in [self.lastSection] + list(sections)]
         else:
-            tasks = [UpdateHubTask().setup(hub, self.updateHubCallback)
+            # fetch hubs we need to update
+            rp = self.getCurrentHubsPositions(self.lastSection)
+            tasks = [UpdateHubTask().setup(hub, self.updateHubCallback,
+                                           reselect_pos=rp.get(hub.getCleanHubIdentifier(self.lastSection.key is None)))
                      for hub in self.updateHubs.values()]
         self.tasks += tasks
         backgroundthread.BGThreader.addTasks(tasks)
@@ -1504,7 +1510,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                         task = ExtendHubTask().setup(control.dataSource, self.extendHubCallback,
                                                      canceledCallback=lambda hub: mli.setBoolProperty('is.updating',
                                                                                                       False),
-                                                     reselect_pos=-1)
+                                                     reselect_pos=(None, -1))
                         self.tasks.append(task)
                         backgroundthread.BGThreader.addTask(task)
                     return
@@ -1715,6 +1721,28 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         finally:
             self.setProperty('drawing', '')
 
+    def getCurrentHubsPositions(self, section):
+        is_home = section.key is None
+        rp = {}
+        # self.sectionHubs[section.key] might be None
+        if not self.sectionHubs.get(section.key, []):
+            return rp
+
+        for hub in self.sectionHubs.get(section.key, []):
+            identifier = hub.getCleanHubIdentifier(is_home=is_home)
+            if identifier in self.HUBMAP:
+                pos = self.hubControls[self.HUBMAP[identifier]['index']].getSelectedPos()
+                if pos is not None:
+                    mli = self.hubControls[self.HUBMAP[identifier]['index']].getItemByPos(pos)
+                    if mli.dataSource:
+                        # continue/inprogress hubs update their order after items have changed their state, skip those
+                        if (identifier in ('home.continue', 'home.ondeck', 'continueWatching')
+                                or identifier.endswith('.inprogress')):
+                            rp[identifier] = (str(mli.dataSource.ratingKey), 0)
+                            continue
+                        rp[identifier] = (str(mli.dataSource.ratingKey), pos)
+        return rp
+
     def _showHubs(self, section=None, update=False, force=False, reselect_pos_dict=None):
         if not update:
             self.clearHubs()
@@ -1758,18 +1786,15 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                 "Home" if section.key is None else section.key, update, "Unknown" if not hubs else hubs.invalid))
             hubs.lastUpdated = time.time()
             self.cleanTasks()
-            # remember selected positions in hubs
-            is_home = section.key is None
-            _rp = {}
-            for hub in self.sectionHubs.get(section.key, []):
-                identifier = hub.getCleanHubIdentifier(is_home=is_home)
-                if identifier in self.HUBMAP:
-                    _rp[identifier] = self.hubControls[self.HUBMAP[identifier]['index']].getSelectedPos()
+
+            rpd = self.getCurrentHubsPositions(section)
+
             if not update:
                 if section.key in self.sectionHubs:
                     self.sectionHubs[section.key] = None
             task = SectionHubsTask().setup(section, self.sectionHubsCallback, self.wantedSections,
-                                           reselect_pos_dict=_rp, ignore_hubs=self.ignoredHubs)
+                                           reselect_pos_dict=rpd,
+                                           ignore_hubs=self.ignoredHubs)
             self.tasks.append(task)
             backgroundthread.BGThreader.addTask(task)
             return
@@ -1823,10 +1848,12 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         identifier = hub.getCleanHubIdentifier(is_home=is_home)
 
         if identifier in self.HUBMAP:
-            util.DEBUG_LOG('HUB: {0} [{1}]({2}, {3})'.format(hub.hubIdentifier,
-                                                             identifier,
-                                                             len(hub.items),
-                                                             len(items) if items else None))
+            util.DEBUG_LOG('HUB: {0} [{1}]({2}, {3}, reselect: {4})'.format(hub.hubIdentifier,
+                                                                            identifier,
+                                                                            len(hub.items),
+                                                                            len(items) if items else None,
+                                                                            reselect_pos),
+                           )
             self._showHub(hub, hubitems=items, reselect_pos=reselect_pos, identifier=identifier,
                           **self.HUBMAP[identifier])
             return True
@@ -1984,7 +2011,15 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         self.setProperty('hub.4{0:02d}'.format(index), hub.title or kwargs.get('title'))
         self.setProperty('hub.text2lines.4{0:02d}'.format(index), text2lines and '1' or '')
 
-        use_reselect_pos = reselect_pos is not None and (reselect_pos > 0 or reselect_pos == -1)
+        use_reselect_pos = False
+        if reselect_pos is not None:
+            rk, pos = reselect_pos
+            use_reselect_pos = True if rk is not None else (reselect_pos > 0 or reselect_pos == -1)
+
+            if pos == 0 and not use_reselect_pos:
+                # we might want to force the first position, check the hubs position
+                if control.getSelectedPos() > 0:
+                    use_reselect_pos = True
 
         items = []
 
@@ -2044,8 +2079,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
             control.replaceItems(items)
 
         if use_reselect_pos:
-            pos = reselect_pos
-            if reselect_pos == -1:
+            rk, pos = reselect_pos
+            if pos == -1:
                 last_pos = control.size() - 1
                 if hub.more:
                     last_pos -= 1
@@ -2056,21 +2091,44 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                     self.backgroundSet = True
                 return
 
-            if pos < control.size() - (more and 1 or 0):
-                # we might've moved the selection in the hub while this was happening. If so, don't change the selection
-                if not self._anyItemAction:
-                    control.selectItem(pos)
+            if self._anyItemAction:
+                return
+
+            cur_pos = control.getSelectedPos()
+            if cur_pos == pos:
+                return
+
+            if rk is not None:
+                rk_found = False
+                # try finding the ratingKey first
+                for idx, mli in enumerate(control):
+                    if mli.dataSource and mli.dataSource.ratingKey and str(mli.dataSource.ratingKey) == rk:
+                        if cur_pos != idx:
+                            util.DEBUG_LOG("Reselect: Found {} in list, reselecting", rk)
+                            control.selectItem(idx)
+                            rk_found = True
+                        else:
+                            return
+                if rk_found:
                     if self.updateBackgroundFrom(control[pos].dataSource):
                         self.backgroundSet = True
+                    return
+
+            if pos < control.size() - (more and 1 or 0):
+                # we didn't find the ratingKey, try the position first, if it's smaller than our list size
+                util.DEBUG_LOG("Reselect: We didn't find {} in list, or no item given. Reselecting position {}", rk, pos)
+                control.selectItem(pos)
+                if self.updateBackgroundFrom(control[pos].dataSource):
+                    self.backgroundSet = True
             else:
                 if more:
-                    # re-extend the hub to its original size so we can reselect the position
+                    # re-extend the hub to its original size so we can reselect the ratingKey/position
                     # calculate how many pages we need to re-arrive at the last selected position
                     # fixme: someone check for an off-by-one please
                     size = max(math.ceil((pos + 2 - control.size()) / HUB_PAGE_SIZE), 1) * HUB_PAGE_SIZE
                     task = ExtendHubTask().setup(control.dataSource, self.extendHubCallback,
                                                  canceledCallback=lambda h: mli.setBoolProperty('is.updating', False),
-                                                 size=size, reselect_pos=pos)
+                                                 size=size, reselect_pos=reselect_pos)
                     self.tasks.append(task)
                     backgroundthread.BGThreader.addTask(task)
                 else:

@@ -759,6 +759,10 @@ class ManagedControlList(object):
             return None
         return pos
 
+    def getItemByPos(self, pos):
+        if self.positionIsValid(pos):
+            return self.getListItem(pos)
+
     def setSelectedItemByPos(self, pos):
         if self.positionIsValid(pos):
             self.control.selectItem(pos)
