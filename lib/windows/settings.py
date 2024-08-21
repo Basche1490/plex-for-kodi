@@ -660,7 +660,7 @@ class Settings(object):
                      (900, '15m'), (1200, '20m'), (1800, '30m'), (2700, '45m'), (3600, '1h'),)
                 ),
                 BoolSetting(
-                    'player_stop_on_screensaver', T(32947, 'Stop video playback on screensaver'), True
+                    'player_stop_on_screensaver', T(32947, 'Stop video playback on screensaver'), False
                 ),
             )
         ),

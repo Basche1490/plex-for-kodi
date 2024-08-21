@@ -220,7 +220,7 @@ class AddonSettings(object):
         ("tickrate", 1.0),
         ("honor_plextv_dnsrebind", True),
         ("honor_plextv_pam", True),
-        ("coreelec_resume_seek_wait", 200),
+        ("coreelec_resume_seek_wait", 250),
     )
 
     def __init__(self):
@@ -335,7 +335,7 @@ class UtilityMonitor(xbmc.Monitor, signalsmixin.SignalsMixin):
     def onScreensaverActivated(self):
         DEBUG_LOG("Monitor: OnScreensaverActivated")
         self.trigger('screensaver.activated')
-        if getSetting('player_stop_on_screensaver', True) and xbmc.Player().isPlayingVideo():
+        if getSetting('player_stop_on_screensaver', False) and xbmc.Player().isPlayingVideo():
             self.stopPlayback()
 
     def onScreensaverDeactivated(self):
