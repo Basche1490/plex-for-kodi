@@ -104,8 +104,8 @@ def safe_math_eval(s):
     def _eval(node):
         if isinstance(node, ast.Expression):
             return _eval(node.body)
-        if isinstance(node, ast.Constant):
-            return node.value
+        if isinstance(node, utils.Constant):
+            return getattr(node, 'value', getattr(node, 'n'))
         if isinstance(node, ast.Name):
             return node.id
         if isinstance(node, ast.BinOp):
@@ -195,7 +195,7 @@ class Expression:
                         for index, arg in enumerate(matheval):
                             if isinstance(arg, six.string_types):
                                 # try resolving as variable
-                                if arg.isidentifier():
+                                if utils.isidentifier(arg):
                                     func_args.append(ContextVariable(arg))
                                     continue
                                 elif self.re_func_call.match(arg):
@@ -242,7 +242,7 @@ class Expression:
                     func_args[index] = ast.literal_eval(arg)
             except Exception:
                 # try resolving as variable
-                if arg.isidentifier():
+                if utils.isidentifier(arg):
                     if kwarg:
                         func_kwargs[kwarg] = ContextVariable(arg)
                     else:
@@ -721,7 +721,8 @@ class IncludeNode(Node):
                 try:
                     name, expr = chunk.split('=', 1)
                     self.variables[name.strip()] = Expression(expr.strip(), token)
-                except:
+                except Exception as e:
+                    raise
                     errors.raise_(errors.TemplateSyntaxError("Malformed 'include' tag.", token), None)
         else:
             raise errors.TemplateSyntaxError("Malformed 'include' tag.", token)

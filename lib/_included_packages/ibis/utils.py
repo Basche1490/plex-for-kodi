@@ -1,6 +1,8 @@
 # coding=utf-8
 
+import ast
 import re
+import keyword
 
 
 # Splits a string on instances of a delimiter character. Ignores quoted delimiters.
@@ -92,3 +94,21 @@ def splitre(s, delimiters, keep_delimiters=False):
     tokens.append(''.join(buf))
 
     return tokens
+
+
+ISIDENTIFIER_RE = re.compile(r'^[a-z_][a-z0-9_]*$', re.I)
+
+
+def isidentifier(s):
+    try:
+        return s.isidentifier()
+    except AttributeError:
+        if s in keyword.kwlist:
+            return False
+        return ISIDENTIFIER_RE.match(s) is not None
+
+
+try:
+    Constant = ast.Constant
+except AttributeError:
+    Constant = ast.Num
