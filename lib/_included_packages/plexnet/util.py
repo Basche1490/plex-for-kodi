@@ -180,7 +180,7 @@ def cleanToken(url):
 
 def mask(v):
     vlen = len(v)
-    return (v[:math.floor(vlen / 2)] + math.ceil(vlen / 2) * "*") if vlen > 4 else "****"
+    return (v[:int(math.floor(vlen / 2))] + int(math.ceil(vlen / 2)) * "*") if vlen > 4 else "****"
 
 
 def cleanObjTokens(dorig,
