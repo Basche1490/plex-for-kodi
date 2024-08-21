@@ -2003,6 +2003,9 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
         if not hub.items and not hubitems:
             control.reset()
+            if 399 < self.lastFocusID < 500:
+                hubControlIndex = self.lastFocusID - 400
+                self.focusFirstValidHub(hubControlIndex)
             return
 
         if not hubitems:
