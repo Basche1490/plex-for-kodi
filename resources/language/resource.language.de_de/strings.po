@@ -294,8 +294,8 @@ msgstr "Benutzerauswahl und Pin-Eingabe beim Start überspringen."
 
 #: 
 msgctxt "#32101"
-msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a {} second delay."
-msgstr "Falls die Option aktiviert und ein weiterer Titel verfügbar ist, wird dieser {} Sekunden nach der aktuellen Wiedergabe gestartet."
+msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a 15 second delay."
+msgstr "Falls die Option aktiviert und ein weiterer Titel verfügbar ist, wird dieser 15 Sekunden nach der aktuellen Wiedergabe gestartet."
 
 #: 
 msgctxt "#32102"
@@ -3025,10 +3025,18 @@ msgctxt "#33650"
 msgid "This adjusts the delay between seek-tries on CoreELEC, which fixes resume not always working or double-seeking. When you have resume/double-seek issues, increase this. 100ms should be stable as well. Default: 200ms"
 msgstr "Dies passt die Wartezeit zwischen Sprungversuchen auf CoreELEC an, welches den Fehler behebt, dass das Fortsetzen manchmal nicht funktioniert, oder doppelt gesprungen wird. Solltest Du Fortsetzen-/Doppelsprungprobleme haben, diesen Wert erhöhen. 100ms sollten ebenfalls stabil sein. Standard: 200ms"
 
+#: 
+msgctxt "#32101"
+msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a {} second delay."
+msgstr "Falls die Option aktiviert und ein weiterer Titel verfügbar ist, wird dieser {} Sekunden nach der aktuellen Wiedergabe gestartet."
+
+#: 
 msgctxt "#33651"
 msgid "Startup delay"
 msgstr "Start-Verzögerung"
 
+#: 
 msgctxt "#33652"
 msgid "Never show Post Play"
 msgstr "Niemals Post-Play-Fenster anzeigen"
+
