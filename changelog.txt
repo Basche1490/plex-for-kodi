@@ -147,6 +147,9 @@
 - Fix seek issue with CoreELEC devices (thanks @bowlingbeeg)
 - GUI: Clean up interface by removing most button focus zoom animations
 - i18n/Chinese: Fix broken translation (incomplete)
+- i18n: Update Chinese translations (thanks liquidion, wabisabi, x1ao4)
+- i18n: Update German translations (thanks fuchs21, Martin)
+- i18n: Update Spanish translations (thanks Deci8belios, Donovan_000)
 - Indicators: Improve indicators resolution; add missing image
 - Kodigui: Support dialog and window close signals
 - Libraries: Fix play all and shuffle all buttons
