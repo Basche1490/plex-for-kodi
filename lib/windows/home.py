@@ -2081,8 +2081,11 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         else:
             control.replaceItems(items)
 
+        # hub reselect logic after updating a hub
         if use_reselect_pos:
             rk, pos = reselect_pos
+
+            # round-robin
             if pos == -1:
                 last_pos = control.size() - 1
                 if hub.more:
@@ -2094,6 +2097,7 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
                     self.backgroundSet = True
                 return
 
+            # during hub updates, if the user manually selects a different item, do nothing
             if self._anyItemAction:
                 return
 
