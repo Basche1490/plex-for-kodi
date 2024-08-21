@@ -175,7 +175,7 @@ msgstr "自动登录"
 #: 
 msgctxt "#32039"
 msgid "Post Play Auto Play"
-msgstr "点击海报自动播放"
+msgstr "播放结束后自动播放"
 
 #: 
 msgctxt "#32040"
@@ -285,7 +285,7 @@ msgstr "使用 Kodi 音频通道"
 #: 
 msgctxt "#32064"
 msgid "Treat DTS like AC3"
-msgstr "将 DTS 像 AC3 同样处理"
+msgstr "把 DTS 当做 AC3 处理"
 
 #: 
 msgctxt "#32100"
@@ -3022,4 +3022,19 @@ msgstr "CoreELEC：恢复修复等待跳转"
 msgctxt "#33650"
 msgid "This adjusts the delay between seek-tries on CoreELEC, which fixes resume not always working or double-seeking. When you have resume/double-seek issues, increase this. 100ms should be stable as well. Default: 200ms"
 msgstr "调整 CoreELEC 上跳转尝试之间的延迟，修复恢复播放不总是有效或双重跳转的问题。当出现恢复/双重跳转问题时，请增加此值。100ms 也应是稳定的。默认值：200ms"
+
+#: 
+msgctxt "#32101"
+msgid "If enabled, when playback ends and there is a 'Next Up' item available, it will be automatically be played after a {} second delay."
+msgstr "如果启用，当播放结束且有 “下一个” 项目可用时，它将在 {} 秒延迟后自动播放。"
+
+#: 
+msgctxt "#33651"
+msgid "Startup delay"
+msgstr "启动延迟"
+
+#: 
+msgctxt "#33652"
+msgid "Never show Post Play"
+msgstr "禁用播放结束界面"
 
