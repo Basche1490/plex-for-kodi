@@ -1483,7 +1483,7 @@ msgstr "提前显示跳过片头按钮"
 
 #: 
 msgctxt "#33506"
-msgid "Show the intro skip button from the start of a video with an intro marker. The auto-skipping setting applies. Doesn\\'t override enabled binge mode.\n"
+msgid "Show the intro skip button from the start of a video with an intro marker. The auto-skipping setting applies. Doesn't override enabled binge mode.\n"
 "Can be disabled/enabled per TV show."
 msgstr "在有跳过片头标记的视频开始时显示跳过片头按钮。适用于自动跳过。不会覆盖启用的追剧模式。\n"
 "可以单独为每个电视节目禁用/启用。"
@@ -1605,7 +1605,7 @@ msgstr "追剧模式"
 
 #: 
 msgctxt "#33619"
-msgid "Automatically skips episode intros, credits and tries to skip episode recaps. Doesn\\'t skip the intro of the first episode of a season and doesn't skip the final credits of a show.\n"
+msgid "Automatically skips episode intros, credits and tries to skip episode recaps. Doesn't skip the intro of the first episode of a season and doesn't skip the final credits of a show.\n"
 "\n"
 "Can be disabled/enabled per TV show.\n"
 "Overrides any setting below."

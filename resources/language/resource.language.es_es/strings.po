@@ -1498,7 +1498,7 @@ msgstr "Mostrar el botón de salto de introducción antes de tiempo"
 
 #: 
 msgctxt "#33506"
-msgid "Show the intro skip button from the start of a video with an intro marker. The auto-skipping setting applies. Doesn\\'t override enabled binge mode.\n"
+msgid "Show the intro skip button from the start of a video with an intro marker. The auto-skipping setting applies. Doesn't override enabled binge mode.\n"
 "Can be disabled/enabled per TV show."
 msgstr "Mostrar el botón de salto de introducción desde el inicio de un vídeo con un marcador de introducción. Se aplica la configuración de salto automático. No anula el modo maratón activado.\n"
 "Puede desactivarse/activarse por programa de TV."
@@ -1620,10 +1620,7 @@ msgstr "Modo \"maratón\" de TV"
 
 #: 
 msgctxt "#33619"
-msgid "Automatically skips episode intros, credits and tries to skip episode recaps. Doesn\\'t skip the intro of the first episode of a season and doesn't skip the final credits of a show.\n"
-"\n"
-"Can be disabled/enabled per TV show.\n"
-"Overrides any setting below."
+msgid "Automatically skips episode intros, credits and tries to skip episode recaps. Doesn't skip the intro of the first episode of a season and doesn't skip the final credits of a show.\n\nCan be disabled/enabled per TV show.\nOverrides any setting below."
 msgstr "Se salta automaticamente las intros de los episodios, los créditos e intenta saltarse los resúmenes de los episodios. No salta la intro del primer episodio de una temporada y no salta los créditos finales de un programa.\n"
 "Puede ser desactivado/activado por programa de TV.\n"
 "Anula cualquier configuración de abajo."
