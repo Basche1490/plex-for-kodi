@@ -413,7 +413,7 @@
                 </setting>
                 <setting id="use_cert_bundle" type="string" label="33051" help="33052">
                     <level>0</level>
-                    <default>plex.direct</default>
+                    <default>system</default>
                     <constraints>
                         <options>
                             <option label="33053">system</option>
