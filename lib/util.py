@@ -214,7 +214,7 @@ class AddonSettings(object):
         ("intro_marker_max_offset", 600),
         ("hubs_rr_max", 250),
         ("max_retries1", 3),
-        ("use_cert_bundle", "system"),
+        ("use_cert_bundle", "plex.direct"),
         ("cache_templates", True),
         ("always_compile_templates", False),
         ("tickrate", 1.0),
