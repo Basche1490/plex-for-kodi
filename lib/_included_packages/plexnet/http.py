@@ -27,7 +27,7 @@ DEFAULT_TIMEOUT = asyncadapter.AsyncTimeout(util.TIMEOUT).setConnectTimeout(util
 
 RESOLVED_PD_HOSTS = {}
 
-CURRENT_PLEX_CRT_DATE = datetime.date(year=2025, month=9, day=15)
+CURRENT_ACME_CRT_DATE = datetime.date(year=2035, month=6, day=3)
 TODAY = datetime.date.today()
 
 _getaddrinfo = socket.getaddrinfo
@@ -35,7 +35,7 @@ _getaddrinfo = socket.getaddrinfo
 
 def pgetaddrinfo(host, port, *args, **kwargs):
     """
-    "circumvent" DNS rebind protection
+    "circumvent" DNS rebind protection for our requests. this does not apply to Kodi requests (assets etc.)
     """
     if host.endswith("plex.direct"):
         v6 = host.count("-") > 3
@@ -105,9 +105,9 @@ class HttpRequest(object):
                 self.session.verify = os.path.join(util.translatePath(util.ADDON.getAddonInfo("profile")),
                                                  "custom_bundle.crt")
 
-            elif util.USE_CERT_BUNDLE == "plex.direct" and "plex.direct" in url and TODAY <= CURRENT_PLEX_CRT_DATE:
+            elif util.USE_CERT_BUNDLE == "acme" and TODAY <= CURRENT_ACME_CRT_DATE:
                 self.session.verify = os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)), 'certs', 'plex.direct.bundle.crt')
+                    os.path.dirname(os.path.realpath(__file__)), 'certs', 'acme.bundle.crt')
             #else:
             #    self.session.cert = os.path.join(certsPath, 'ca-bundle.crt')
 
