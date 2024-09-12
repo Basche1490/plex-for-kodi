@@ -2795,8 +2795,8 @@ msgstr "Plex.tv-Verbindungszeitlimit"
 
 #: 
 msgctxt "#33639"
-msgid "Plex.tv: Sets the maximum amount of time to connect to Plex.tv in seconds. Default: 5"
-msgstr "Plex.tv: Setzt das Zeitlimit um sich mit Plex.tv zu verbinden, in Sekunden. Voreinstellung: 5"
+msgid "Plex.tv: Sets the maximum amount of time to connect to Plex.tv in seconds. Default: 1"
+msgstr "Plex.tv: Setzt das Zeitlimit um sich mit Plex.tv zu verbinden, in Sekunden. Voreinstellung: 1"
 
 #: 
 msgctxt "#33640"
@@ -2805,8 +2805,8 @@ msgstr "Plex.tv Lesezeitlimit"
 
 #: 
 msgctxt "#33641"
-msgid "Plex.tv: Sets the maximum amount of time to read from Plex.tv in seconds. Default: 20"
-msgstr "Plex.tv: Setzt das Zeitlimit beim Lesen von Plex.tv, in Sekunden. Voreinstellung: 20"
+msgid "Plex.tv: Sets the maximum amount of time to read from Plex.tv in seconds. Default: 2"
+msgstr "Plex.tv: Setzt das Zeitlimit beim Lesen von Plex.tv, in Sekunden. Voreinstellung: 2"
 
 #: 
 msgctxt "#33642"
