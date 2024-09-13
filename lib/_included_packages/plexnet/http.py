@@ -86,6 +86,8 @@ class HttpRequest(object):
                  "thread", "__dict__")
     _cancel = False
 
+    USE_SYSTEM_CERT_BUNDLE = False
+
     def __init__(self, url, method=None):
         self.server = None
         self.path = None
@@ -99,7 +101,7 @@ class HttpRequest(object):
         self.thread = None
 
         # Use a specific CA cert bundle if applicable
-        if util.USE_CERT_BUNDLE != "system" and url[:5] == "https":
+        if not self.USE_SYSTEM_CERT_BUNDLE and util.USE_CERT_BUNDLE != "system" and url[:5] == "https":
             if util.USE_CERT_BUNDLE == "custom":
                 # noinspection PyTypeChecker
                 self.session.verify = os.path.join(util.translatePath(util.ADDON.getAddonInfo("profile")),
