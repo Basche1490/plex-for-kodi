@@ -729,6 +729,29 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
         util.MONITOR.off('system.wakeup', self.onWake)
 
     def tick(self):
+        if util.getGlobalProperty('update_available'):
+            button = optionsdialog.show(
+                T(33653, 'Update available'),
+                util.getGlobalProperty('update_available'),
+                T(32328, 'Yes'),
+                T(32329, 'No')
+            )
+            if button == 0:
+                resp = "commence"
+            else:
+                resp = "cancel"
+            util.setGlobalProperty('update_response', resp, wait=True)
+            util.setGlobalProperty('update_available', '', wait=True)
+
+            if resp == "commence":
+                # wait for it to be consumed
+                util.waitForConsumption('update_response', timeout=20)
+
+                self._shuttingDown = True
+                #self.closeOption = "update"
+                self.doClose()
+                return
+
         if not self.lastSection or self._ignoreTick:
             return
 

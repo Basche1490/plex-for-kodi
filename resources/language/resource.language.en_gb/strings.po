@@ -2269,3 +2269,7 @@ msgstr ""
 msgctxt "#33652"
 msgid "Never show Post Play"
 msgstr ""
+
+msgctxt "#33653"
+msgid "Update available"
+msgstr ""
