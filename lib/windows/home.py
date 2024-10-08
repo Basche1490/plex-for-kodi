@@ -744,8 +744,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, SpoilersMixin):
 
     def doClose(self):
         plexapp.util.APP.trigger('close.windows')
-        if self.sectionChangeThread and self.sectionChangeThread.isAlive():
-            self.sectionChangeThread.join(timeout=2.0)
+        #if self.sectionChangeThread and self.sectionChangeThread.isAlive():
+        #    self.sectionChangeThread.join(timeout=2.0)
 
         super(HomeWindow, self).doClose()
 
