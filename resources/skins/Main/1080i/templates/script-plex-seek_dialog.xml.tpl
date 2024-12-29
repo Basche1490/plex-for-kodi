@@ -466,6 +466,7 @@
         <height>{{ vscale(124) }}</height>
         <align>center</align>
         <onup>100</onup>
+        <ondown>501</ondown>
         <itemgap>-40</itemgap>
         <orientation>horizontal</orientation>
         <scrolltime tween="quadratic" easing="out">200</scrolltime>
