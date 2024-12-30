@@ -171,6 +171,8 @@ class SeekDialog(kodigui.BaseDialog, PlexSubtitleDownloadMixin):
         self.hasDialog = False
         self.lastFocusID = None
         self.previousFocusID = None
+        self.lastNonNavFocusID = None
+        self.previousNonNavFocusID = None
         self.playlistDialogVisible = False
         self.forceNextTimeAsChapter = False
         self.showChapters = False
@@ -571,6 +573,8 @@ class SeekDialog(kodigui.BaseDialog, PlexSubtitleDownloadMixin):
 
             cancelActions = (xbmcgui.ACTION_PREVIOUS_MENU, xbmcgui.ACTION_NAV_BACK, xbmcgui.ACTION_STOP)
 
+            util.DEBUG_LOG("ROLLE: %s %s %s %s, %s %s" % (action.getId(), controlID, self.lastFocusID, self.previousFocusID, self.lastNonNavFocusID, self.previousNonNavFocusID))
+
             if not self._ignoreInput:
                 if action.getId() in KEY_MOVE_SET:
                     self.setProperty('mouse.mode', '')
@@ -602,6 +606,13 @@ class SeekDialog(kodigui.BaseDialog, PlexSubtitleDownloadMixin):
                         return
 
                 passThroughMain = False
+                if (401 <= controlID <= 412 and action == xbmcgui.ACTION_MOVE_DOWN and self.showChapters and
+                    self.clientLikePlex and (self.lastFocusID == self.previousFocusID or (self.previousFocusID == self.MAIN_BUTTON_ID and self.previousNonNavFocusID == self.BIG_SEEK_LIST_ID))):
+                        # pressing down with the OSD open and chapters available
+                        self.setProperty('show.chapters', '1')
+                        self.setFocusId(self.BIG_SEEK_LIST_ID)
+                        return
+
                 if controlID == self.SKIP_MARKER_BUTTON_ID:
                     if action == xbmcgui.ACTION_SELECT_ITEM:
                         markerDef = self._currentMarker
@@ -676,12 +687,12 @@ class SeekDialog(kodigui.BaseDialog, PlexSubtitleDownloadMixin):
 
                     elif action == xbmcgui.ACTION_MOVE_DOWN:
                         # pressing down with the OSD open and chapters available
-                        if (self.showChapters and self.clientLikePlex and
-                                (self.previousFocusID not in (controlID, self.MAIN_BUTTON_ID, self.BIG_SEEK_LIST_ID))):
-                            self.setProperty('show.chapters', '1')
-                            self.setFocusId(self.BIG_SEEK_LIST_ID)
+                        #if (self.showChapters and self.clientLikePlex and
+                        #        (self.previousFocusID not in (controlID, self.MAIN_BUTTON_ID, self.BIG_SEEK_LIST_ID))):
+                        #    self.setProperty('show.chapters', '1')
+                        #    self.setFocusId(self.BIG_SEEK_LIST_ID)
 
-                        elif self.previousFocusID == self.BIG_SEEK_LIST_ID and (
+                        if self.previousFocusID == self.BIG_SEEK_LIST_ID and (
                                 self.getProperty('show.markerSkip') or self.getProperty('show.markerSkip_OSDOnly')):
                             self.setFocusId(self.SKIP_MARKER_BUTTON_ID)
                             self.setProperty('show.chapters', '')
@@ -868,6 +879,10 @@ class SeekDialog(kodigui.BaseDialog, PlexSubtitleDownloadMixin):
         lastFocusID = self.lastFocusID
         self.previousFocusID = self.lastFocusID
         self.lastFocusID = controlID
+        if controlID not in (self.MAIN_BUTTON_ID, self.NO_OSD_BUTTON_ID):
+            self.previousNonNavFocusID = self.lastNonNavFocusID
+            self.lastNonNavFocusID = controlID
+
         if controlID == self.MAIN_BUTTON_ID:
             # when seeking via ENTER/CLICK on chapters, coming directly from bigSeekSelected, don't assume we've
             # already seeked.  bigSeekSelected sets self.selectedOffset
