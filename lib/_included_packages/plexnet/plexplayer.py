@@ -693,13 +693,13 @@ class PlexPlayer(BasePlayer):
 
         qualityIndex = self.item.settings.getQualityIndex(self.item.getQualityType(server))
         #builder.addParam("videoQuality", self.item.settings.getGlobal("transcodeVideoQualities")[qualityIndex])
-        maxVideoResolution = "allow_4k" in features and "3840x2160" or "1920x1080"
+        maxVideoResolution = "allow_4k" in features and "99999x99999" or "1920x1080"
         builder.addParam("videoResolution", str(maxVideoResolution))
         builder.addParam("maxVideoBitrate", self.item.settings.getGlobal("transcodeVideoBitrates")[qualityIndex])
 
         builder.extras.append(
             "add-limitation(scope=videoCodec&scopeName=*&context=streaming&protocol=http&"
-            "type=upperBound&name=video.height&value={}&isRequired=true)".format("allow_4k" in features and "2160" or
+            "type=upperBound&name=video.height&value={}&isRequired=true)".format("allow_4k" in features and "99999" or
                                                                                  "1088"))
 
         if self.media.mediaIndex is not None:

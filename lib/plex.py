@@ -306,7 +306,7 @@ class PlexInterface(plexapp.AppInterface):
 
         if qualityIndex >= 9:
             if "allow_4k" in self.getPlaybackFeatures():
-                return allow4k and 2160 or 1088
+                return allow4k and 99999 or 1088 #and 2160 or 1088
             else:
                 return 1088
         elif qualityIndex >= 6:
