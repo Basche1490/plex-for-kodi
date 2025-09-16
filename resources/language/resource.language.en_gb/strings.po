@@ -2767,5 +2767,6 @@ msgctxt "#30114"
 msgid "Stop playback after idle (s)"
 msgstr ""
 
-msgid "36114"
-msgstr "Stops playback after a set amount of time if paused. 0 to disable. (Zidoo Player)"
+msgctxt "#36114"
+msgid "Stops playback after a set amount of time if paused. 0 to disable. (Zidoo Player)"
+msgstr ""

@@ -2310,8 +2310,18 @@ class ZidooPlayerHandler(BasePlayerHandler):
             # progress already consumed
             return
 
-        self.player.trigger('video.progress', data=(rk, self._progressHld[rk] if not self.videoWatched else True))
+        # --- START OF ValueError FIX ---
+        # The modern 'episodes' window expects 4 values, but this was only sending 2.
+        # This now mirrors the main SeekPlayerHandler to prevent the crash.
+        gprk = None
+        prk = None
+        if self.player.video.type == "episode":
+            prk = self.player.video.parentRatingKey
+            gprk = self.player.video.grandparentRatingKey
+        
+        self.player.trigger('video.progress', data=(gprk, prk, rk, self._progressHld[rk] if not self.videoWatched else True))
         self._progressHld = {}
+        # --- END OF ValueError FIX ---
 
     def onPlayBackStopped(self):
         util.DEBUG_LOG('ZidooHandler: onPlayBackStopped')
@@ -2388,7 +2398,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.resume = False
         self.currentMarker = None
         self.zidooFailureDialog = None
-        # FIX: The original addon was missing the int() cast, which caused crashes on startup
         self.stopPlaybackOnIdle = int(util.getSetting('player_stop_on_idle', 0))
         self.idleTime = None
         self.skipNextStopNotification = False
@@ -2452,30 +2461,18 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file, safe=':/')
                 url += f'&PlexToZidoo-Path={encodedPath}'
             
-            # --- START OF URL FIX ---
-            # The entire URL must be properly encoded (quoted) before being passed as a command line argument
-            # to StartAndroidActivity. This prevents any special characters from breaking the command.
-            final_url_for_command = six.moves.urllib.parse.quote(url, safe='')
-            xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % final_url_for_command)
-            # --- END OF URL FIX ---
+            # --- START OF URL LAUNCH FIX ---
+            # Reverting to the simplest possible call. The URL is constructed and then passed directly.
+            # The 'ExceptionOccurred' error suggests complex quoting was causing issues.
+            xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
+            # --- END OF URL LAUNCH FIX ---
 
-            # --- START OF DIALOG CRASH FIX ---
-            # The 'optionsdialog.show' function returns an integer, not a window object. We must not assign
-            # this integer to self.zidooFailureDialog, as it causes a crash in the _monitor thread.
-            # We now check for the dialog's existence safely using getattr.
-            if not getattr(self, "_zidooFailureDialogActive", False):
+            # Put up this error message in the background in case we can't start the zidoo player.  If we actually get the player started we'll just kill this dialog
+            # This logic is reverted to the original developer's logic to prevent 'closing' crash
+            if not self.zidooFailureDialog or self.zidooFailureDialog.closing():
                 time.sleep(2)
                 from .windows import optionsdialog
-                self._zidooFailureDialogActive = True
-                self.zidooFailureDialog = optionsdialog.OptionsDialog.create(
-                    header="Error", 
-                    info="Failed to start Zidoo player", 
-                    button0="OK"
-                )
-                self.zidooFailureDialog.doModal()
-                self._zidooFailureDialogActive = False
-                self.zidooFailureDialog = None
-            # --- END OF DIALOG CRASH FIX ---
+                self.zidooFailureDialog = optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
 
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
@@ -2899,41 +2896,19 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 util.DEBUG_LOG('ZidooPlayer: Monitor 1')
                 # Wait for the zidoo player to get going
                 zidooStatusFull = None
-                
-                # --- START DIALOG CRASH FIX ---
-                # Check for playback start. If it fails, the 'play' method's dialog will handle user interaction.
-                # If that dialog is closed by the user, we should stop monitoring.
-                playback_started = False
-                for _ in range(15): # Wait up to 15 seconds for player to start
-                    if util.MONITOR.abortRequested() or self._closed: break
-                    zidooStatusFull = self.getZidooPlayerStatus()
-                    if zidooStatusFull and zidooStatusFull.get('video', {}).get('duration', 0) > 0:
-                        playback_started = True
-                        break
-                    if getattr(self, "_zidooFailureDialogActive", False) == False and self.zidooFailureDialog is None:
-                        # Dialog was shown and closed by user, so break monitoring
-                        break
+                while((zidooStatusFull is None or zidooStatusFull['video']['duration'] <= 0) and not util.MONITOR.abortRequested() and not self._closed):
                     time.sleep(1)
-                
-                # If we are here because the dialog was closed, exit the monitor loop for this playback attempt.
-                if not playback_started:
-                    self.playState = self.STATE_STOPPED
-                    if self.started: # Ensure 'stopped' event fires if we thought we started
-                        self.onPlayBackStopped()
-                    continue 
-                # --- END DIALOG CRASH FIX ---
-
+                    zidooStatusFull = self.getZidooPlayerStatus()
+                    if zidooStatusFull is None:
+                        # Check to see if the user cleared the error message, if so then we can stop monitoring
+                        if self.zidooFailureDialog is None or self.zidooFailureDialog.closing():
+                            self.playState = self.STATE_STOPPED
+                            break
 
                 if zidooStatusFull is not None:
                     util.DEBUG_LOG('ZidooPlayer: Monitor 2')
-                    
-                    # --- START DIALOG CRASH FIX ---
-                    # If playback has successfully started, ensure the failure dialog is closed.
                     if self.zidooFailureDialog:
                         self.zidooFailureDialog.doClose()
-                        self.zidooFailureDialog = None
-                    # --- END DIALOG CRASH FIX ---
-
                     # Loop here while the movie is still being played
                     statusNull = 0
                     while self.started and not util.MONITOR.abortRequested() and not self._closed:
