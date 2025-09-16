@@ -2448,7 +2448,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 url = util.addURLParams(url, {'PlexToZidoo-PathMapped': True})
             elif self.video.mediaChoice.part.file:
                 # Can't call util.addURLParms because it doesn't handle the special characters in the path correctly
-                encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file)
+                encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file, safe=':/')
                 url += f'&PlexToZidoo-Path={encodedPath}'
             
             xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
