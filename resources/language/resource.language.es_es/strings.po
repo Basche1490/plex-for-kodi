@@ -1864,10 +1864,10 @@ msgstr "Reseñas"
 msgctxt "#32954"
 msgid "Needs Kodi restart. WARNING: This will overwrite advancedsettings.xml!\n"
 "\n"
-"To customize other cache/network-related values, copy \"script.plexmod/pm4k_cache_template.xml\" to profile folder and edit it to your liking. (See About section for the file paths)"
+"To customize other cache/network-related values, copy \"script.plexmod.zidoo/pm4k_cache_template.xml\" to profile folder and edit it to your liking. (See About section for the file paths)"
 msgstr "Necesita reiniciar Kodi. ADVERTENCIA: ¡Esto sobrescribirá advancedsettings.xml!\n"
 "\n"
-"Para personalizar otros valores relacionados con la caché/red, copia \"script.plexmod/pm4k_cache_template.xml\" a la carpeta profile y edítalo a tu gusto. (Consulta la sección Acerca de para ver las rutas de los archivos)"
+"Para personalizar otros valores relacionados con la caché/red, copia \"script.plexmod.zidoo/pm4k_cache_template.xml\" a la carpeta profile y edítalo a tu gusto. (Consulta la sección Acerca de para ver las rutas de los archivos)"
 
 #: 
 msgctxt "#32955"
@@ -2268,8 +2268,8 @@ msgstr "Fecha del episodio añadida"
 
 #: 
 msgctxt "#33001"
-msgid "Long-press (or context menu) on a library item or: Honor path_mapping.json in the addon_data/script.plexmod folder when DirectPlaying media. This can be used to stream using other techniques such as SMB/NFS/etc. instead of the default HTTP handler. path_mapping.example.json is included in the addon's main directory."
-msgstr "Pulsación larga (o menú contextual) en un elemento de la biblioteca o: Honor path_mapping.json en la carpeta addon_data/script.plexmod cuando DirectPlaying medios de comunicación. Esto puede usarse para transmitir usando otras técnicas como SMB/NFS/etc. en lugar del manejador HTTP por defecto. path_mapping.example.json está incluido en el directorio principal del addon."
+msgid "Long-press (or context menu) on a library item or: Honor path_mapping.json in the addon_data/script.plexmod.zidoo folder when DirectPlaying media. This can be used to stream using other techniques such as SMB/NFS/etc. instead of the default HTTP handler. path_mapping.example.json is included in the addon's main directory."
+msgstr "Pulsación larga (o menú contextual) en un elemento de la biblioteca o: Honor path_mapping.json en la carpeta addon_data/script.plexmod.zidoo cuando DirectPlaying medios de comunicación. Esto puede usarse para transmitir usando otras técnicas como SMB/NFS/etc. en lugar del manejador HTTP por defecto. path_mapping.example.json está incluido en el directorio principal del addon."
 
 #: 
 msgctxt "#33043"
@@ -2346,9 +2346,9 @@ msgstr "Tema"
 #: 
 msgctxt "#32984"
 msgid "Sets the theme. Currently only customizes all control buttons. ATTENTION: [I]Might[/I] need an addon restart.\n"
-"In order to customize this, copy one of the xml's in script.plexmod/resources/skins/Main/1080i/templates to addon_data/script.plexmod/templates/{templatename}_custom.xml and adjust it to your liking, then select \"Custom\" as your theme."
+"In order to customize this, copy one of the xml's in script.plexmod.zidoo/resources/skins/Main/1080i/templates to addon_data/script.plexmod.zidoo/templates/{templatename}_custom.xml and adjust it to your liking, then select \"Custom\" as your theme."
 msgstr "Configura el tema. Actualmente sólo personaliza todos los botones de control. ATENCIÓN: [I]Podría[/I] necesitar un reinicio del addon.\n"
-"Para personalizar esto, copia uno de los xml's en script.plexmod/resources/skins/Main/1080i/templates a addon_data/script.plexmod/templates/{templatename}_custom.xml y ajústalo a tu gusto, luego selecciona \"Personalizado\" como tu tema."
+"Para personalizar esto, copia uno de los xml's en script.plexmod.zidoo/resources/skins/Main/1080i/templates a addon_data/script.plexmod.zidoo/templates/{templatename}_custom.xml y ajústalo a tu gusto, luego selecciona \"Personalizado\" como tu tema."
 
 #: 
 msgctxt "#33011"
@@ -2741,8 +2741,8 @@ msgstr "Se salta automaticamente las intros de los episodios, los créditos e in
 
 #: 
 msgctxt "#33052"
-msgid "Which CA certificate bundle to use for request HTTPS verification. \"system\" uses the system-provided certificate bundle. \"ACME\" uses an extremely small bundle provided with the addon, which includes root certificates for Letsencrypt (plex.direct) and ZeroSSL. \"custom\" allows for a ca-certificate bundle in userdata/addon_data/script.plexmod/custom_bundle.crt"
-msgstr "Qué paquete de certificados CA utilizar para solicitar la verificación HTTPS. \"system\" utiliza el paquete de certificados proporcionado por el sistema. \"ACME\" utiliza un paquete extremadamente pequeño proporcionado con el addon, que incluye certificados raíz para Letsencrypt (plex.direct) y ZeroSSL. \"custom\" permite un paquete de certificados ca en userdata/addon_data/script.plexmod/custom_bundle.crt"
+msgid "Which CA certificate bundle to use for request HTTPS verification. \"system\" uses the system-provided certificate bundle. \"ACME\" uses an extremely small bundle provided with the addon, which includes root certificates for Letsencrypt (plex.direct) and ZeroSSL. \"custom\" allows for a ca-certificate bundle in userdata/addon_data/script.plexmod.zidoo/custom_bundle.crt"
+msgstr "Qué paquete de certificados CA utilizar para solicitar la verificación HTTPS. \"system\" utiliza el paquete de certificados proporcionado por el sistema. \"ACME\" utiliza un paquete extremadamente pequeño proporcionado con el addon, que incluye certificados raíz para Letsencrypt (plex.direct) y ZeroSSL. \"custom\" permite un paquete de certificados ca en userdata/addon_data/script.plexmod.zidoo/custom_bundle.crt"
 
 #: 
 msgctxt "#33054"

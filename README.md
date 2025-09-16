@@ -29,7 +29,7 @@ Master branch is based off of the official plex-for-kodi master branch.
 * Optional, recommended: Install Plextuary skin using the above
 
 ### Manual
-* Checkout any branch of this GitHub repository, rename to `script.plexmod` and use as an addon (for it to work with "Install from zip", the contents of the zip should be the folder `script.plexmod`.
+* Checkout any branch of this GitHub repository, rename to `script.plexmod.zidoo` and use as an addon (for it to work with "Install from zip", the contents of the zip should be the folder `script.plexmod.zidoo`.
 
 ### Installing to a read-only or write-protected location
 Set the environment variable `INSTALLATION_DIR_AVOID_WRITE` to any value before starting Kodi to prevent the addon from trying to write to its installation directory. Useful for package managers.

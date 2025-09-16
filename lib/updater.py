@@ -114,7 +114,7 @@ class Updater(object):
 
     @property
     def archive_name(self):
-        return 'script.plexmod-{}.zip'.format(self.remote_version)
+        return 'script.plexmod.zidoo-{}.zip'.format(self.remote_version)
 
     @property
     def archive_path(self):
@@ -196,8 +196,8 @@ class Updater(object):
                         final_list.remove(entry)
 
             zf.extractall(loc, members=final_list)
-            final_dest = os.path.join(loc, "script.plexmod")
-            if sub_dir != "script.plexmod":
+            final_dest = os.path.join(loc, "script.plexmod.zidoo")
+            if sub_dir != "script.plexmod.zidoo":
                 os.rename(os.path.join(loc, sub_dir), final_dest)
             return final_dest
         except Exception:
@@ -209,27 +209,27 @@ class Updater(object):
 
         # check service.py
         if get_digest(os.path.join(translatePath(ADDON.getAddonInfo('path')), "lib", "service_runner.py")) != \
-                get_digest(os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod", "lib",
+                get_digest(os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod.zidoo", "lib",
                                         "service_runner.py")):
             changes.append("service")
 
         # check update_checker.py and dependencies
         for a in ("update_checker.py", "updater.py", "kodi_util.py", "logging.py"):
             if get_digest(os.path.join(translatePath(ADDON.getAddonInfo('path')), "lib", a)) != \
-                    get_digest(os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod", "lib", a)):
+                    get_digest(os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod.zidoo", "lib", a)):
                 changes.append("updater")
                 break
 
         # check current language file
         ptl = ("resources", "language", LANGUAGE_RESOURCE, "strings.po")
         ptr1 = os.path.join(translatePath(ADDON.getAddonInfo('path')), *ptl)
-        ptr2 = os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod", *ptl)
+        ptr2 = os.path.join(os.path.splitext(self.archive_path)[0], "script.plexmod.zidoo", *ptl)
         if os.path.exists(ptr1) and os.path.exists(ptr2) and get_digest(ptr1) != get_digest(ptr2):
             changes.append("language")
         return changes
 
     def install(self, path):
-        dest = os.path.join(translatePath('special://home/addons/'), "script.plexmod")
+        dest = os.path.join(translatePath('special://home/addons/'), "script.plexmod.zidoo")
         shutil.rmtree(dest, ignore_errors=True)
         shutil.move(path, dest)
         return dest
@@ -248,13 +248,13 @@ class StableUpdater(Updater):
 
     @property
     def info_url(self):
-        return ('https://raw.githubusercontent.com/pannal/dontpanickodi/master/{}/zips/script.plexmod/'
+        return ('https://raw.githubusercontent.com/pannal/dontpanickodi/master/{}/zips/script.plexmod.zidoo/'
                 'addon.xml').format(self.kodi_ver_name)
 
     @property
     def download_url(self):
         return ('https://github.com/pannal/dontpanickodi/raw/master/{}/zips/'
-                'script.plexmod/script.plexmod-{}.zip').format(self.kodi_ver_name, self.remote_version)
+                'script.plexmod.zidoo/script.plexmod.zidoo-{}.zip').format(self.kodi_ver_name, self.remote_version)
 
 
 @register_updater

@@ -1864,10 +1864,10 @@ msgstr "评论"
 msgctxt "#32954"
 msgid "Needs Kodi restart. WARNING: This will overwrite advancedsettings.xml!\n"
 "\n"
-"To customize other cache/network-related values, copy \"script.plexmod/pm4k_cache_template.xml\" to profile folder and edit it to your liking. (See About section for the file paths)"
+"To customize other cache/network-related values, copy \"script.plexmod.zidoo/pm4k_cache_template.xml\" to profile folder and edit it to your liking. (See About section for the file paths)"
 msgstr "需要重启 Kodi。警告：advancedsettings.xml 将会被覆盖！\n"
 "\n"
-"要自定义其他缓存/网络相关的值，请将 “script.plexmod/pm4k_cache_template.xml” 复制到配置文件夹并根据需要进行编辑。（请查阅相关内容获取文件路径）"
+"要自定义其他缓存/网络相关的值，请将 “script.plexmod.zidoo/pm4k_cache_template.xml” 复制到配置文件夹并根据需要进行编辑。（请查阅相关内容获取文件路径）"
 
 #: 
 msgctxt "#32955"
@@ -2268,8 +2268,8 @@ msgstr "剧集添加日期"
 
 #: 
 msgctxt "#33001"
-msgid "Long-press (or context menu) on a library item or: Honor path_mapping.json in the addon_data/script.plexmod folder when DirectPlaying media. This can be used to stream using other techniques such as SMB/NFS/etc. instead of the default HTTP handler. path_mapping.example.json is included in the addon's main directory."
-msgstr "长按（或右键菜单）库项目或：在 DirectPlaying 媒体时遵循 addon_data/script.plexmod 文件夹中的 path_mapping.json。这可以用于使用 SMB/NFS 等其他技术进行流式传输，而不是默认的 HTTP 处理程序。path_mapping.example.json 包含在插件的主目录中。"
+msgid "Long-press (or context menu) on a library item or: Honor path_mapping.json in the addon_data/script.plexmod.zidoo folder when DirectPlaying media. This can be used to stream using other techniques such as SMB/NFS/etc. instead of the default HTTP handler. path_mapping.example.json is included in the addon's main directory."
+msgstr "长按（或右键菜单）库项目或：在 DirectPlaying 媒体时遵循 addon_data/script.plexmod.zidoo 文件夹中的 path_mapping.json。这可以用于使用 SMB/NFS 等其他技术进行流式传输，而不是默认的 HTTP 处理程序。path_mapping.example.json 包含在插件的主目录中。"
 
 #: 
 msgctxt "#33043"
@@ -2346,9 +2346,9 @@ msgstr "主题"
 #: 
 msgctxt "#32984"
 msgid "Sets the theme. Currently only customizes all control buttons. ATTENTION: [I]Might[/I] need an addon restart.\n"
-"In order to customize this, copy one of the xml's in script.plexmod/resources/skins/Main/1080i/templates to addon_data/script.plexmod/templates/{templatename}_custom.xml and adjust it to your liking, then select \"Custom\" as your theme."
+"In order to customize this, copy one of the xml's in script.plexmod.zidoo/resources/skins/Main/1080i/templates to addon_data/script.plexmod.zidoo/templates/{templatename}_custom.xml and adjust it to your liking, then select \"Custom\" as your theme."
 msgstr "设置主题。目前仅支持自定义控制按钮。注意：[I]可能[/I]需要重启插件。\n"
-"要自定义此项，请将 script.plexmod/resources/skins/Main/1080i/templates 中的一个 XML 文件复制到 addon_data/script.plexmod/templates/{templatename}_custom.xml 并根据您的喜好进行调整，然后选择 “自定义” 作为主题。"
+"要自定义此项，请将 script.plexmod.zidoo/resources/skins/Main/1080i/templates 中的一个 XML 文件复制到 addon_data/script.plexmod.zidoo/templates/{templatename}_custom.xml 并根据您的喜好进行调整，然后选择 “自定义” 作为主题。"
 
 #: 
 msgctxt "#33011"
@@ -2742,8 +2742,8 @@ msgstr "自动跳过片头、片尾，并尝试跳过剧集回顾。不跳过每
 
 #: 
 msgctxt "#33052"
-msgid "Which CA certificate bundle to use for request HTTPS verification. \"system\" uses the system-provided certificate bundle. \"ACME\" uses an extremely small bundle provided with the addon, which includes root certificates for Letsencrypt (plex.direct) and ZeroSSL. \"custom\" allows for a ca-certificate bundle in userdata/addon_data/script.plexmod/custom_bundle.crt"
-msgstr "用于请求 HTTPS 验证的 CA 证书包。“system” 使用系统提供的证书捆绑包。“ACME” 使用插件提供的极小捆绑包，其中包括 Letsencrypt （plex.direct） 和 ZeroSSL 的根证书。“custom” 允许在userdata/addon_data/script.plexmod/custom_bundle.crt 中使用 CA 证书包"
+msgid "Which CA certificate bundle to use for request HTTPS verification. \"system\" uses the system-provided certificate bundle. \"ACME\" uses an extremely small bundle provided with the addon, which includes root certificates for Letsencrypt (plex.direct) and ZeroSSL. \"custom\" allows for a ca-certificate bundle in userdata/addon_data/script.plexmod.zidoo/custom_bundle.crt"
+msgstr "用于请求 HTTPS 验证的 CA 证书包。“system” 使用系统提供的证书捆绑包。“ACME” 使用插件提供的极小捆绑包，其中包括 Letsencrypt （plex.direct） 和 ZeroSSL 的根证书。“custom” 允许在userdata/addon_data/script.plexmod.zidoo/custom_bundle.crt 中使用 CA 证书包"
 
 #: 
 msgctxt "#33054"
