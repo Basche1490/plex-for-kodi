@@ -2759,6 +2759,13 @@ msgctxt "#34027"
 msgid "earliest between threshold percent and first credits marker"
 msgstr ""
 
-msgctxt "#30113"
-msgid "Force Zidoo external player"
-msgstr ""
+# Zidoo Player Toggle
+msgid "30113"
+msgstr "Force Zidoo external player"
+
+# Player stop on idle label and help text
+msgid "30114"
+msgstr "Stop playback after idle (s)"
+
+msgid "36114"
+msgstr "Stops playback after a set amount of time if paused. 0 to disable. (Zidoo Player)"

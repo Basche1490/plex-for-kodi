@@ -2399,7 +2399,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.skipPostPlay = False
         self.autoSkipIntro = False
         self.autoSkipCredits = False
-        self.autoSkipOffset = int(util.addonSettings.autoSkipOffset * 1000)
+        self.autoSkipOffset = int(util.getSetting('auto_skip_offset', 1.0) * 1000)
         self.hasPlexPass = plexapp.ACCOUNT and plexapp.ACCOUNT.hasPlexPass() or False
         self.monitor()
 
@@ -2453,7 +2453,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             #xbmc.executebuiltin('StartAndroidActivity(com.android.gallery3d, android.intent.action.VIEW, video/*, {0}, , "[ {{ \"key\" : \"position\", \"value\" : \"{1}\", \"type\" : \"string\" }}, {{ \"key\" : \"title\", \"value\" : \"test\", \"type\" : \"string\" }} ]", , , com.android.gallery3d.app.MovieActivity)'.format(url, self.handler.seekOnStart))
 
 
-            url = util.addURLParams(url, {
+            url = util.addURLParams(args[0], {
                 'PlexToZidoo-ViewOffset': self.handler.seekOnStart,
                 'PlexToZidoo-Title': self.video.title
             })
@@ -2470,13 +2470,15 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file)
                 url += f'&PlexToZidoo-Path={encodedPath}'
 
-            xbmc.executebuiltin(f'StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, video/*, {url})')
+            xbmc.executebuiltin(f'StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, , "{url}")')
 
             # Put up this error message in the background in case we can't start the zidoo player.  If we actually get the player started we'll just kill this dialog
             if not self.zidooFailureDialog or self.zidooFailureDialog.closing():
                 time.sleep(2)
                 from .windows import optionsdialog
-                self.zidooFailureDialog = optionsdialog.create(show=True, header="Error", info="Failed to start Zidoo player", button0="OK")
+                # OLD LINE: self.zidooFailureDialog = optionsdialog.create(show=True, header="Error", info="Failed to start Zidoo player", button0="OK")
+                # NEW, CORRECTED LINE:
+                self.zidooFailureDialog = optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
 
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
@@ -3091,8 +3093,8 @@ def shutdown():
 
 
 if util.getSetting('force_zidoo_player', False):
-    util.LOG('PlexMod-Zidoo: Zidoo Player is forced, initializing ZidooPlayer.')
+    util.LOG.info('PlexMod-Zidoo: Zidoo Player is forced, initializing ZidooPlayer.')
     PLAYER = ZidooPlayer().init()
 else:
-    util.LOG('PlexMod-Zidoo: Initializing default PlexPlayer.')
+    util.LOG.info('PlexMod-Zidoo: Initializing default PlexPlayer.')
     PLAYER = PlexPlayer().init()
