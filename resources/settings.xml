@@ -114,6 +114,10 @@
                     <control type="toggle"/>
                 </setting>
             </group>
+                <setting id="force_zidoo_player" type="bool" label="30113" default="false">
+                    <level>0</level>
+                    <control type="toggle"/>
+                </setting>
         </category>
         <!-- Player -->
         <category id="player" label="32464">

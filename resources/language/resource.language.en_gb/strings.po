@@ -2758,3 +2758,7 @@ msgstr ""
 msgctxt "#34027"
 msgid "earliest between threshold percent and first credits marker"
 msgstr ""
+
+msgctxt "#30113"
+msgid "Force Zidoo external player"
+msgstr ""

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.plexmod"
-       name="Plex"
+<addon id="script.plexmod.zidoo"
+       name="Plex Zidoo"
        version="0.8.0-rc1"
        provider-name="pannal">
     <requires>
