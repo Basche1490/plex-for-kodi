@@ -1,3 +1,5 @@
+# THE FINAL, CORRECTED player.py
+
 from __future__ import absolute_import
 import base64
 import json
@@ -2385,7 +2387,9 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.resume = False
         self.currentMarker = None
         self.zidooFailureDialog = None
-        self.stopPlaybackOnIdle = util.getSettingInt('player_stop_on_idle', 0)
+        # OLD, BUGGY LINE: self.stopPlaybackOnIdle = util.getSettingInt('player_stop_on_idle', 0)
+        # NEW, CORRECTED LINE:
+        self.stopPlaybackOnIdle = int(util.getSetting('player_stop_on_idle', 0))
         self.idleTime = None
         self.skipNextStopNotification = False
         self.reset()
