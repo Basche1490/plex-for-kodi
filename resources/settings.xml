@@ -3,29 +3,29 @@
     <section id="script.plex">
 
         <!-- General -->
-        <category id="general" label="General">
+        <category id="general" label="32000">
             <group id="1" label="">
-                <setting id="debug" type="boolean" label="Enable debug logging">
+                <setting id="debug" type="boolean" label="32024">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="debug_requests" type="boolean" label="Enable requests debug logging">
+                <setting id="debug_requests" type="boolean" label="33717">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="kiosk.always" type="boolean" label="Always show 'All' item in library" help="Controls whether the 'All' item is shown in movie/TV show libraries">
+                <setting id="kiosk.always" type="boolean" label="33735" help="33736">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="subtitle_use_extended_title" type="boolean" label="Use extended subtitle titles" help="Show language name and format (e.g. 'English (SRT)')">
+                <setting id="subtitle_use_extended_title" type="boolean" label="32950" help="32951">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="poster_resolution_scale_perc" type="integer" label="Poster resolution scale" help="Scale poster resolution to save memory/increase performance">
+                <setting id="poster_resolution_scale_perc" type="integer" label="32956" help="32957">
                     <level>0</level>
                     <default>100</default>
                     <constraints>
@@ -37,7 +37,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="background_resolution_scale_perc" type="integer" label="Background resolution scale" help="Scale background resolution to save memory/increase performance">
+                <setting id="background_resolution_scale_perc" type="integer" label="33653" help="33654">
                     <level>0</level>
                     <default>100</default>
                     <constraints>
@@ -49,12 +49,12 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="retrieve_all_media_up_front" type="boolean" label="Retrieve all items from library" help="Retrieve all items from a library at once. Faster, but might OOM on weak devices with large libraries">
+                <setting id="retrieve_all_media_up_front" type="boolean" label="32969" help="32970">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="library_chunk_size" type="string" label="Library chunk size" help="How many items to retrieve from a library at once">
+                <setting id="library_chunk_size" type="string" label="32971" help="32972">
                     <level>0</level>
                     <default>240</default>
                     <constraints>
@@ -73,7 +73,7 @@
                     </dependencies>
                     <control type="list" format="string"/>
                 </setting>
-                <setting id="playlist_max_size" type="integer" label="Maximum playlist size" help="Maximum amount of items to retrieve for a single playlist">
+                <setting id="playlist_max_size" type="integer" label="33738" help="33739">
                     <level>0</level>
                     <default>500</default>
                     <constraints>
@@ -85,12 +85,12 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="hubs_round_robin" type="boolean" label="Hubs: round-robin">
+                <setting id="hubs_round_robin" type="boolean" label="33043">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="hubs_rr_max" type="integer" label="Hubs: round-robin max items" help="Total amount of items to retrieve when round-robin is active">
+                <setting id="hubs_rr_max" type="integer" label="33047" help="33048">
                     <level>0</level>
                     <default>250</default>
                     <constraints>
@@ -105,7 +105,7 @@
                         <dependency type="enable" setting="hubs_round_robin">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="cache_home_users" type="boolean" label="Cache home users">
+                <setting id="cache_home_users" type="boolean" label="33018">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
@@ -113,9 +113,9 @@
             </group>
         </category>
         <!-- Player -->
-        <category id="player" label="Player">
+        <category id="player" label="32464">
             <group id="2" label="">
-                <setting id="osd_hide_delay" type="number" label="Plex OSD hide delay" help="How long the Plex OSD stays open without user interaction">
+                <setting id="osd_hide_delay" type="number" label="33715" help="33716">
                     <level>0</level>
                     <default>4</default>
                     <constraints>
@@ -130,12 +130,12 @@
                         <dependency type="enable" setting="auto_seek">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="auto_seek" type="boolean" label="Enable chapter seek dialog" help="Show a dialog for seeking through chapters.">
+                <setting id="auto_seek" type="boolean" label="32466" help="32900">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="auto_seek_delay" parent="auto_seek" type="number" label="Delay chapter seeking" help="How long to wait before showing the chapter seek dialog.">
+                <setting id="auto_seek_delay" parent="auto_seek" type="number" label="32487" help="32901">
                     <level>0</level>
                     <default>1</default>
                     <constraints>
@@ -150,17 +150,17 @@
                         <dependency type="enable" setting="auto_seek">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="kodi_skip_stepping" type="boolean" label="Use Kodi skip steps" help="Use the Kodi skip steps instead of the default +/- 30 seconds.">
+                <setting id="kodi_skip_stepping" type="boolean" label="32465" help="32902">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="dynamic_timeline_seek" type="boolean" label="Enable dynamic timeline seeking (experimental)" help="Allow seeking outside the current VFS buffer. Might break on some systems.">
+                <setting id="dynamic_timeline_seek" type="boolean" label="32471" help="32903">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="coreelec_resume_seek_wait" type="integer" label="CoreELEC resume seek wait time (ms)" help="How long to wait after a relative seek on resume. Increase this if resume doesn't work.">
+                <setting id="coreelec_resume_seek_wait" type="integer" label="33649" help="33650">
                     <level>0</level>
                     <default>850</default>
                     <constraints>
@@ -172,12 +172,12 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="show_media_ends_info" type="boolean" label="Show 'Media Ends' info" help="Show an info label in the seek dialog that shows when the next video will start.">
+                <setting id="show_media_ends_info" type="boolean" label="32540" help="32541">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="show_media_ends_label" type="boolean" label="Show 'Media Ends' text" help="">
+                <setting id="show_media_ends_label" type="boolean" label="32542" help="">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
@@ -185,12 +185,12 @@
                         <dependency type="enable" setting="show_media_ends_info">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="player_show_buffer" type="boolean" label="Show player buffer status" help="Show a dialog while the player is buffering">
+                <setting id="player_show_buffer" type="boolean" label="32912" help="32913">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="buffer_wait_max" type="integer" label="Maximum buffer wait time" help="Maximum time to wait for the player to buffer media (0=disabled).">
+                <setting id="buffer_wait_max" type="integer" label="32918" help="32919">
                     <level>0</level>
                     <default>120</default>
                     <constraints>
@@ -202,7 +202,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="buffer_insufficient_wait" type="integer" label="Insufficient buffer wait time" help="Time to wait when the buffer is insufficient (0=disabled).">
+                <setting id="buffer_insufficient_wait" type="integer" label="32920" help="32921">
                     <level>0</level>
                     <default>10</default>
                     <constraints>
@@ -214,7 +214,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="consecutive_video_pb_wait" type="number" label="Player: Wait before consecutive playback" help="Wait this many seconds before playing back the next video in a playlist.">
+                <setting id="consecutive_video_pb_wait" type="number" label="32963" help="32964">
                     <level>0</level>
                     <default>0</default>
                     <constraints>
@@ -227,7 +227,7 @@
                     </control>
                 </setting>
                 <!-- START OF ZIDOO MOD SETTINGS -->
-                <setting id="player_stop_on_idle" type="integer" label="Stop playback after idle (seconds)" help="Automatically stop playback after the video has been paused for a specified time. (0=disabled)">
+                <setting id="player_stop_on_idle" type="integer" label="30114" help="36114">
                     <level>0</level>
                     <default>0</default>
                     <constraints>
@@ -239,7 +239,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="force_zidoo_player" type="boolean" label="Force Zidoo external player" help="Enable to use the Zidoo player for all video playback.">
+                <setting id="force_zidoo_player" type="boolean" label="30113" help="">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
@@ -248,9 +248,9 @@
             </group>
         </category>
         <!-- Markers -->
-        <category id="markers" label="Markers">
+        <category id="markers" label="33612">
             <group id="3" label="">
-                <setting id="auto_skip_offset" type="number" label="Auto skip offset" help="Time to wait after the intro/credits have finished before seeking">
+                <setting id="auto_skip_offset" type="number" label="33629" help="33630">
                     <level>0</level>
                     <default>1</default>
                     <constraints>
@@ -259,11 +259,11 @@
                         <maximum>10</maximum>
                     </constraints>
                     <control type="slider" format="number">
-                        <heading>Auto skip offset</heading>
+                        <heading>33630</heading>
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="skip_intro_button_timeout" type="integer" label="Skip intro button timeout" help="Time in seconds until skip intro button disappears">
+                <setting id="skip_intro_button_timeout" type="integer" label="32521" help="32524">
                     <level>0</level>
                     <default>10</default>
                     <constraints>
@@ -272,11 +272,11 @@
                         <maximum>40</maximum>
                     </constraints>
                     <control type="slider" format="integer">
-                        <heading>Skip intro button timeout</heading>
+                        <heading>32524</heading>
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="skip_credits_button_timeout" type="integer" label="Skip credits button timeout" help="Time in seconds until skip credits button disappears">
+                <setting id="skip_credits_button_timeout" type="integer" label="32525" help="32528">
                     <level>0</level>
                     <default>10</default>
                     <constraints>
@@ -285,11 +285,11 @@
                         <maximum>40</maximum>
                     </constraints>
                     <control type="slider" format="integer">
-                        <heading>Skip credits button timeout</heading>
+                        <heading>32528</heading>
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="skip_intro_button_show_early_threshold2" type="integer" label="Show 'Skip Intro' early threshold (s)" help="How early to show the skip intro button before the intro starts">
+                <setting id="skip_intro_button_show_early_threshold2" type="integer" label="33509" help="33510">
                     <level>0</level>
                     <default>120</default>
                     <constraints>
@@ -298,11 +298,11 @@
                         <maximum>1800</maximum>
                     </constraints>
                     <control type="slider" format="integer">
-                        <heading>Show 'Skip Intro' early threshold (s)</heading>
+                        <heading>33510</heading>
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="intro_marker_max_offset" type="integer" label="Intro marker max offset" help="Maximum offset for an Intro marker to be valid (in seconds)">
+                <setting id="intro_marker_max_offset" type="integer" label="33037" help="33038">
                     <level>0</level>
                     <default>1400</default>
                     <constraints>
@@ -311,16 +311,16 @@
                         <maximum>3600</maximum>
                     </constraints>
                     <control type="slider" format="integer">
-                        <heading>Show 'Skip Intro' early threshold (s)</heading>
+                        <heading>33510</heading>
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="skip_marker_timer_cancel" type="boolean" label="Cancel skip marker on input" help="Cancel skip-marker timer countdown on any input.">
+                <setting id="skip_marker_timer_cancel" type="boolean" label="32906" help="32907">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="skip_marker_timer_immediate" type="boolean" label="Immediately skip marker on select" help="Immediately skip marker on select, don't show info.">
+                <setting id="skip_marker_timer_immediate" type="boolean" label="32908" help="32909">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
@@ -328,24 +328,24 @@
             </group>
         </category>
         <!-- UI -->
-        <category id="user_interface" label="User Interface">
+        <category id="user_interface" label="32467">
             <group id="4" label="">
-                <setting id="fast_back" type="boolean" label="Fast back/home navigation">
+                <setting id="fast_back" type="boolean" label="32485">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="postplay_always" type="boolean" label="Always show post-play screen">
+                <setting id="postplay_always" type="boolean" label="32500">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="dynamic_backgrounds" type="boolean" label="Enable dynamic backgrounds">
+                <setting id="dynamic_backgrounds" type="boolean" label="32468">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="dbg_crossfade" type="boolean" label="Enable dynamic background crossfade">
+                <setting id="dbg_crossfade" type="boolean" label="32943">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
@@ -353,7 +353,7 @@
                       <dependency type="enable" setting="dynamic_backgrounds">true</dependency>
                   </dependencies>
                 </setting>
-                <setting id="background_colour" type="string" label="Background colour" help="A static fallback color for when dynamic backgrounds are turned off.">
+                <setting id="background_colour" type="string" label="33200" help="33201">
                   <level>0</level>
                   <default>-</default>
                   <control type="colorbutton" />
@@ -361,7 +361,7 @@
                       <dependency type="enable" setting="dynamic_backgrounds">false</dependency>
                   </dependencies>
                 </setting>
-                <setting id="background_art_blur_amount2" type="integer" label="Background art blur amount">
+                <setting id="background_art_blur_amount2" type="integer" label="32469">
                     <level>0</level>
                     <default>0</default>
                     <constraints>
@@ -376,7 +376,7 @@
                       <dependency type="enable" setting="dynamic_backgrounds">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="background_art_opacity_amount2" type="integer" label="Background art opacity amount">
+                <setting id="background_art_opacity_amount2" type="integer" label="32470">
                     <level>0</level>
                     <default>20</default>
                     <constraints>
@@ -391,7 +391,7 @@
                       <dependency type="enable" setting="dynamic_backgrounds">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="use_bg_fallback" type="boolean" label="Use background fallback">
+                <setting id="use_bg_fallback" type="boolean" label="32929">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
@@ -399,12 +399,12 @@
                       <dependency type="enable" setting="dynamic_backgrounds">true</dependency>
                     </dependencies>
                 </setting>
-                <setting id="continue_use_thumb" type="boolean" label="'Continue Watching' use poster" help="Use poster instead of thumbnail for items in 'Continue Watching'">
+                <setting id="continue_use_thumb" type="boolean" label="32927" help="32928">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="episode_no_spoiler_blur" type="integer" label="Episode 'no-spoiler' blur">
+                <setting id="episode_no_spoiler_blur" type="integer" label="33009">
                     <level>0</level>
                     <default>16</default>
                     <constraints>
@@ -416,12 +416,12 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="playlist_visit_media" type="boolean" label="Go to video on playlist select">
+                <setting id="playlist_visit_media" type="boolean" label="32505">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="postplay_timeout" type="integer" label="Post-play screen timeout" help="Time in seconds until the post-play screen automatically plays the next video">
+                <setting id="postplay_timeout" type="integer" label="32501" help="32904">
                     <level>0</level>
                     <default>16</default>
                     <constraints>
@@ -433,45 +433,45 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="postplay_cancel" type="boolean" label="Cancel post-play on any input">
+                <setting id="postplay_cancel" type="boolean" label="32905">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
             </group>
         </category>
-        <category id="screensaver" label="Screensaver">
+        <category id="screensaver" label="32488">
             <group id="5" label="">
-                <setting id="screensaver_quiz" type="boolean" label="Enable trivia quiz screensaver">
+                <setting id="screensaver_quiz" type="boolean" label="32489">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
             </group>
         </category>
-        <category id="system" label="System">
+        <category id="system" label="33600">
             <group id="6" label="">
-                <setting id="cache_templates" type="boolean" label="Cache templates" help="Cache templates to decrease load times">
+                <setting id="cache_templates" type="boolean" label="33066" help="33067">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="always_compile_templates" type="boolean" label="Always compile templates" help="Always recompile templates on addon start">
+                <setting id="always_compile_templates" type="boolean" label="33068" help="33069">
                     <level>0</level>
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="verify_mapped_files" type="boolean" label="Verify mapped files" help="Verify that mapped files are available on disk">
+                <setting id="verify_mapped_files" type="boolean" label="33002" help="33003">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="ignore_docker_v4" type="boolean" label="Ignore Docker IPv4 bug" help="Work-around for PMS running in docker where the internal IP is used instead of the mapped one">
+                <setting id="ignore_docker_v4" type="boolean" label="33014" help="33015">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="max_shutdown_wait" type="number" label="Maximum shutdown wait" help="How long to wait on Kodi exit to make sure all threads have gracefully quit.">
+                <setting id="max_shutdown_wait" type="number" label="34016" help="34017">
                     <level>0</level>
                     <default>5</default>
                     <constraints>
@@ -483,30 +483,30 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="honor_plextv_dnsrebind" type="boolean" label="Honor DNS Rebind settings" help="Connect locally, even if a server doesn't provide a local URL.">
+                <setting id="honor_plextv_dnsrebind" type="boolean" label="33645" help="33646">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="honor_plextv_pam" type="boolean" label="Honor Pre-Auth settings" help="Attempt to connect to a resource even if it doesn't appear available.">
+                <setting id="honor_plextv_pam" type="boolean" label="33647" help="33648">
                     <level>0</level>
                     <default>true</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="use_cert_bundle" type="string" label="Certificate Bundle to use" help="Change this if you're having issues connecting to your server securely.">
+                <setting id="use_cert_bundle" type="string" label="33051" help="33052">
                     <level>0</level>
                     <default>acme</default>
                     <constraints>
                         <options>
-                            <option label="System">system</option>
-                            <option label="ACME">acme</option>
-                            <option label="Custom">custom</option>
+                            <option label="33053">system</option>
+                            <option label="33054">acme</option>
+                            <option label="33055">custom</option>
                         </options>
                         <allowempty>false</allowempty>
                     </constraints>
                     <control type="list" format="string"/>
                 </setting>
-                <setting id="requests_timeout_connect" type="number" label="Connect timeout" help="How long to wait for a connection to be established.">
+                <setting id="requests_timeout_connect" type="number" label="33620" help="33621">
                     <level>0</level>
                     <default>5</default>
                     <constraints>
@@ -518,7 +518,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="requests_timeout_read" type="number" label="Read timeout" help="How long to wait for data to be received.">
+                <setting id="requests_timeout_read" type="number" label="33636" help="33637">
                     <level>0</level>
                     <default>5</default>
                     <constraints>
@@ -530,7 +530,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="plextv_timeout_connect" type="number" label="Plex.tv Connect timeout" help="How long to wait for a connection to Plex.tv to be established.">
+                <setting id="plextv_timeout_connect" type="number" label="33638" help="33639">
                     <level>0</level>
                     <default>1</default>
                     <constraints>
@@ -542,7 +542,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="plextv_timeout_read" type="number" label="Plex.tv Read timeout" help="How long to wait for data to be received from Plex.tv.">
+                <setting id="plextv_timeout_read" type="number" label="33640" help="33641">
                     <level>0</level>
                     <default>2</default>
                     <constraints>
@@ -554,7 +554,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="conn_check_timeout" type="number" label="Connection check timeout" help="How long to wait when checking for connection availability.">
+                <setting id="conn_check_timeout" type="number" label="33632" help="33633">
                     <level>0</level>
                     <default>2.5</default>
                     <constraints>
@@ -566,7 +566,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="local_reach_timeout" type="number" label="Local reachability timeout" help="How long to wait for a local server to respond.">
+                <setting id="local_reach_timeout" type="number" label="33622" help="33623">
                     <level>0</level>
                     <default>10</default>
                     <constraints>
@@ -578,7 +578,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="max_retries1" type="number" label="Maximum connection retries" help="Maximum amount of times to retry connecting to a resource.">
+                <setting id="max_retries1" type="number" label="33049" help="33050">
                     <level>0</level>
                     <default>3</default>
                     <constraints>
@@ -590,7 +590,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="tickrate" type="number" label="Tick-rate" help="Core addon clock tick-rate.">
+                <setting id="tickrate" type="number" label="33098" help="33099">
                     <level>0</level>
                     <default>1.0</default>
                     <constraints>
@@ -602,7 +602,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="worker_count" type="number" label="Worker-count" help="How many concurrent downloads to allow at once.">
+                <setting id="worker_count" type="number" label="32981" help="32982">
                     <level>0</level>
                     <default>3</default>
                     <constraints>
@@ -614,7 +614,7 @@
                         <popup>false</popup>
                     </control>
                 </setting>
-                <setting id="requests_cache_expiry" type="number" label="Requests cache expiry (hours)">
+                <setting id="requests_cache_expiry" type="number" label="33729">
                     <level>0</level>
                     <default>168</default>
                     <constraints>
