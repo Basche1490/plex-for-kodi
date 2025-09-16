@@ -2385,7 +2385,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.resume = False
         self.currentMarker = None
         self.zidooFailureDialog = None
-        self.stopPlaybackOnIdle = util.getSetting('player_stop_on_idle', 0)
+        self.stopPlaybackOnIdle = util.getSettingInt('player_stop_on_idle', 0)
         self.idleTime = None
         self.skipNextStopNotification = False
         self.reset()
@@ -2430,29 +2430,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.started = False
 
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
-            url = six.moves.urllib.parse.quote(args[0], safe="/ :?&=")
-
-            #cmds = f'/system/bin/am start --user 0 -n com.hpn789.plextozidoo/.Play --ez zdmc true'
-            #cmds = f'/system/bin/am start --user 0 -n com.android.gallery3d/com.android.gallery3d.app.MovieActivity'
-            #audioTrack = self.video.selectedAudioStream()
-            #if audioTrack:
-            #    cmds += f' --ei audio_idx {audioTrack.typeIndex}'
-            #subtitleTrack = self.video.selectedSubtitleStream()
-            #if subtitleTrack:
-            #    cmds += f' --ei subtitle_idx {subtitleTrack.typeIndex+1}' # subtitle tracks are 1 based in the zidoo player
-            #cmds += f' -a android.intent.action.VIEW -t video/* --ez from_start false --ei position {self.handler.seekOnStart} -e title {self.video.title.translate(self.escape_table)} -d {url.translate(self.escape_table)}'
-            #util.DEBUG_LOG(f'ZidooPlayer Cmd: {cmds}')
-            # Unfortunately this always gives a security error about the shell not being owned by the uid.  Not sure why that is because I can run this just fine from termux
-            #import subprocess
-            #output = subprocess.run(cmds, shell=True, capture_output=True)
-            #util.DEBUG_LOG(f'ZidooPlayer Output: {output}')
-
-            # Unfortunately I can't get the "extras" to show up on the other side.  Not sure if this is a Kodi issue or something I'm doing wrong but looks like we'll always
-            # need PlexToZidoo :(
-            #xbmc.executebuiltin('StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, video/*, {0}, , "[ {{ \"key\" : \"position\", \"value\" : \"{1}\", \"type\" : \"string\" }}, {{ \"key\" : \"title\", \"value\" : \"test\", \"type\" : \"string\" }} ]", , , com.hpn789.plextozidoo.Play)'.format(url, self.handler.seekOnStart))
-            #xbmc.executebuiltin('StartAndroidActivity(com.android.gallery3d, android.intent.action.VIEW, video/*, {0}, , "[ {{ \"key\" : \"position\", \"value\" : \"{1}\", \"type\" : \"string\" }}, {{ \"key\" : \"title\", \"value\" : \"test\", \"type\" : \"string\" }} ]", , , com.android.gallery3d.app.MovieActivity)'.format(url, self.handler.seekOnStart))
-
-
+            
             url = util.addURLParams(args[0], {
                 'PlexToZidoo-ViewOffset': self.handler.seekOnStart,
                 'PlexToZidoo-Title': self.video.title
@@ -2469,15 +2447,13 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 # Can't call util.addURLParms because it doesn't handle the special characters in the path correctly
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file)
                 url += f'&PlexToZidoo-Path={encodedPath}'
-
-            xbmc.executebuiltin(f'StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, , "{url}")')
+            
+            xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
 
             # Put up this error message in the background in case we can't start the zidoo player.  If we actually get the player started we'll just kill this dialog
             if not self.zidooFailureDialog or self.zidooFailureDialog.closing():
                 time.sleep(2)
                 from .windows import optionsdialog
-                # OLD LINE: self.zidooFailureDialog = optionsdialog.create(show=True, header="Error", info="Failed to start Zidoo player", button0="OK")
-                # NEW, CORRECTED LINE:
                 self.zidooFailureDialog = optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
 
             self.handler.seekOnStart = 0
@@ -3093,8 +3069,8 @@ def shutdown():
 
 
 if util.getSetting('force_zidoo_player', False):
-    util.LOG.info('PlexMod-Zidoo: Zidoo Player is forced, initializing ZidooPlayer.')
+    util.LOG('PlexMod-Zidoo: Zidoo Player is forced, initializing ZidooPlayer.')
     PLAYER = ZidooPlayer().init()
 else:
-    util.LOG.info('PlexMod-Zidoo: Initializing default PlexPlayer.')
+    util.LOG('PlexMod-Zidoo: Initializing default PlexPlayer.')
     PLAYER = PlexPlayer().init()
