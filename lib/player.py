@@ -1,4 +1,4 @@
-# THE FINAL, FULLY-CORRECTED player.py
+# THE FINAL, FULLY-CORRECTED player.py (WITH DEBUGGING)
 
 from __future__ import absolute_import
 import base64
@@ -1211,7 +1211,7 @@ class AudioPlayerHandler(BasePlayerHandler):
         return True
 
     def finish(self):
-        self.player.trigger('session.ended')
+        elf.player.trigger('session.ended')
         util.setGlobalProperty('track.ID', '')
 
     def tick(self):
@@ -2309,10 +2309,10 @@ class ZidooPlayerHandler(BasePlayerHandler):
         if rk not in self._progressHld:
             # progress already consumed
             return
-
+        
         # --- START OF ValueError FIX ---
-        # The modern 'episodes' window expects 4 values, but this was only sending 2.
-        # This now mirrors the main SeekPlayerHandler to prevent the crash.
+        # The modern 'episodes' window expects 4 values (grandparent, parent, item, state)
+        # This handler was only sending 2, causing a crash. This now sends all 4.
         gprk = None
         prk = None
         if self.player.video.type == "episode":
@@ -2461,18 +2461,13 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file, safe=':/')
                 url += f'&PlexToZidoo-Path={encodedPath}'
             
-            # --- START OF URL LAUNCH FIX ---
-            # Reverting to the simplest possible call. The URL is constructed and then passed directly.
-            # The 'ExceptionOccurred' error suggests complex quoting was causing issues.
+            # --- START OF DIAGNOSTIC LOG ---
+            # This will print the exact URL to the kodi log.
+            # We need this to diagnose the StartActivity error.
+            util.LOG.error("PlexMod-Zidoo: Attempting to launch with URL: %s", url)
+            # --- END OF DIAGNOSTIC LOG ---
+            
             xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
-            # --- END OF URL LAUNCH FIX ---
-
-            # Put up this error message in the background in case we can't start the zidoo player.  If we actually get the player started we'll just kill this dialog
-            # This logic is reverted to the original developer's logic to prevent 'closing' crash
-            if not self.zidooFailureDialog or self.zidooFailureDialog.closing():
-                time.sleep(2)
-                from .windows import optionsdialog
-                self.zidooFailureDialog = optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
 
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
@@ -2515,7 +2510,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         if self.bgmPlaying:
             self.stopAndWait()
             
-        # FIX 1: Ensure session_id exists and is passed to the handler
         self.sessionID = session_id or str(uuid.uuid4())
         self.handler = handler if handler and isinstance(handler, ZidooPlayerHandler) \
             else ZidooPlayerHandler(self, self.sessionID)
@@ -2533,7 +2527,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         )
         try:
             if not playerObject:
-                 # FIX 2: Pass the sessionID to the PlexPlayer decision object
                 self.playerObject = plexplayer.PlexPlayer(self.video, offset, forceUpdate=force_update, session_id=self.sessionID)
                 self.playerObject.build()
             self.playerObject = self.playerObject.getServerDecision()
@@ -2883,6 +2876,9 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.thread.start()
 
     def _monitor(self):
+        # --- START OF THREAD-SAFE DIALOG FIX ---
+        # This new logic makes the monitor thread responsible for showing the error dialog.
+        # This prevents the race condition that caused the 'AttributeError crash.
         try:
             while not util.MONITOR.abortRequested() and not self._closed:
                 util.DEBUG_LOG('ZidooPlayer: Monitor 0')
@@ -2892,66 +2888,71 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 # Wait for something to start
                 while (not self.started or not self.handler or not isinstance(self.handler, ZidooPlayerHandler)) and not util.MONITOR.abortRequested() and not self._closed:
                     time.sleep(1)
+                
+                if not self.started: continue
 
                 util.DEBUG_LOG('ZidooPlayer: Monitor 1')
                 # Wait for the zidoo player to get going
                 zidooStatusFull = None
-                while((zidooStatusFull is None or zidooStatusFull['video']['duration'] <= 0) and not util.MONITOR.abortRequested() and not self._closed):
-                    time.sleep(1)
+                playback_started = False
+                
+                # Try for 8 seconds to see if the player has started
+                for _ in range(8):
+                    if util.MONITOR.abortRequested() or self._closed or not self.started: break
                     zidooStatusFull = self.getZidooPlayerStatus()
-                    if zidooStatusFull is None:
-                        # Check to see if the user cleared the error message, if so then we can stop monitoring
-                        if self.zidooFailureDialog is None or self.zidooFailureDialog.closing():
-                            self.playState = self.STATE_STOPPED
-                            break
+                    if zidooStatusFull and zidooStatusFull.get('video', {}).get('duration', 0) > 0:
+                        playback_started = True
+                        break
+                    time.sleep(1)
+                
+                if not playback_started:
+                    if self.started: # Only show dialog if we were supposed to be playing
+                        util.LOG.error("ZidooPlayer: Playback did not start after 8 seconds. Showing failure dialog.")
+                        from .windows import optionsdialog
+                        optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
+                        self.playState = self.STATE_STOPPED
+                        self.onPlayBackStopped() # Manually trigger stop event
+                    continue # Go back to idling
 
-                if zidooStatusFull is not None:
-                    util.DEBUG_LOG('ZidooPlayer: Monitor 2')
-                    if self.zidooFailureDialog:
-                        self.zidooFailureDialog.doClose()
-                    # Loop here while the movie is still being played
-                    statusNull = 0
-                    while self.started and not util.MONITOR.abortRequested() and not self._closed:
-                        time.sleep(1)
-                        timeJump = False
-                        zidooStatusFull = self.getZidooPlayerStatus()
-                        if zidooStatusFull is not None:
-                            statusNull = 0
-                            if zidooStatusFull['video']['duration'] > 0:
-                                zidooStatus = zidooStatusFull['video']['status']
-                                if zidooStatus == 0 or zidooStatus == 1:
-                                    if zidooStatus == 0:
-                                        if self.playState != self.STATE_PAUSED:
-                                            self.playState = self.STATE_PAUSED
-                                            self.onPlayBackPaused()
-                                            self.idleTime = time.time()
-                                            continue # Loop back to the top so we give the Plex server a chance to catch up
-                                        if self.stopPlaybackOnIdle:
-                                            if self.idleTime and time.time() - self.idleTime >= self.stopPlaybackOnIdle:
-                                                util.DEBUG_LOG('ZidooPlayer: Monitor idle time expired - stopping playback')
-                                                self.setZidooPlayerStop()
-                                                continue
-                                    elif zidooStatus == 1:
-                                        if self.playState != self.STATE_PLAYING:
-                                            self.playState = self.STATE_PLAYING
-                                            self.onPlayBackResumed()
-                                            self.idleTime = None
-                                            continue # Loop back to the top so we give the Plex server a chance to catch up
-                                    self.duration = zidooStatusFull['video']['duration'] / 1000
-                                    newTime = zidooStatusFull['video']['currentPosition']
-                                    if newTime > 0:
-                                        # If the time change since the last update is more than 10 seconds we want to
-                                        # update the plex server
-                                        if abs(newTime - (self.currentTime * 1000)) > 10000:
-                                            timeJump = True
-
-                                        self.currentTime = newTime / 1000
-
-                                        if self.autoSkipIntro or self.autoSkipCredits:
-                                            self.checkAutoSkip()
-                                else:
-                                    self.playState = self.STATE_STOPPED
-                                    break
+                # --- Playback has started successfully ---
+                util.DEBUG_LOG('ZidooPlayer: Monitor 2 - Playback confirmed.')
+                
+                # Loop here while the movie is still being played
+                statusNull = 0
+                while self.started and not util.MONITOR.abortRequested() and not self._closed:
+                    time.sleep(1)
+                    timeJump = False
+                    zidooStatusFull = self.getZidooPlayerStatus()
+                    if zidooStatusFull is not None:
+                        statusNull = 0
+                        if zidooStatusFull['video']['duration'] > 0:
+                            zidooStatus = zidooStatusFull['video']['status']
+                            if zidooStatus == 0 or zidooStatus == 1:
+                                if zidooStatus == 0:
+                                    if self.playState != self.STATE_PAUSED:
+                                        self.playState = self.STATE_PAUSED
+                                        self.onPlayBackPaused()
+                                        self.idleTime = time.time()
+                                        continue # Loop back to the top so we give the Plex server a chance to catch up
+                                    if self.stopPlaybackOnIdle > 0:
+                                        if self.idleTime and time.time() - self.idleTime >= self.stopPlaybackOnIdle:
+                                            util.DEBUG_LOG('ZidooPlayer: Monitor idle time expired - stopping playback')
+                                            self.setZidooPlayerStop()
+                                            continue
+                                elif zidooStatus == 1:
+                                    if self.playState != self.STATE_PLAYING:
+                                        self.playState = self.STATE_PLAYING
+                                        self.onPlayBackResumed()
+                                        self.idleTime = None
+                                        continue # Loop back to the top so we give the Plex server a chance to catch up
+                                self.duration = zidooStatusFull['video']['duration'] / 1000
+                                newTime = zidooStatusFull['video']['currentPosition']
+                                if newTime > 0:
+                                    if abs(newTime - (self.currentTime * 1000)) > 10000:
+                                        timeJump = True
+                                    self.currentTime = newTime / 1000
+                                    if self.autoSkipIntro or self.autoSkipCredits:
+                                        self.checkAutoSkip()
                             else:
                                 self.playState = self.STATE_STOPPED
                                 break
@@ -2960,10 +2961,10 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                             statusNull += 1
                             if statusNull >= 3:
                                 break
-                            continue # We randomly will get bad status so just keep going.
+                            continue
 
                         if timeJump:
-                            self.handler.updateNowPlaying(force=True, state=self.STATE_PAUSED) # The PAUSED state should actually force an update
+                            self.handler.updateNowPlaying(force=True, state=self.STATE_PAUSED)
                         else:
                             self.handler.updateNowPlaying(force=True)
 
@@ -2980,6 +2981,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             util.DEBUG_LOG('ZidooPlayer: Closed')
         finally:
             self.trigger('session.ended')
+        # --- END OF THREAD-SAFE DIALOG FIX ---
 
     def getTotalTime(self):
         if not self.handler or not isinstance(self.handler, ZidooPlayerHandler):
