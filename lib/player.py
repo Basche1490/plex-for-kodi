@@ -1,4 +1,4 @@
-# THE FINAL, FULLY-CORRECTED player.py (WITH DEBUGGING)
+# THE FINAL, FULLY-CORRECTED player.py (WITH ALL BUG FIXES AND DIAGNOSTICS)
 
 from __future__ import absolute_import
 import base64
@@ -493,12 +493,6 @@ class SeekPlayerHandler(BasePlayerHandler):
                 util.DEBUG_LOG("SeekAbsolute: runtime error")
                 return False
 
-            # Some devices seem to have an issue with the self.player.seekTime function where after the seek the video
-            # will be playing, but the audio won't for a few seconds(I've seen up to 15 seconds).  Using this alternate
-            # way to seek avoids that issue.
-
-            # we only apply the fix for a significant seek, otherwise the event might not fire, and we end up with
-            # an unconsumed self.seekOnStart, which leads to never sending timeline events
             if self.useAlternateSeek and seekSeconds > 0.5:
                 currentTime = self.player.getTime()
                 relativeSeekSeconds = seekSeconds - currentTime
@@ -529,7 +523,6 @@ class SeekPlayerHandler(BasePlayerHandler):
 
         self.ignoreTimelines = False
 
-        # check if embedded subtitle was set correctly
         if self.isDirectPlay and self.player.video and self.player.video.current_subtitle_is_embedded:
             got_player = False
             tries = 0
@@ -567,7 +560,6 @@ class SeekPlayerHandler(BasePlayerHandler):
         if self.dialog:
             self.dialog.onPlayBackStarted()
 
-        #if not self.prePlayWitnessed and self.isDirectPlay:
         if self.isDirectPlay:
             self.setSubtitles(do_sleep=False)
 
@@ -577,7 +569,6 @@ class SeekPlayerHandler(BasePlayerHandler):
             self.dialog.onPlayBackResumed()
 
             util.CRON.forceTick()
-        # self.hideOSD()
 
     def getVideoPlayedFac(self, ref=None):
         return (ref if ref is not None else self.trueTime * 1000) / float(self.duration)
@@ -594,11 +585,6 @@ class SeekPlayerHandler(BasePlayerHandler):
         return int(server_thres)
 
     def getVideoWatched(self, ref=None):
-        """
-        0:at selected threshold percentage|1:at final credits marker position|2:at first credits marker position|3:earliest between threshold percent and first credits marker
-        :param ref:
-        :return: bool
-        """
         playedAtBH = self.player.video.server.prefs.get("LibraryVideoPlayedAtBehaviour", None)
         if playedAtBH is None:
             playedAtBH = util.getSetting("played_threshold_behaviour")
@@ -630,7 +616,6 @@ class SeekPlayerHandler(BasePlayerHandler):
 
         rk = str(self.player.video.ratingKey)
         if rk not in self._progressHld:
-            # progress already consumed
             return
 
         gprk = None
@@ -655,7 +640,6 @@ class SeekPlayerHandler(BasePlayerHandler):
         if self.queuingNext or self.queuingSpecific:
             if self.isDirectPlay and self.playlist and (self.playlist.hasNext() or self.queuingSpecific):
                 self.hideOSD(delete=True)
-            # fixme: the on_end value is a hack here, we should rename or use a different parameter
             if self.queuingNext:
                 if self.next(on_end=not self.skipPostPlay):
                     return
@@ -666,7 +650,6 @@ class SeekPlayerHandler(BasePlayerHandler):
             self.triggerProgressEvent()
 
             if not self.queuingSpecific:
-                # show post play if possible, if an item has been watched (90% by Plex standards)
                 if self.seeking != self.SEEK_PLAYLIST and self.duration:
                     util.DEBUG_LOG("Player - played-threshold: {}%/{}%",
                                    int(self.videoPlayedFac * 100), int(self.playedThresholdPerc))
@@ -686,7 +669,7 @@ class SeekPlayerHandler(BasePlayerHandler):
             self.dialog.onPlayBackEnded()
 
         if self.player.playerObject.hasMoreParts():
-            self.updateNowPlaying(state=self.player.STATE_PAUSED)  # To for update after seek
+            self.updateNowPlaying(state=self.player.STATE_PAUSED)
             self.seeking = self.SEEK_IN_PROGRESS
             self.player._playVideo(self.player.playerObject.getNextPartOffset(), seeking=self.seeking)
             return
@@ -737,15 +720,12 @@ class SeekPlayerHandler(BasePlayerHandler):
             try:
                 p_time = self.player.getTime()
             except RuntimeError:
-                # kodi isn't playing anything
                 util.LOG("SeekHandler: onPlayBackSeek: Called without playing player, exiting.")
                 return
 
             if p_time * 1000 < withinSOS:
                 if self.useResumeFix and self.seekOnStart > 500:
                     self.waitingForSOS = True
-                    # checking infoLabel Player.Seeking would be the better solution here, but we're dealing with stuff like
-                    # CoreELEC, which doesn't necessarily properly honor this
                     util.MONITOR.waitForAbort(0.25)
                 self.seek(self.seekOnStart)
 
@@ -772,13 +752,11 @@ class SeekPlayerHandler(BasePlayerHandler):
                         util.DEBUG_LOG("OnPlayBackSeek: Seeked on start to: {0}", self.seekOnStart)
                     self.waitingForSOS = False
 
-            # should not be necessary due to other recent changes to dialog persistence, but it doesn't hurt, either
             if self.dialog:
                 self.dialog.offset = self.seekOnStart
             self.seekOnStart = 0
 
         self.updateOffset()
-        # self.showOSD(from_seek=True)
 
     @property
     def subtitleStreamOffset(self):
@@ -786,8 +764,6 @@ class SeekPlayerHandler(BasePlayerHandler):
             if self._subtitleStreamOffset is not None:
                 return self._subtitleStreamOffset
 
-            # when mapped, Kodi finds external subs on its own and places them at the top of the list, before
-            # embedded subs.
             kodisubs = None
             tries = 0
             while not kodisubs and tries < 50:
@@ -800,12 +776,10 @@ class SeekPlayerHandler(BasePlayerHandler):
                 tries += 1
                 util.MONITOR.waitForAbort(0.1)
             if not kodisubs:
-                # this can happen occasionally, if the player isn't ready, yet, but we account for that
                 util.DEBUG_LOG("SeekHandler: subtitleStreamOffset: Returning zero as player not available or no "
                                "subtitles found")
                 return 0
             if kodisubs:
-                # find embedded subtitle stream in Plex
                 ess = None
                 ext_subs_amount = 0
                 for ss in self.player.video.subtitleStreams:
@@ -814,8 +788,6 @@ class SeekPlayerHandler(BasePlayerHandler):
                         continue
                     if not ess and ss.embedded:
                         ess = ss
-                    # ss.score: only downloaded external subtitles have a score; skip them, as they're not visible to
-                    # Kodi
                     elif not ss.embedded and not ss.score:
                         ext_subs_amount += 1
 
@@ -826,12 +798,6 @@ class SeekPlayerHandler(BasePlayerHandler):
 
                 util.DEBUG_LOG("SeekHandler: subtitleStreamOffset: Found embedded subtitle at: {}", ext_subs_amount)
 
-                # find embedded subtitle stream in Kodi stream list
-                # we know Kodi puts external subtitles first, start there (Kodi might see more external subs or the PMS
-                # hasn't detected them, so we still need to find the embedded sub we're searching for)
-
-                # use iso639 to determine the streams' languages (Kodi uses the bibliographic language code, Plex uses
-                # the terminological one (e.g: ger vs. deu, fre vs. fra)
                 ess_lang = languages.get(part2t=ess.languageCode)
                 for sub in kodisubs[ext_subs_amount:]:
                     if (sub['isdefault'] == ess.default.asBool() and sub['isforced'] == ess.forced.asBool() and
@@ -845,16 +811,6 @@ class SeekPlayerHandler(BasePlayerHandler):
                 util.LOG("SeekHandler: Couldn't find embedded subtitle in Kodi subtitle list: {}, assuming no difference", ess)
                 self._subtitleStreamOffset = 0
 
-                # old implementation
-                # embeddedStreams = list(filter(lambda x: x.embedded, self.player.video.subtitleStreams))
-                # difflen = len(kodisubs) - len(embeddedStreams)
-                ## does our sub-count differ from the one Kodi sees? if so, adjust the offset
-                # if difflen > 0:
-                #    self._subtitleStreamOffset = difflen
-                #    return self._subtitleStreamOffset
-                ## if not, do we have external subtitles? if so, we need to adjust the offset
-                # self._subtitleStreamOffset = len(list(filter(lambda x: not x.embedded, self.player.video.subtitleStreams)))
-                # return self._subtitleStreamOffset
         return 0
 
     def setSubtitles(self, do_sleep=True, honor_forced_subtitles_override=True, honor_deselect_subtitles=True,
@@ -871,16 +827,11 @@ class SeekPlayerHandler(BasePlayerHandler):
             ref=ref
         )
 
-        # we want to get the subtitle stream offset regardless of whether we have subtitles selected or not,
-        # as the subtitle amount might change during playback (e.g. kodi subtitle download adds one to the list)
-        # but our concern are existing external subtitles in path mapped mode, which Kodi adds to the top of the list
         sso = self.subtitleStreamOffset
         if subs:
             if do_sleep:
                 xbmc.sleep(100)
 
-            # the subtitle stream might not have had the correct amount of data set to properly determine auto sync
-            # reinit the auto sync state with our current video
             subs.init_auto_sync(video=self.player.video)
             path = subs.getSubtitleServerPath(auto_sync=subs.should_auto_sync)
             if self.isDirectPlay:
@@ -891,13 +842,9 @@ class SeekPlayerHandler(BasePlayerHandler):
                     self.player.showSubtitles(True)
 
                 else:
-                    # u_til.TEST(subs.__dict__)
-                    # u_til.TEST(self.player.video.mediaChoice.__dict__)
-
                     util.DEBUG_LOG('Enabling embedded subtitles at: {0} ({1})', subs.typeIndex + sso, subs)
                     self.player.setSubtitleStream(subs.typeIndex + sso)
                     self.player.showSubtitles(True)
-
         else:
             self.player.showSubtitles(False)
 
@@ -924,7 +871,6 @@ class SeekPlayerHandler(BasePlayerHandler):
                     self.player.setAudioStream(track.typeIndex)
                     tries += 1
 
-
     def updateOffset(self):
         try:
             self.offset = int(self.player.getTime() * 1000)
@@ -934,7 +880,6 @@ class SeekPlayerHandler(BasePlayerHandler):
     def initPlayback(self):
         self.seeking = self.NO_SEEK
 
-        #self.setSubtitles()
         if self.isTranscoded and self.player.getAvailableSubtitleStreams():
             util.DEBUG_LOG('Enabling first subtitle stream, as we\'re in DirectStream')
             self.player.showSubtitles(True)
@@ -958,13 +903,9 @@ class SeekPlayerHandler(BasePlayerHandler):
 
         return True
 
-    # def onSeekOSD(self):
-    #     self.dialog.activate()
-
     def onVideoWindowOpened(self):
         util.DEBUG_LOG('SeekHandler: onVideoWindowOpened - Seeking={0}', self.seeking)
         self.getDialog().show()
-
         self.initPlayback()
 
     def onVideoWindowClosed(self):
@@ -972,11 +913,6 @@ class SeekPlayerHandler(BasePlayerHandler):
         util.DEBUG_LOG('SeekHandler: onVideoWindowClosed - Seeking={0}', self.seeking)
         self.player.trigger('videowindow.closed', session_id=self.sessionID, video=self.player.video)
         if not self.seeking:
-            # send events as we might not have seen onPlayBackEnded and/or onPlayBackStopped in certain cases,
-            # especially when postplay isn't wanted and we're at the end of a show
-            #self.updateNowPlaying()
-            #if self._progressHld:
-            #    self.triggerProgressEvent()
             if self.player.isPlaying():
                 self.player.stopAndWait()
 
@@ -986,7 +922,6 @@ class SeekPlayerHandler(BasePlayerHandler):
                     self.sessionEnded()
 
     def onVideoOSD(self):
-        # xbmc.executebuiltin('Dialog.Close(seekbar,true)')  # Doesn't work :)
         util.DEBUG_LOG('SeekHandler: onVideoOSD - Seeking={0}', self.seeking)
         if self.queuingSpecific or self.queuingNext:
             return
@@ -1035,7 +970,7 @@ class AudioPlayerHandler(BasePlayerHandler):
             return
 
         plexID = None
-        for x in range(10):  # Wait a sec (if necessary) for this to become available
+        for x in range(10):
             try:
                 item = kodijsonrpc.rpc.Player.GetItem(playerid=0, properties=['comment'])['item']
                 plexID = item['comment']
@@ -1062,7 +997,7 @@ class AudioPlayerHandler(BasePlayerHandler):
             pobj = plexplayer.PlexAudioPlayer(track, session_id=self.sessionID)
             self.player.playerObject = pobj
             self.updatePlayQueueTrack(track)
-            util.setGlobalProperty('track.ID', track.ratingKey)  # This is used in the skins to match a listitem
+            util.setGlobalProperty('track.ID', track.ratingKey)
         except:
             util.ERROR()
 
@@ -1076,7 +1011,6 @@ class AudioPlayerHandler(BasePlayerHandler):
 
         plist = xbmc.PlayList(xbmc.PLAYLIST_MUSIC)
         just_added = kwargs.get("just_added")
-        # plist.clear()
 
         waited = 0
         while not kodijsonrpc.rpc.Player.GetActivePlayers() and not util.MONITOR.abortRequested() and waited < 10:
@@ -1087,25 +1021,21 @@ class AudioPlayerHandler(BasePlayerHandler):
             citem = kodijsonrpc.rpc.Player.GetItem(playerid=0, properties=['comment'])['item']
             plexID = citem['comment'].split(':', 1)[0]
         except:
-            #util.ERROR()
             return
 
         current = plist.getposition()
         size = plist.size()
 
-        # if we've just added items to the playqueue, we don't need to do any swappery
         if not just_added:
-            # Remove everything but the current track
-            for x in range(size - 1, current, -1):  # First everything with a greater position
+            for x in range(size - 1, current, -1):
                 kodijsonrpc.rpc.Playlist.Remove(playlistid=xbmc.PLAYLIST_MUSIC, position=x)
-            for x in range(current):  # Then anything with a lesser position
+            for x in range(current):
                 kodijsonrpc.rpc.Playlist.Remove(playlistid=xbmc.PLAYLIST_MUSIC, position=0)
 
             swap = None
             for idx, track in enumerate(self.playQueue.items()):
                 tid = 'PLEX-{0}'.format(track.ratingKey)
                 if tid == plexID:
-                    # Save the position of the current track in the pq
                     swap = idx
 
                 url, li = self.player.createTrackListItem(track, index=idx + 1)
@@ -1122,7 +1052,6 @@ class AudioPlayerHandler(BasePlayerHandler):
                         'playcount': swap + 1,
                     })
 
-            # Now swap the track to the correct position. This seems to be the only way to update the kodi playlist position to the current track's new position
             if swap is not None:
                 kodijsonrpc.rpc.Playlist.Swap(playlistid=xbmc.PLAYLIST_MUSIC, position1=0, position2=swap + 1)
                 try:
@@ -1130,7 +1059,6 @@ class AudioPlayerHandler(BasePlayerHandler):
                 except:
                     pass
         else:
-            # add added items
             idx = plist.size() + 1
             for track in just_added:
                 url, li = self.player.createTrackListItem(track, index=idx)
@@ -1211,7 +1139,7 @@ class AudioPlayerHandler(BasePlayerHandler):
         return True
 
     def finish(self):
-        elf.player.trigger('session.ended')
+        self.player.trigger('session.ended')
         util.setGlobalProperty('track.ID', '')
 
     def tick(self):
@@ -1374,7 +1302,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.ignoreStopEvents = False
         self._ignorePlaybackFailure = False
         self.dontRequeueBGM = False
-        #self.handler = AudioPlayerHandler(self)
         self.currentTime = 0
 
     def control(self, cmd):
@@ -1391,12 +1318,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 xbmc.executebuiltin('PlayerControl(Play)')
 
     def playerAction(self, action, **kwargs):
-        """
-        Signal receiver for specific player actions (called by SeekDialog for example)
-        @param action: "next", "prev", "playAt"
-        @param kwargs: "pos"=playlist index; in case of action == "playAt"
-        @return:
-        """
         if not self.handler:
             util.DEBUG_LOG("Player: Can't handle action without handler")
             return
@@ -1407,10 +1328,8 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
         if action == "next":
             self.handler.next()
-
         elif action == "prev":
             self.handler.prev()
-
         elif action == "playAt":
             self.handler.playAt(kwargs['pos'])
 
@@ -1434,10 +1353,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         return None
 
     def playAt(self, path, ms):
-        """
-        Plays the video specified by path.
-        Optionally set the start position with h,m,s,ms keyword args.
-        """
         seconds = ms / 1000.0
 
         h = int(seconds / 3600)
@@ -1458,18 +1373,13 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         if self.isPlaying():
             if not self.lastPlayWasBGM:
                 return
-
             else:
-                # don't re-queue the currently playing theme
                 if isinstance(self.handler, BGMPlayerHandler) and self.handler.currentlyPlaying == rating_key:
                     return
-
-                # cancel any currently playing theme before starting the new one
                 else:
                     self.stopAndWait()
         self.sessionID = "BGM{}".format(rating_key)
         curVol = self.handler.getVolume()
-        # no current volume, don't play BGM either
         if not curVol:
             return
 
@@ -1481,7 +1391,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.dontRequeueBGM = False
         self.handler = BGMPlayerHandler(self, [source, volume, rating_key])
 
-        # store current volume if it's different from the BGM volume
         if volume < curVol:
             util.setSetting('last_good_volume', curVol)
 
@@ -1505,7 +1414,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self._playVideo(resume and video.viewOffset.asInt() or 0, force_update=force_update, session_id=session_id)
 
     def getOSSPathHint(self, meta):
-        # only hint the path one folder above for a movie, two folders above for TV
         try:
             head1, tail1 = os.path.split(meta.path)
             head2, tail2 = os.path.split(head1)
@@ -1544,7 +1452,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG('Playing URL(+{1}ms): {0}{2}', plexnetUtil.cleanToken(url), offset, bifURL and ' - indexed' or '')
 
         self.ignoreStopEvents = True
-        self.stopAndWait()  # Stop before setting up the handler to prevent player events from causing havoc
+        self.stopAndWait()
         if self.handler and self.handler.queuingNext and util.addonSettings.consecutiveVideoPbWait:
             util.DEBUG_LOG(
                 "Waiting for {}s until playing back next item".format(util.addonSettings.consecutiveVideoPbWait))
@@ -1552,18 +1460,13 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
         self.ignoreStopEvents = False
 
-        # fixme: this handler might be accessing a new playerObject, not the one it's expecting to access,
-        #        especially when .next() is used
         self.handler.reset()
         self.handler.setup(self.video.duration.asInt(), meta, offset, bifURL, title=self.video.grandparentTitle,
                            title2=self.video.title, seeking=seeking, chapters=self.video.chapters,
                            is_mapped=meta.isMapped)
 
-        # try to get an early intro offset so we can skip it if necessary
         introOffset = None
         if not offset:
-            # in case we're transcoded, instruct the marker handler to set the marker a skipped, so we don't re-skip it
-            # after seeking
             probOff = self.handler.getIntroOffset(offset, setSkipped=meta.isTranscoded)
             if probOff:
                 introOffset = probOff
@@ -1572,12 +1475,10 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.handler.mode = self.handler.MODE_RELATIVE
 
             if introOffset:
-                # cheat our way into an early intro skip by modifying the offset in the stream URL
                 util.DEBUG_LOG("Immediately seeking behind intro: {}", introOffset)
                 url = self.OFFSET_RE.sub(r"\g<1>{}".format(introOffset // 1000), url)
                 self.handler.dialog.baseOffset = introOffset
 
-                # probably not necessary
                 meta.playStart = introOffset // 1000
         else:
             if offset:
@@ -1590,9 +1491,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.handler.mode = self.handler.MODE_ABSOLUTE
 
         if not meta.isMapped:
-            # Kodi 19 will try to look for subtitles in the directory containing the file. '/' and `/file.mkv` both
-            # point to the file, and Kodi will happily try to read the whole file without recognizing it isn't a
-            # directory. To get around that, we omit the filename here since it is unnecessary.
             omit, fname = url.rsplit("/", 1)
             if fname.startswith("file."):
                 url = "{}/{}".format(omit, "?" + fname.split("?")[1] if "?" in fname else "")
@@ -1614,7 +1512,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         fill_trakt_ids = False
         trakt_ids = {}
 
-        # generate guids when script.trakt is installed
         if "script.trakt" in util.USER_ADDONS:
             fill_trakt_ids = True
 
@@ -1654,13 +1551,11 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
                     trakt_ids[sabbr] = gid
         if fill_trakt_ids:
-            # generate trakt slug
             if vtype == "movie":
                 year = self.video.year.asInt()
                 trakt_ids['slug'] = util.slugify("{}{}".format(self.video.title, year and " {}".format(year) or ""))
 
             util.DEBUG_LOG("Setting Trakt IDs: {}", trakt_ids)
-            # report IDs to trakt
             xbmcgui.Window(10000).setProperty('script.trakt.ids', json.dumps(trakt_ids))
 
         info = {
@@ -1719,12 +1614,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         if handler and isinstance(handler, SeekPlayerHandler):
             util.DEBUG_LOG("PlayVideoPlaylist: Reusing old handler: {}", handler)
             self.handler = handler
-            #self.handler.queuingNext = True
-            #self.handler.seekOnStart = 0
-            #self.handler.baseOffset = 0
-            #if self.handler.dialog:
-            #    self.handler.dialog.doClose(delete=True)
-            #self.handler.dialog = None
             self.playerObject = None
             self.currentTime = 0
         else:
@@ -1740,27 +1629,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self._playVideo(resume and self.video.viewOffset.asInt() or 0, seeking=handler and handler.SEEK_PLAYLIST or 0,
                         force_update=True, session_id=session_id)
 
-    # def createVideoListItem(self, video, index=0):
-    #     url = 'plugin://script.plex/play?{0}'.format(base64.urlsafe_b64encode(video.serialize()))
-    #     li = xbmcgui.ListItem(self.video.title, path=url, thumbnailImage=self.video.defaultThumb.asTranscodedImageURL(256, 256))
-    #     vtype = self.video.type if self.video.vtype in ('movie', 'episode', 'musicvideo') else 'video'
-    #     li.setInfo('video', {
-    #         'mediatype': vtype,
-    #         'playcount': index,
-    #         'title': video.title,
-    #         'tvshowtitle': video.grandparentTitle,
-    #         'episode': video.index.asInt(),
-    #         'season': video.parentIndex.asInt(),
-    #         'year': video.year.asInt(),
-    #         'plot': video.summary
-    #     })
-    #     li.setArt({
-    #         'poster': self.video.defaultThumb.asTranscodedImageURL(347, 518),
-    #         'fanart': self.video.defaultArt.asTranscodedImageURL(1920, 1080),
-    #     })
-
-    #     return url, li
-
     def playAudio(self, track, fanart=None, **kwargs):
         if self.bgmPlaying:
             self.stopAndWait()
@@ -1774,7 +1642,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.stopAndWait()
         self.ignoreStopEvents = False
 
-        # maybe fixme: once started, self.sessionID will never be None for Audio
         self.trigger('starting.audio')
         self.play(url, li, **kwargs)
 
@@ -1844,8 +1711,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             'tracknumber': track.get('index').asInt(),
             'duration': int(track.duration.asInt() / 1000),
             'playcount': index,
-            # fixme: this is not really necessary, as we don't go the plugin:// route anymore.
-            #        changing the track identification style would mean a bigger rewrite, though, so let's keep it.
             'comment': 'PLEX-{0}:{1}'.format(track.ratingKey, data)
         }
 
@@ -1997,7 +1862,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             util.showNotification(util.T(32448, 'Playback Failed!'))
             self.stopAndWait()
             self.close()
-            # xbmcgui.Dialog().ok('Failed', 'Playback failed')
 
     def onVideoWindowOpened(self):
         if not self.sessionID:
@@ -2014,7 +1878,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG('Player: Video window closed')
         try:
             self.handler.onVideoWindowClosed()
-            # self.stop()
         except:
             util.ERROR()
 
@@ -2077,9 +1940,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                         self._audioMonitor()
                 elif self.isPlaying():
                     util.DEBUG_LOG('Monitoring pre-play...')
-
-                    # note: this might never be triggered depending on how fast the video playback starts.
-                    # don't rely on it in any way.
                     self._preplayMonitor()
 
             self.handler.close()
@@ -2103,8 +1963,6 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG("VideoMonitor: Initializing...")
         while self.isPlayingVideo() and not util.MONITOR.abortRequested() and not self._closed:
             if self.handler and (self.handler.queuingNext or self.handler.queuingSpecific):
-                # when waiting for the next item to be fully initialized, don't set self.currentTime, otherwise
-                # onPlaybackStarted could push an invalid trueTime
                 util.DEBUG_LOG("VideoMonitor: Waiting for next item to queue...")
                 while (self.handler and (self.handler.queuingNext or self.handler.queuingSpecific)
                        and not util.MONITOR.abortRequested() and not self._closed):
@@ -2171,6 +2029,7 @@ class PlexPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 ct = 0
                 self.handler.tick()
 
+
 class ZidooPlayerHandler(BasePlayerHandler):
     MODE_ABSOLUTE = 0
     MODE_RELATIVE = 1
@@ -2232,7 +2091,7 @@ class ZidooPlayerHandler(BasePlayerHandler):
         return True
 
     def showPostPlay(self):
-        if self.player.zidooFailureDialog:
+        if hasattr(self.player, 'zidooFailureDialog') and self.player.zidooFailureDialog:
             self.player.zidooFailureDialog.doClose()
 
         if not self.shouldShowPostPlay():
@@ -2295,6 +2154,7 @@ class ZidooPlayerHandler(BasePlayerHandler):
 
     @property
     def videoPlayedFac(self):
+        if self.duration == 0: return 0.0
         return self.trueTime * 1000 / float(self.duration)
 
     @property
@@ -2307,12 +2167,8 @@ class ZidooPlayerHandler(BasePlayerHandler):
 
         rk = str(self.player.video.ratingKey)
         if rk not in self._progressHld:
-            # progress already consumed
             return
         
-        # --- START OF ValueError FIX ---
-        # The modern 'episodes' window expects 4 values (grandparent, parent, item, state)
-        # This handler was only sending 2, causing a crash. This now sends all 4.
         gprk = None
         prk = None
         if self.player.video.type == "episode":
@@ -2321,14 +2177,12 @@ class ZidooPlayerHandler(BasePlayerHandler):
         
         self.player.trigger('video.progress', data=(gprk, prk, rk, self._progressHld[rk] if not self.videoWatched else True))
         self._progressHld = {}
-        # --- END OF ValueError FIX ---
 
     def onPlayBackStopped(self):
         util.DEBUG_LOG('ZidooHandler: onPlayBackStopped')
         self.updateNowPlaying()
         self.triggerProgressEvent()
 
-        # show post play if possible, if an item has been watched (90% by Plex standards)
         util.DEBUG_LOG("ZidooHandler: played-threshold: {}/{}".format(self.videoPlayedFac, self.playedThreshold))
         if self.videoWatched:
             if self.next(on_end=True):
@@ -2354,7 +2208,7 @@ class ZidooPlayerHandler(BasePlayerHandler):
             return
         self.ended = True
         util.DEBUG_LOG('ZidooHandler: sessionEnded')
-        time.sleep(.5) # Give the Plex server some time to update before we start querying it
+        time.sleep(.5)
         self.player.trigger('session.ended', session_id=self.sessionID)
 
     __next__ = next
@@ -2377,7 +2231,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def __init__(self, *args, **kwargs):
         xbmc.Player.__init__(self, *args, **kwargs)
         signalsmixin.SignalsMixin.__init__(self)
-        self.handler = None  # Need to set this because creating the AudioPlayerHandler will call functions that check the handler
+        self.handler = None
         self.handler = AudioPlayerHandler(self)
 
     def init(self):
@@ -2424,7 +2278,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.started = False
         self.bgmPlaying = False
         self.playerObject = None
-        #self.handler = AudioPlayerHandler(self)
         self.currentTime = 0
         self.duration = 0
         self.playState = self.STATE_STOPPED
@@ -2453,19 +2306,14 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 url = util.addURLParams(url, {'PlexToZidoo-AudioIndex': audioTrack.typeIndex})
             subtitleTrack = self.video.selectedSubtitleStream(util.getSetting("forced_subtitles_override", False))
             if subtitleTrack:
-                url = util.addURLParams(url, {'PlexToZidoo-SubtitleIndex': subtitleTrack.typeIndex+1}) # subtitle tracks are 1 based in the zidoo player
+                url = util.addURLParams(url, {'PlexToZidoo-SubtitleIndex': subtitleTrack.typeIndex+1})
             if self.playerObject.metadata.isMapped:
                 url = util.addURLParams(url, {'PlexToZidoo-PathMapped': True})
             elif self.video.mediaChoice.part.file:
-                # Can't call util.addURLParms because it doesn't handle the special characters in the path correctly
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file, safe=':/')
                 url += f'&PlexToZidoo-Path={encodedPath}'
             
-            # --- START OF DIAGNOSTIC LOG ---
-            # This will print the exact URL to the kodi log.
-            # We need this to diagnose the StartActivity error.
-            util.LOG.error("PlexMod-Zidoo: Attempting to launch with URL: %s", url)
-            # --- END OF DIAGNOSTIC LOG ---
+            util.LOG("PlexMod-Zidoo: Attempting to launch with URL: %s", url)
             
             xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
 
@@ -2481,10 +2329,8 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             if not self.lastPlayWasBGM:
                 return
             else:
-                # don't re-queue the currently playing theme
                 if self.handler.currentlyPlaying == rating_key:
                     return
-                # cancel any currently playing theme before starting the new one
                 else:
                     self.stopAndWait()
 
@@ -2494,7 +2340,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.started = False
         self.handler = BGMPlayerHandler(self, rating_key)
 
-        # store current volume if it's different from the BGM volume
         curVol = self.handler.getVolume()
         if volume < curVol:
             util.setSetting('last_good_volume', curVol)
@@ -2543,7 +2388,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         bifURL = self.playerObject.getBifUrl()
         util.DEBUG_LOG('Playing URL(+{1}ms): {0}'.format(plexnetUtil.cleanToken(url), offset))
 
-        self.stopAndWait()  # Stop before setting up the handler to prevent player events from causing havoc
+        self.stopAndWait()
 
         self.handler.setup(self.video.duration.asInt(), meta, offset, bifURL, title=self.video.grandparentTitle, title2=self.video.title, chapters=self.video.chapters)
 
@@ -2554,38 +2399,29 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.bingeMode = pbs.binge_mode
             self.skipPostPlay = pbs.binge_mode or pbs.skip_post_play_tv
 
-            # don't auto skip intro when on binge mode on the first episode of a season
             firstEp = self.video.index == '1'
 
             if self.handler.isDirectPlay or util.getUserSetting('auto_skip_in_transcode', True):
                 self.autoSkipIntro = (self.bingeMode and not firstEp) or pbs.auto_skip_intro
                 self.autoSkipCredits = self.bingeMode or pbs.auto_skip_credits
 
-        # try to get an early intro offset so we can skip it if necessary
         introOffset = None
         if not offset:
-            # in case we're transcoded, instruct the marker handler to set the marker a skipped, so we don't re-skip it
-            # after seeking
             for marker in self.video.markers:
                 if marker.type == 'intro' and self.autoSkipIntro:
                     if int(marker.startTimeOffset) <= MARKER_SHOW_NEGOFF:
                         introOffset = math.ceil(float(marker.endTimeOffset)) + self.autoSkipOffset
 
-                        # Make sure we don't re-trigger the same marker that way the user can seek back into the skip zone and it won't automatically jump out of it again
                         if not self.currentMarker or self.currentMarker.startTimeOffset != marker.startTimeOffset:
                             self.currentMarker = marker
-
                         break
 
         if meta.isTranscoded:
             self.handler.mode = self.handler.MODE_RELATIVE
 
             if introOffset:
-                # cheat our way into an early intro skip by modifying the offset in the stream URL
                 util.DEBUG_LOG("Immediately seeking behind intro: {}".format(introOffset))
                 url = self.OFFSET_RE.sub(r"\g<1>{}".format(introOffset // 1000), url)
-
-                # probably not necessary
                 meta.playStart = introOffset // 1000
         else:
             if offset:
@@ -2602,60 +2438,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 'X-Plex-Client-Profile-Name': 'Generic',
                 'X-Plex-Client-Identifier': plexapp.util.INTERFACE.getGlobal('clientIdentifier')
             })
-
-        vtype = self.video.type if self.video.type in ('movie', 'episode', 'musicvideo') else 'video'
-        imdbNum = None
-        fill_trakt_ids = False
-        trakt_ids = {}
-
-        # generate guids when script.trakt is installed
-        if "script.trakt" in util.USER_ADDONS:
-            fill_trakt_ids = True
-
-        a = self.video.guid
-        if "com.plexapp.agents.imdb" in a:
-            imdbNum = a.split("?lang=")[0][a.index("com.plexapp.agents.imdb://")+len("com.plexapp.agents.imdb://"):]
-            if fill_trakt_ids:
-                if imdbNum:
-                    trakt_ids["imdb"] = imdbNum
-
-        elif fill_trakt_ids and "com.plexapp.agents.themoviedb" in a:
-            trakt_ids["tmdb"] = a.split("?lang=")[0][
-                                a.index("com.plexapp.agents.themoviedb://") + len("com.plexapp.agents.themoviedb://"):]
-
-        elif fill_trakt_ids and "com.plexapp.agents.thetvdb" in a:
-            trakt_ids["tvdb"] = a.split("?lang=")[0][
-                                a.index("com.plexapp.agents.thetvdb://") +
-                                len("com.plexapp.agents.thetvdb://"):].split("/", 1)[0]
-
-        elif "plex://movie" in a or "plex://episode" in a:
-            ref = self.video
-            if fill_trakt_ids and "plex://episode" in a:
-                ref = self.video.show()
-                if not ref.isFullObject():
-                    ref.reload()
-
-            for guid in ref.guids:
-                if not imdbNum and guid.id.startswith('imdb://'):
-                    imdbNum = guid.id.split('imdb://')[1]
-
-                if fill_trakt_ids:
-                    sabbr, gid = guid.id.split("://")
-                    try:
-                        gid = int(gid)
-                    except:
-                        pass
-
-                    trakt_ids[sabbr] = gid
-        if fill_trakt_ids:
-            # generate trakt slug
-            if vtype == "movie":
-                year = self.video.year.asInt()
-                trakt_ids['slug'] = util.slugify("{}{}".format(self.video.title, year and " {}".format(year) or ""))
-
-            util.DEBUG_LOG("Setting Trakt IDs: {}".format(trakt_ids))
-            # report IDs to trakt
-            xbmcgui.Window(10000).setProperty('script.trakt.ids', json.dumps(trakt_ids))
 
         self.trigger('starting.video')
         self.play(url)
@@ -2741,7 +2523,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             track = track.reload()
         url = self.playerObject.build(track)['url']
         li = xbmcgui.ListItem(track.title, path=url)
-        if float(xbmc.getInfoLabel('System.BuildVersionShort')) < 20.0:
+        if util.KODI_VERSION_MAJOR < 20:
             li.setInfo('music', {
                 'artist': six.text_type(track.originalTitle or track.grandparentTitle),
                 'title': six.text_type(track.title),
@@ -2750,8 +2532,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 'tracknumber': track.get('index').asInt(),
                 'duration': int(track.duration.asInt() / 1000),
                 'playcount': index,
-                # fixme: this is not really necessary, as we don't go the plugin:// route anymore.
-                #        changing the track identification style would mean a bigger rewrite, though, so let's keep it.
                 'comment': 'PLEX-{0}:{1}'.format(track.ratingKey, data)
             })
         else:
@@ -2785,7 +2565,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG('ZidooPlayer: STARTED')
         self.trigger('playback.started')
         self.started = True
-        self.currentTime = .001 # Need to trick the timeline update flows otherwise they ignore a 0 time
+        self.currentTime = .001
         if not self.handler:
             return
         self.handler.onPlayBackStarted()
@@ -2814,7 +2594,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         util.DEBUG_LOG('ZidooPlayer: RESUMED')
         if not self.handler:
             return
-
         self.handler.onPlayBackResumed()
 
     def onPlayBackStopped(self):
@@ -2876,27 +2655,17 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.thread.start()
 
     def _monitor(self):
-        # --- START OF THREAD-SAFE DIALOG FIX ---
-        # This new logic makes the monitor thread responsible for showing the error dialog.
-        # This prevents the race condition that caused the 'AttributeError crash.
         try:
             while not util.MONITOR.abortRequested() and not self._closed:
-                util.DEBUG_LOG('ZidooPlayer: Monitor 0')
                 if not self.started:
                     util.DEBUG_LOG('ZidooPlayer: Idling...')
 
-                # Wait for something to start
                 while (not self.started or not self.handler or not isinstance(self.handler, ZidooPlayerHandler)) and not util.MONITOR.abortRequested() and not self._closed:
                     time.sleep(1)
                 
                 if not self.started: continue
 
-                util.DEBUG_LOG('ZidooPlayer: Monitor 1')
-                # Wait for the zidoo player to get going
-                zidooStatusFull = None
                 playback_started = False
-                
-                # Try for 8 seconds to see if the player has started
                 for _ in range(8):
                     if util.MONITOR.abortRequested() or self._closed or not self.started: break
                     zidooStatusFull = self.getZidooPlayerStatus()
@@ -2906,18 +2675,16 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                     time.sleep(1)
                 
                 if not playback_started:
-                    if self.started: # Only show dialog if we were supposed to be playing
-                        util.LOG.error("ZidooPlayer: Playback did not start after 8 seconds. Showing failure dialog.")
+                    if self.started: 
+                        util.LOG("PlexMod-Zidoo: Playback did not start after 8 seconds. Showing failure dialog.")
                         from .windows import optionsdialog
                         optionsdialog.show(header="Error", info="Failed to start Zidoo player", button0="OK")
                         self.playState = self.STATE_STOPPED
-                        self.onPlayBackStopped() # Manually trigger stop event
-                    continue # Go back to idling
+                        self.onPlayBackStopped()
+                    continue
 
-                # --- Playback has started successfully ---
-                util.DEBUG_LOG('ZidooPlayer: Monitor 2 - Playback confirmed.')
+                util.DEBUG_LOG('ZidooPlayer: Monitor - Playback confirmed.')
                 
-                # Loop here while the movie is still being played
                 statusNull = 0
                 while self.started and not util.MONITOR.abortRequested() and not self._closed:
                     time.sleep(1)
@@ -2933,7 +2700,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                                         self.playState = self.STATE_PAUSED
                                         self.onPlayBackPaused()
                                         self.idleTime = time.time()
-                                        continue # Loop back to the top so we give the Plex server a chance to catch up
+                                        continue
                                     if self.stopPlaybackOnIdle > 0:
                                         if self.idleTime and time.time() - self.idleTime >= self.stopPlaybackOnIdle:
                                             util.DEBUG_LOG('ZidooPlayer: Monitor idle time expired - stopping playback')
@@ -2944,7 +2711,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                                         self.playState = self.STATE_PLAYING
                                         self.onPlayBackResumed()
                                         self.idleTime = None
-                                        continue # Loop back to the top so we give the Plex server a chance to catch up
+                                        continue
                                 self.duration = zidooStatusFull['video']['duration'] / 1000
                                 newTime = zidooStatusFull['video']['currentPosition']
                                 if newTime > 0:
@@ -2957,7 +2724,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                                 self.playState = self.STATE_STOPPED
                                 break
                         else:
-                            util.DEBUG_LOG('ZidooPlayer: Monitor 2.1')
                             statusNull += 1
                             if statusNull >= 3:
                                 break
@@ -2968,20 +2734,16 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                         else:
                             self.handler.updateNowPlaying(force=True)
 
-                util.DEBUG_LOG('ZidooPlayer: Monitor 3')
                 self.playState = self.STATE_STOPPED
                 if not util.MONITOR.abortRequested() and not self._closed:
-                    util.DEBUG_LOG('ZidooPlayer: Monitor 4')
                     self.currentMarker = None
                     self.onPlayBackStopped()
-                util.DEBUG_LOG('ZidooPlayer: Monitor 5')
 
             self.handler.close()
             self.close()
             util.DEBUG_LOG('ZidooPlayer: Closed')
         finally:
             self.trigger('session.ended')
-        # --- END OF THREAD-SAFE DIALOG FIX ---
 
     def getTotalTime(self):
         if not self.handler or not isinstance(self.handler, ZidooPlayerHandler):
@@ -3046,18 +2808,15 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
         for marker in self.video.markers:
             if (marker.type == 'intro' and self.autoSkipIntro) or (marker.type == 'credits' and self.autoSkipCredits):
-                # Make sure we don't use any negative time values
                 triggerStartTime = int(marker.startTimeOffset) + self.autoSkipOffset
                 if triggerStartTime < 0:
                     triggerStartTime = 0
 
-                # Make sure we don't skip past the end, the FINAL_MARKER_NEGOFF is so that the postplay screen will show
                 triggerEndTime = math.ceil(float(marker.endTimeOffset)) + self.autoSkipOffset
                 if triggerEndTime > (int(self.getTotalTime() * 1000) - FINAL_MARKER_NEGOFF):
                     triggerEndTime = int(self.getTotalTime() * 1000) - FINAL_MARKER_NEGOFF
 
                 if triggerStartTime <= math.floor(self.currentTime*1000) < triggerEndTime:
-                    # Make sure we don't re-trigger the same marker that way the user can seek back into the skip zone and it won't automatically jump out of it again
                     if not self.currentMarker or self.currentMarker.startTimeOffset != marker.startTimeOffset:
                         self.currentMarker = marker
                         util.DEBUG_LOG(f'ZidooAutoSkip: Skipping to {triggerEndTime}')
