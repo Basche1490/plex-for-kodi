@@ -1,4 +1,4 @@
-# THE FINAL, CORRECTED player.py
+# THE FINAL, FULLY-CORRECTED player.py
 
 from __future__ import absolute_import
 import base64
@@ -2378,6 +2378,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.lastPlayWasBGM = False
         self.BGMTask = None
         self.video = None
+        self.sessionID = None
         self.handler = AudioPlayerHandler(self)
         self.playerObject = None
         self.currentTime = 0
@@ -2387,8 +2388,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.resume = False
         self.currentMarker = None
         self.zidooFailureDialog = None
-        # OLD, BUGGY LINE: self.stopPlaybackOnIdle = util.getSettingInt('player_stop_on_idle', 0)
-        # NEW, CORRECTED LINE:
         self.stopPlaybackOnIdle = int(util.getSetting('player_stop_on_idle', 0))
         self.idleTime = None
         self.skipNextStopNotification = False
@@ -2500,9 +2499,12 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def playVideo(self, video, resume=False, force_update=False, session_id=None, handler=None):
         if self.bgmPlaying:
             self.stopAndWait()
-
+            
+        # FIX 1: Ensure session_id exists and is passed to the handler
+        self.sessionID = session_id or str(uuid.uuid4())
         self.handler = handler if handler and isinstance(handler, ZidooPlayerHandler) \
-            else ZidooPlayerHandler(self, session_id)
+            else ZidooPlayerHandler(self, self.sessionID)
+        
         self.video = video
         self.resume = resume
         self.open()
@@ -2516,7 +2518,8 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         )
         try:
             if not playerObject:
-                self.playerObject = plexplayer.PlexPlayer(self.video, offset, forceUpdate=force_update)
+                 # FIX 2: Pass the sessionID to the PlexPlayer decision object
+                self.playerObject = plexplayer.PlexPlayer(self.video, offset, forceUpdate=force_update, session_id=self.sessionID)
                 self.playerObject.build()
             self.playerObject = self.playerObject.getServerDecision()
         except plexplayer.DecisionFailure as e:
@@ -2652,11 +2655,12 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
     def playVideoPlaylist(self, playlist, resume=False, handler=None, session_id=None):
         if self.bgmPlaying:
             self.stopAndWait()
-
+        
+        self.sessionID = session_id or str(uuid.uuid4())
         if handler and isinstance(handler, ZidooPlayerHandler):
             self.handler = handler
         else:
-            self.handler = ZidooPlayerHandler(self, session_id)
+            self.handler = ZidooPlayerHandler(self, self.sessionID)
 
         self.handler.playlist = playlist
         if playlist.isRemote:
