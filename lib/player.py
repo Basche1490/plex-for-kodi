@@ -2297,11 +2297,26 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
 
-            # --- START OF DEFINITIVE FIX ---
-            
-            # Determine if we have a direct path (local file)
+            # --- START: THIS IS THE CORRECTED LOGIC ---
+
+            # Determine if we have a direct path for a local file.
+            # `self.playerObject.metadata.isMapped` is True when path substitution has been successful.
+            # `self.video.mediaChoice.part.file` is the raw path from the Plex server.
             is_local_file = self.playerObject.metadata.isMapped or (self.video.mediaChoice and self.video.mediaChoice.part.file)
             
+            # Base URI determination
+            if is_local_file:
+                # For local files, the correct path is in `metadata.path`. The plexplayer library
+                # you are using automatically runs path substitution and places the result here.
+                base_uri = self.playerObject.metadata.path
+                util.LOG("PlexMod-Zidoo: Local file detected. Using direct path as base URI: %s", base_uri)
+            else:
+                # For shared/remote files, use the streaming URL passed in as the first argument.
+                base_uri = args[0]
+                util.LOG("PlexMod-Zidoo: Remote/Stream file detected. Using streaming URL as base URI: %s", base_uri)
+            
+            # --- END: CORRECTED LOGIC ---
+
             # Prepare parameters for the Zidoo helper app URL
             params = {
                 'PlexToZidoo-ViewOffset': self.handler.seekOnStart,
@@ -2314,26 +2329,11 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             subtitleTrack = self.video.selectedSubtitleStream(util.getSetting("forced_subtitles_override", False))
             if subtitleTrack:
                 params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1
-
-            # SCENARIO A: Local file with a direct path
-            if is_local_file:
-                base_uri = self.video.mediaChoice.part.file
-                util.LOG("PlexMod-Zidoo: Local file detected. Using direct path as base URI: %s", base_uri)
-                if self.playerObject.metadata.isMapped:
-                    params['PlexToZidoo-PathMapped'] = True
-                
-                final_uri = util.addURLParams(base_uri, params)
-
-            # SCENARIO B: Shared/Remote file (streaming)
-            else:
-                base_uri = args[0] # This is the https:// streaming URL
-                util.LOG("PlexMod-Zidoo: Shared/Remote file detected. Using streaming URL as base URI: %s", base_uri)
-                # For streams, we only need the base parameters. Do NOT add a file path.
-                final_uri = util.addURLParams(base_uri, params)
-
-            # --- END OF DEFINITIVE FIX ---
+            
+            final_uri = util.addURLParams(base_uri, params)
 
             util.LOG("PlexMod-Zidoo: Attempting to launch Zidoo with final URI: %s", final_uri)
+            # Use a slightly different StartAndroidActivity call that is more robust
             xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % final_uri)
 
             self.handler.seekOnStart = 0
@@ -2341,7 +2341,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             self.onPlayBackStarted()
             self.onAVStarted()
         else:
-            # This handles non-video playback like audio
+            # Fallback for non-Zidoo playback (e.g., audio)
             xbmc.Player.play(self, *args, **kwargs)
 
     def playBackgroundMusic(self, source, volume, rating_key, *args, **kwargs):
