@@ -2296,32 +2296,52 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.started = False
 
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
+
+            # --- START OF DEFINITIVE FIX ---
             
-            url = util.addURLParams(args[0], {
+            # Determine if we have a direct path (local file)
+            is_local_file = self.playerObject.metadata.isMapped or (self.video.mediaChoice and self.video.mediaChoice.part.file)
+            
+            # Prepare parameters for the Zidoo helper app URL
+            params = {
                 'PlexToZidoo-ViewOffset': self.handler.seekOnStart,
                 'PlexToZidoo-Title': self.video.title
-            })
+            }
             audioTrack = self.video.selectedAudioStream()
             if audioTrack:
-                url = util.addURLParams(url, {'PlexToZidoo-AudioIndex': audioTrack.typeIndex})
+                params['PlexToZidoo-AudioIndex'] = audioTrack.typeIndex
+
             subtitleTrack = self.video.selectedSubtitleStream(util.getSetting("forced_subtitles_override", False))
             if subtitleTrack:
-                url = util.addURLParams(url, {'PlexToZidoo-SubtitleIndex': subtitleTrack.typeIndex+1})
-            if self.playerObject.metadata.isMapped:
-                url = util.addURLParams(url, {'PlexToZidoo-PathMapped': True})
-            elif self.video.mediaChoice.part.file:
-                encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file, safe=':/')
-                url += f'&PlexToZidoo-Path={encodedPath}'
-            
-            util.LOG("PlexMod-Zidoo: Attempting to launch with URL: %s", url)
-            
-            xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % url)
+                params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1
+
+            # SCENARIO A: Local file with a direct path
+            if is_local_file:
+                base_uri = self.video.mediaChoice.part.file
+                util.LOG("PlexMod-Zidoo: Local file detected. Using direct path as base URI: %s", base_uri)
+                if self.playerObject.metadata.isMapped:
+                    params['PlexToZidoo-PathMapped'] = True
+                
+                final_uri = util.addURLParams(base_uri, params)
+
+            # SCENARIO B: Shared/Remote file (streaming)
+            else:
+                base_uri = args[0] # This is the https:// streaming URL
+                util.LOG("PlexMod-Zidoo: Shared/Remote file detected. Using streaming URL as base URI: %s", base_uri)
+                # For streams, we only need the base parameters. Do NOT add a file path.
+                final_uri = util.addURLParams(base_uri, params)
+
+            # --- END OF DEFINITIVE FIX ---
+
+            util.LOG("PlexMod-Zidoo: Attempting to launch Zidoo with final URI: %s", final_uri)
+            xbmc.executebuiltin('StartAndroidActivity("com.hpn789.plextozidoo","android.intent.action.VIEW","","%s")' % final_uri)
 
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
             self.onPlayBackStarted()
             self.onAVStarted()
         else:
+            # This handles non-video playback like audio
             xbmc.Player.play(self, *args, **kwargs)
 
     def playBackgroundMusic(self, source, volume, rating_key, *args, **kwargs):
