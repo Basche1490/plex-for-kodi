@@ -2292,42 +2292,27 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             return self.handler.media
         return None
 
-        # THIS IS THE CORRECTED CODE
+    # THIS IS THE CORRECTED CODE v2
     def play(self, *args, **kwargs):
         self.started = False
 
         # This is the main logic for Zidoo playback
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
+            util.LOG("PlexMod-Zidoo: ZidooPlayer.play() initiated.")
+
+            # Get the path that the addon thinks is correct for direct play.
+            # This path is determined earlier and should already be mapped (e.g. from nfs:// to /mnt/...)
+            base_uri = self.playerObject.metadata.path
+            util.LOG("PlexMod-Zidoo: Initial base URI from metadata: {}", base_uri)
             
-            # --- START: DEFINITIVE LOGIC FIX ---
-            util.LOG("PlexMod-Zidoo: play() method initiated for Zidoo Player.")
-
-            is_local_file = self.playerObject.metadata.isMapped or (self.video.mediaChoice and self.video.mediaChoice.part.file)
-            base_uri = ""
-
-            # SCENARIO A: This is a local file on your server (Direct Play).
-            if is_local_file:
-                util.LOG("PlexMod-Zidoo: Detected a local file for Direct Play.")
+            # If the path isn't a stream (http/https), assume it's a local file path.
+            if not base_uri.startswith('http'):
+                util.LOG("PlexMod-Zidoo: Detected local file path.")
                 
-                # The addon has already done the path substitution.
-                base_uri = self.playerObject.metadata.path
-                util.LOG("PlexMod-Zidoo: Path from metadata is: %s", base_uri)
-                
-                # CRITICAL FIX #1: Ensure the local path is a valid File URI for Android.
+                # CRITICAL FIX #1: Ensure the path is a valid File URI for Android.
                 if not base_uri.startswith('file://'):
                     base_uri = 'file://' + base_uri
-                    util.LOG("PlexMod-Zidoo: Prepended 'file://' scheme. New URI: %s", base_uri)
-
-            # SCENARIO B: This is a remote/shared stream (Not a local file).
-            else:
-                base_uri = args[0]
-                util.LOG("PlexMod-Zidoo: Remote/Stream file detected. Using streaming URL: %s", base_uri)
-
-            # If for some reason we couldn't determine a URI, abort.
-            if not base_uri:
-                util.ERROR("PlexMod-Zidoo: Could not determine a valid play URI. Aborting.")
-                self.onPlayBackFailed()
-                return
+                    util.LOG("PlexMod-Zidoo: Prepended 'file://' scheme. URI is now: {}", base_uri)
 
             # Prepare parameters for the PlexToZidoo helper app
             params = {
@@ -2340,25 +2325,19 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
             subtitleTrack = self.video.selectedSubtitleStream(util.getSetting("forced_subtitles_override", False))
             if subtitleTrack:
-                # Zidoo player's subtitle index is 1-based, Plex is 0-based.
-                params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1 
+                params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1
             
             final_uri = util.addURLParams(base_uri, params)
 
             # CRITICAL FIX #2: Use the modern and safer way to call StartAndroidActivity.
-            # Format: StartAndroidActivity(package, action, datauri, mimetype)
-            # Notice the arguments are separate strings, not one giant formatted string.
             package = "com.hpn789.plextozidoo"
             action = "android.intent.action.VIEW"
             mimetype = "video/*"
             
-            # This is the final command Kodi will execute.
-            activity_command = f'StartAndroidActivity("{package}","{action}","{final_uri}","{mimetype}")'
+            activity_command = 'StartAndroidActivity("{}", "{}", "{}", "{}")'.format(package, action, final_uri, mimetype)
 
-            util.LOG("PlexMod-Zidoo: Executing builtin command: %s", plexnetUtil.cleanToken(activity_command))
+            util.LOG("PlexMod-Zidoo: Executing builtin command: {}", plexnetUtil.cleanToken(activity_command))
             xbmc.executebuiltin(activity_command)
-
-            # --- END: DEFINITIVE LOGIC FIX ---
 
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
