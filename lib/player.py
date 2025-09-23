@@ -1,4 +1,4 @@
-# THE FINAL, FULLY-CORRECTED player.py (WITH ALL BUG FIXES AND DIAGNOSTICS)
+# FINAL SCRIPT - All Zidoo playback and UI fixes are included.
 
 from __future__ import absolute_import
 import base64
@@ -2292,9 +2292,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             return self.handler.media
         return None
 
-    # THIS IS THE CORRECTED CODE v2
-        # THIS IS THE CORRECTED AND FINAL CODE (v3)
-        # THIS IS THE FINAL "TRANSPLANT" ADAPTED FROM B_PLAYER.PY
+    # THIS IS THE FINAL "TRANSPLANT" ADAPTED FROM B_PLAYER.PY
     def play(self, *args, **kwargs):
         self.started = False
 
@@ -2303,9 +2301,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
             # This is the streaming URL from Plex.
             url = args[0]
-
-            # The original script URL-encoded the entire URL. We just need to ensure it's safe.
-            # The modern 'util.addURLParams' is safer and handles this correctly, so we'll use that.
             
             # Add the seek offset and title
             params = {
@@ -2341,9 +2336,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
             util.LOG("PlexMod-Zidoo: Executing final builtin command (B_player style): {}", plexnetUtil.cleanToken(activity_command))
             xbmc.executebuiltin(activity_command)
-
-            # The original script also had this logic to show a failure dialog.
-            # We'll re-implement it in the monitor thread for better stability.
             
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
