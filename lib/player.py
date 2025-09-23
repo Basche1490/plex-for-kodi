@@ -2294,69 +2294,63 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
     # THIS IS THE CORRECTED CODE v2
         # THIS IS THE CORRECTED AND FINAL CODE (v3)
+        # THIS IS THE FINAL "TRANSPLANT" ADAPTED FROM B_PLAYER.PY
     def play(self, *args, **kwargs):
         self.started = False
 
-        # This is the main logic for Zidoo playback
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
-            util.LOG("PlexMod-Zidoo: ZidooPlayer.play() initiated.")
+            util.LOG("PlexMod-Zidoo: ZidooPlayer.play() called (using B_player.py transplant logic).")
 
-            # --- START: NEW STRATEGY - Replicating the original logic ---
+            # This is the streaming URL from Plex.
+            url = args[0]
+
+            # The original script URL-encoded the entire URL. We just need to ensure it's safe.
+            # The modern 'util.addURLParams' is safer and handles this correctly, so we'll use that.
             
-            # This is the original streaming URL from the Plex server.
-            # This will *always* be the base of our command.
-            streaming_url = args[0]
-            util.LOG("PlexMod-Zidoo: Using base streaming URL: {}", plexnetUtil.cleanToken(streaming_url))
-            
-            # This is the local file path as correctly mapped by the addon.
-            local_path = self.playerObject.metadata.path
-            util.LOG("PlexMod-Zidoo: Mapped local path found: {}", local_path)
-            
-            # Prepare parameters to be added to the URL.
+            # Add the seek offset and title
             params = {
                 'PlexToZidoo-ViewOffset': self.handler.seekOnStart,
                 'PlexToZidoo-Title': self.video.title
             }
+            
+            # Add audio and subtitle track indexes.
             audioTrack = self.video.selectedAudioStream()
             if audioTrack:
                 params['PlexToZidoo-AudioIndex'] = audioTrack.typeIndex
-
+                
             subtitleTrack = self.video.selectedSubtitleStream(util.getSetting("forced_subtitles_override", False))
             if subtitleTrack:
-                # Zidoo player's subtitle index is 1-based, Plex is 0-based.
-                params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1 
-            
-            # This is the crucial part: if we have a local path, add it as a URL parameter.
-            # The PlexToZidoo app is specifically designed to look for this parameter.
-            if local_path:
-                # URL-encode the path to handle spaces and special characters safely.
-                encoded_path = six.moves.urllib.parse.quote(local_path)
-                params['PlexToZidoo-Path'] = encoded_path
-                util.LOG("PlexMod-Zidoo: Adding encoded local path to params: PlexToZidoo-Path={}", encoded_path)
-            else:
-                util.LOG("PlexMod-Zidoo: No local path found, will stream from URL.")
+                params['PlexToZidoo-SubtitleIndex'] = subtitleTrack.typeIndex + 1
 
-            # Build the final URI by adding all our parameters to the original streaming URL.
-            final_uri = util.addURLParams(streaming_url, params)
-            
-            # Use the modern StartAndroidActivity syntax.
-            package = "com.hpn789.plextozidoo"
-            action = "android.intent.action.VIEW"
-            mimetype = "video/*"
-            
-            activity_command = 'StartAndroidActivity("{}", "{}", "{}", "{}")'.format(package, action, final_uri, mimetype)
+            # Build the URL with the base parameters
+            final_url = util.addURLParams(url, params)
 
-            util.LOG("PlexMod-Zidoo: Executing final builtin command: {}", plexnetUtil.cleanToken(activity_command))
+            # Now, handle the specific local path parameter, which must be appended manually
+            # to exactly replicate the original addon's behavior.
+            if self.playerObject.metadata.isMapped:
+                final_url = util.addURLParams(final_url, {'PlexToZidoo-PathMapped': True})
+                util.LOG("PlexMod-Zidoo: Path is mapped. PlexToZidoo will use this info.")
+
+            elif self.video.mediaChoice.part.file:
+                encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file)
+                final_url += f'&PlexToZidoo-Path={encodedPath}'
+                util.LOG("PlexMod-Zidoo: Appending manual path: &PlexToZidoo-Path={}", encodedPath)
+            
+            # Use the EXACT command format from the original B_player.py
+            activity_command = f'StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, video/*, {final_url})'
+
+            util.LOG("PlexMod-Zidoo: Executing final builtin command (B_player style): {}", plexnetUtil.cleanToken(activity_command))
             xbmc.executebuiltin(activity_command)
 
-            # --- END: NEW STRATEGY ---
-
+            # The original script also had this logic to show a failure dialog.
+            # We'll re-implement it in the monitor thread for better stability.
+            
             self.handler.seekOnStart = 0
             self.onPrePlayStarted()
             self.onPlayBackStarted()
             self.onAVStarted()
         else:
-            # Fallback for non-Zidoo playback (e.g., audio)
+            # Fallback for non-Zidoo playback.
             util.LOG("PlexMod-Zidoo: Not a Zidoo handler, falling back to default player.")
             xbmc.Player.play(self, *args, **kwargs)
 
