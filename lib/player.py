@@ -1,4 +1,4 @@
-# FINAL SCRIPT v2 - All Zidoo playback, UI, and compatibility fixes are included.
+# FINAL SCRIPT v3 - All Zidoo playback, UI, resume, and compatibility fixes are included.
 
 from __future__ import absolute_import
 import base64
@@ -2150,7 +2150,6 @@ class ZidooPlayerHandler(BasePlayerHandler):
         util.LOG('PlexMod-Zidoo: ZidooHandler.onPlayBackResumed')
         self.updateNowPlaying(force=True, state=self.player.STATE_PLAYING)
 
-    # THIS IS THE CRITICAL FIX for the TypeError from your log
     def updateNowPlaying(self, force=False, refreshQueue=False, t=None, state=None, overrideChecks=False):
         if self.ignoreTimelines:
             util.LOG("PlexMod-Zidoo: UpdateNowPlaying: ignoring timeline as requested.")
@@ -2220,25 +2219,19 @@ class ZidooPlayerHandler(BasePlayerHandler):
         self.player.trigger('video.progress', data=(gprk, prk, rk, self._progressHld[rk] if not self.videoWatched else True))
         self._progressHld = {}
 
-    # THIS IS THE CRITICAL FIX for the end-of-playback UI
     def onPlayBackStopped(self):
         util.LOG('PlexMod-Zidoo: ZidooPlayerHandler.onPlayBackStopped() called.')
-        # These two lines are critical for updating the server and the UI's watch status.
         self.updateNowPlaying(force=True, state=self.player.STATE_STOPPED)
         self.triggerProgressEvent()
 
-        # Decide what to do based on whether the video was finished.
         if self.videoWatched:
             util.LOG("PlexMod-Zidoo: Video was watched. Attempting to trigger post-play.")
-            # The 'next()' call handles showing the "Up Next" screen.
             if self.next(on_end=True):
-                return  # If post-play is showing, our job is done.
+                return
         
-        # This part runs if the video was NOT finished OR if there's no next episode.
         util.LOG("PlexMod-Zidoo: Video not watched to completion or no next item. Ending session and returning to list.")
         self.sessionEnded()
-        # This is the crucial command to return to the episode list screen.
-        time.sleep(0.5) # A small delay to let Kodi's events settle.
+        time.sleep(0.5) 
         xbmc.executebuiltin("Action(Back)")
 
 
@@ -2344,7 +2337,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
         self.started = False
 
         if self.handler and isinstance(self.handler, ZidooPlayerHandler):
-            util.LOG("PlexMod-Zidoo: ZidooPlayer.play() called (using B_player.py transplant logic).")
+            util.LOG("PlexMod-Zidoo: ZidooPlayer.play() called.")
             url = args[0]
             
             params = {
@@ -2364,7 +2357,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
 
             if self.playerObject.metadata.isMapped:
                 final_url = util.addURLParams(final_url, {'PlexToZidoo-PathMapped': True})
-                util.LOG("PlexMod-Zidoo: Path is mapped. PlexToZidoo will use this info.")
+                util.LOG("PlexMod-Zidoo: Path is mapped.")
 
             elif self.video.mediaChoice.part.file:
                 encodedPath = six.moves.urllib.parse.quote(self.video.mediaChoice.part.file)
@@ -2373,7 +2366,7 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             
             activity_command = f'StartAndroidActivity(com.hpn789.plextozidoo, android.intent.action.VIEW, video/*, {final_url})'
 
-            util.LOG("PlexMod-Zidoo: Executing final builtin command (B_player style): {}", plexnetUtil.cleanToken(activity_command))
+            util.LOG("PlexMod-Zidoo: Executing builtin command: {}", plexnetUtil.cleanToken(activity_command))
             xbmc.executebuiltin(activity_command)
             
             self.handler.seekOnStart = 0
@@ -2478,12 +2471,14 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 url = self.OFFSET_RE.sub(r"\g<1>{}".format(introOffset // 1000), url)
                 meta.playStart = introOffset // 1000
         else:
+            # THIS IS THE CRITICAL FIX FOR RESUMING
             if offset:
-                util.DEBUG_LOG("Using as SeekOnStart: {0}; offset: {1}".format(meta.playStart, offset))
-                self.handler.seekOnStart = meta.playStart * 1000
+                util.LOG("PlexMod-Zidoo: Using resume offset as SeekOnStart: {0}".format(offset))
+                self.handler.seekOnStart = offset
             elif introOffset:
-                util.DEBUG_LOG("Seeking behind intro after playstart: {}".format(introOffset))
+                util.LOG("PlexMod-Zidoo: Seeking behind intro after playstart: {}".format(introOffset))
                 self.handler.seekOnStart = introOffset
+
             self.handler.mode = self.handler.MODE_ABSOLUTE
 
         if not meta.isMapped:
@@ -2718,7 +2713,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                 
                 if not self.started: continue
 
-                # Wait for the zidoo player to start and report a valid duration
                 playback_started = False
                 for _ in range(10): # Check for 10 seconds
                     if util.MONITOR.abortRequested() or self._closed or not self.started: break
@@ -2779,28 +2773,26 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
                                 if self.autoSkipIntro or self.autoSkipCredits:
                                     self.checkAutoSkip()
                             
+                            # Force a timeline update on a time jump or every few seconds
                             if timeJump:
                                 self.handler.updateNowPlaying(force=True, state=self.STATE_PAUSED)
                             else:
-                                # We call with force=True based on B_player.py logic
                                 self.handler.updateNowPlaying(force=True)
                         
-                        else: # Duration is 0, playback likely stopped
+                        else:
                             self.playState = self.STATE_STOPPED
                             break
                     else:
                         util.LOG('PlexMod-Zidoo: Zidoo player status was null. Retrying...')
                         statusNull += 1
-                        if statusNull >= 5: # If we fail to get status 5 times in a row, assume stopped
+                        if statusNull >= 5:
                             util.LOG('PlexMod-Zidoo: Zidoo player status null for 5 seconds. Assuming playback stopped.')
                             break
                         continue
 
-                # --- THIS IS THE CLEANED UP END-OF-LOOP BLOCK ---
                 self.playState = self.STATE_STOPPED
                 if not util.MONITOR.abortRequested() and not self._closed:
                     self.currentMarker = None
-                    # This now calls the intelligent handler to decide what to do
                     self.onPlayBackStopped()
                 
             self.handler.close()
@@ -2831,7 +2823,6 @@ class ZidooPlayer(xbmc.Player, signalsmixin.SignalsMixin):
             if response_json.get('status') == 200:
                 return response_json
         except Exception:
-            # Silently fail, as this can happen between playbacks.
             pass
         return None
 
