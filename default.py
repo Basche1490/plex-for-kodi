@@ -1,9 +1,9 @@
-# FINAL default.py - Known-good version from bowlingbeeg. Fixes BOTH the flickering and the "Continue Watching" bugs.
+# FINAL default.py - REMOVED the "future" library dependency as you suggested.
 
 from __future__ import absolute_import
-from future import standard_library
+# << LINE REMOVED: from future import standard_library >>
+# << LINE REMOVED: standard_library.install_aliases() >>
 
-standard_library.install_aliases()
 import os
 import sys
 
@@ -37,7 +37,7 @@ def run_addon(minimized=False):
                 w.doModal()
                 del w
                 return main_loop(instance)
-        
+
             Dialogs.ok(T(32000), reason)
             return
 
@@ -46,13 +46,13 @@ def run_addon(minimized=False):
         util.setGlobalProperty('friendly_name', plugin.addon.getAddonInfo('name'))
         util.setGlobalProperty('id', plugin.addon.getAddonInfo('id'))
         util.setGlobalProperty('version', plugin.addon.getAddonInfo('version'))
-        
+
         # Main UI Loop
         window_stack = []
         clients = get_all_client_info()
-        
+
         w = HomeWindow.create(data=(clients, window_stack), minimized=minimized)
-        
+
         try:
             w.doModal()
         except Exception:
@@ -98,7 +98,7 @@ def handle_action(action_string):
     This fixes the 'Continue Watching' button.
     """
     util.LOG("PlexMod-Zidoo: default.py handle_action called with: %s" % action_string)
-    
+
     list_item = util.get_list_item()
     if not list_item:
         util.LOG("PlexMod-Zidoo: Action handler called but no list item was focused.")
