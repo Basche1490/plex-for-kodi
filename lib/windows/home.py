@@ -1345,9 +1345,8 @@ class HomeWindow(kodigui.BaseWindow, util.CronReceiver, CommonMixin, SpoilersMix
             return
 
         # auto resume for in-progress items
-        if util.getSetting('home_inprogress_resume'):
-            if mli.dataSource.TYPE in ('episode', 'movie') and mli.dataSource.in_progress:
-                auto_play = True
+        if mli.dataSource.TYPE in ('episode', 'movie') and mli.dataSource.in_progress:
+            auto_play = True
 
         carryProps = None
         if auto_play:
