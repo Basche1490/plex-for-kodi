@@ -24,9 +24,7 @@ def open(obj, **kwargs):
         key = obj
         if not obj.startswith('/'):
             key = '/library/metadata/{0}'.format(obj)
-
-        server = kwargs.pop("server", None) or plexapp.SERVERMANAGER.selectedServer
-        return open(server.getObject(key), **kwargs)
+        return open(plexapp.SERVERMANAGER.selectedServer.getObject(key), **kwargs)
     elif obj.TYPE == 'episode':
         return episodeClicked(obj, **kwargs)
     elif obj.TYPE == 'movie':
@@ -66,19 +64,11 @@ def open(obj, **kwargs):
 def handleOpen(winclass, **kwargs):
     w = None
     try:
-        # we might just want the play preparation functionality of a window class to directly play an item or playlist
-        # if so, we won't actually open the window, just instantiate it, as to not add it to the kodi window history
         autoPlay = kwargs.pop("auto_play", False)
-        autoPlayOpen = kwargs.pop("auto_play_open", False)
         if autoPlay and hasattr(winclass, "doAutoPlay"):
-            # create but don't open window
             w = winclass.create(show=False, **kwargs)
-            if autoPlayOpen and w.doAutoPlay():
-                # open window after autoPlay to be able to return to it after playback
+            if w.doAutoPlay():
                 w.modal()
-            else:
-                # just autoPlay and don't open the window
-                w.doAutoPlay()
         else:
             w = winclass.open(**kwargs)
         return w.exitCommand or ''
@@ -95,11 +85,7 @@ def handleOpen(winclass, **kwargs):
 
 def playableClicked(playable, **kwargs):
     from . import preplay
-    if kwargs.get('from_watchlist', False):
-        win = preplay.PrePlayWindowWL
-    else:
-        win = preplay.PrePlayWindow
-    return handleOpen(win, video=playable, **kwargs)
+    return handleOpen(preplay.PrePlayWindow, video=playable, **kwargs)
 
 
 def episodeClicked(episode, **kwargs):
